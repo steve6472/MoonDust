@@ -1,0 +1,15 @@
+{
+  "moondust:debug_line_single_buffer": false,
+  "moondust:enable_wide_lines": true,
+  "moondust:font_gen_logs": false,
+  "moondust:font_generate_timeout": 15,
+  "moondust:global_camera_count": 1,
+  "moondust:line_width": 2.0,
+  "moondust:present_mode": "Mailbox",
+  "moondust:render_center_point": false,
+  "moondust:title_fps": true,
+  "moondust:username": "MoonDust",
+  "moondust:validation_level": "Warning",
+  "moondust:vr": false,
+  "moondust:vr_action_manifest_path": "settings/vr_actions.json"
+}

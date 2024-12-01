@@ -1,0 +1,7 @@
+{
+    name: "MoonDust",
+    description: [
+        "Built-in MoonDust resources"
+    ],
+    authors: "steve6472"
+}
