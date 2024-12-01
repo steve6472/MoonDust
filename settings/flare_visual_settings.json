@@ -7,7 +7,7 @@
   "moondust:line_width": 2.0,
   "moondust:present_mode": "Mailbox",
   "moondust:render_center_point": false,
-  "moondust:title_fps": true,
+  "moondust:title_fps": false,
   "moondust:username": "MoonDust",
   "moondust:validation_level": "Warning",
   "moondust:vr": false,
