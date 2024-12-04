@@ -1,7 +1,9 @@
 {
     name: "MoonDust",
     description: [
-        "Built-in MoonDust resources"
+        "Built-in MoonDust resources",
+        "Basic components: ",
+        " - Button"
     ],
     authors: "steve6472"
 }

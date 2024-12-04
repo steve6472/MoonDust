@@ -1,0 +1,34 @@
+{
+    sprites: {
+        "normal": "moondust:box"
+    },
+
+    enabled: true,
+    current_sprite: "normal"
+
+//    events: [
+//        {
+//            call: "moondust:button/press",
+//            event: {
+//                type: "press",
+//
+//                // Allow for only one entry!
+//                /*conditions:
+//                    {
+//                        type: "state",
+//                        enabled: true
+//                    },*/
+//
+//                conditions: [
+//                    { type: "state",  enabled: true },
+//                    {
+//                        or: [
+//                            { "type": "xmas",  "xmas": true },
+//                            { "type": "halloween",  "halloween": true }
+//                        ]
+//                    }
+//                ]
+//            }
+//        }
+//    ]
+}

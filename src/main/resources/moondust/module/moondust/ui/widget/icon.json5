@@ -1,0 +1,6 @@
+{
+    sprites: {
+        "icon": "moondust:sprites/unknown"
+    },
+    current_sprite: "icon"
+}

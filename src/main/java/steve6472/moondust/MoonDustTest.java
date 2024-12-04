@@ -1,10 +1,10 @@
 package steve6472.moondust;
 
 import org.lwjgl.system.MemoryStack;
+import steve6472.core.registry.Key;
 import steve6472.flare.Camera;
 import steve6472.flare.core.FlareApp;
 import steve6472.flare.core.FrameInfo;
-import steve6472.flare.pipeline.Pipelines;
 import steve6472.flare.render.UIRenderSystem;
 
 /**
@@ -29,13 +29,12 @@ public class MoonDustTest extends FlareApp
     @Override
     protected void initRegistries()
     {
-
+        initRegistry(MoonDustRegistries.POSITION_TYPE);
     }
 
     @Override
     public void loadSettings()
     {
-
     }
 
     @Override
@@ -47,7 +46,6 @@ public class MoonDustTest extends FlareApp
     @Override
     public void postInit()
     {
-
     }
 
     @Override

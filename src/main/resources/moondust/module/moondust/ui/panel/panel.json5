@@ -1,0 +1,44 @@
+{
+//    tick_call: "moondust:panel/tick_test",
+
+    position: {
+        type: "absolute",
+        pos: [20, 20]
+    },
+
+    // children, but with different name to fit the "location", has to use same codec and type
+    widgets: [
+        {
+            // The widget type, required
+            widget: "moondust:button",
+
+            // Non-namespaced name, required
+            name: "test_button",
+            sprite_size: [32, 8],
+
+            // Widget components on panel
+            position: {
+                type: "absolute",
+                pos: [10, 15]
+            }/*,
+
+            // Widget components overrides
+            overrides: {
+                sprites: {
+                    replace: {
+                        "normal": "moondust:ui/box_background"
+                    }
+                }
+            }*/
+        },
+        {
+            widget: "moondust:icon",
+            name: "test_icon",
+            sprite_size: [8, 8],
+            position: {
+                type: "absolute",
+                pos: [0, 0]
+            }
+        }
+    ]
+}

@@ -19,6 +19,7 @@ public class MoonDustTestMain
 {
     public static void main(String[] args) throws IOException, URISyntaxException
     {
+        System.setProperty("joml.format", "false");
         try (var dirStream = Files.walk(Paths.get("modules/moondust"))) {
             dirStream
                 .map(Path::toFile)
