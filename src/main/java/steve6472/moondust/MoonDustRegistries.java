@@ -27,7 +27,7 @@ public class MoonDustRegistries extends RegistryCreators
     public static final Registry<UIEventType<?>> EVENT_TYPE = createRegistry(key("event_type"), () -> UIEventType.RANDOM_TICK);
 
     public static final Registry<BlueprintEntry<?>> WIDGET_BLUEPRINT = createRegistry(key("widget_blueprint"), () -> WidgetBlueprints.SPRITES);
-    public static final Registry<BlueprintEntry<?>> CHILD_BLUEPRINT = createRegistry("child_blueprint", () -> ChildBlueprints.NAME);
+    public static final Registry<BlueprintEntry<?>> CHILD_BLUEPRINT = createRegistry("child_blueprint", () -> ChildBlueprints.WIDGET);
     public static final Registry<BlueprintEntry<?>> PANEL_BLUEPRINT = createRegistry("panel_blueprint", () -> PanelBlueprints.CHILDREN);
 
     public static final ObjectRegistry<BlueprintFactory> WIDGET_FACTORY = createObjectRegistry(key("widget_factory"), WidgetLoader::load);

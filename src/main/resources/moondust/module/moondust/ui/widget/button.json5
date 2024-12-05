@@ -3,7 +3,6 @@
         "normal": "moondust:box"
     },
 
-    enabled: true,
     current_sprite: "normal"
 
 //    events: [

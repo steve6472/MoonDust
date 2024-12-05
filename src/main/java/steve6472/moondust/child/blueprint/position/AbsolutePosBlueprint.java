@@ -1,11 +1,9 @@
-package steve6472.moondust.child.blueprint.position.impl;
+package steve6472.moondust.child.blueprint.position;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.joml.Vector2i;
 import steve6472.core.util.ExtraCodecs;
-import steve6472.moondust.child.blueprint.position.PositionBlueprint;
-import steve6472.moondust.child.blueprint.position.PositionType;
 import steve6472.moondust.child.component.position.AbsolutePos;
 
 import java.util.List;

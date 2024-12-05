@@ -1,7 +1,6 @@
 package steve6472.moondust;
 
 import org.lwjgl.system.MemoryStack;
-import steve6472.core.registry.Key;
 import steve6472.flare.Camera;
 import steve6472.flare.core.FlareApp;
 import steve6472.flare.core.FrameInfo;

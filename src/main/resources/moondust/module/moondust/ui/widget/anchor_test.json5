@@ -1,0 +1,133 @@
+{
+    sprites: {
+        "background": "moondust:orange_box"
+    },
+
+    bounds: [32, 32],
+    current_sprite: "background",
+    sprite_size: [32, 32],
+
+    children: [
+        {
+            widget: "moondust:icon",
+            name: "tl",
+            sprite_size: [8, 8],
+            bounds: [8, 8],
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 0],
+                anchor: "top_left"
+            }
+        },
+        {
+            widget: "moondust:icon",
+            name: "tr",
+            sprite_size: [8, 8],
+            bounds: [8, 8],
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 0],
+                anchor: "top_right"
+            }
+        },
+        {
+            widget: "moondust:icon",
+            name: "bl",
+            sprite_size: [8, 8],
+            bounds: [8, 8],
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 0],
+                anchor: "bottom_left"
+            }
+        },
+        {
+            widget: "moondust:icon",
+            name: "br",
+            sprite_size: [8, 8],
+            bounds: [8, 8],
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 0],
+                anchor: "bottom_right"
+            }
+        },
+
+
+        {
+            widget: "moondust:icon",
+            name: "t",
+            sprite_size: [8, 8],
+            bounds: [8, 8],
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 0],
+                anchor: "top"
+            }
+        },
+        {
+            widget: "moondust:icon",
+            name: "b",
+            sprite_size: [8, 8],
+            bounds: [8, 8],
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 0],
+                anchor: "bottom"
+            }
+        },
+        {
+            widget: "moondust:icon",
+            name: "l",
+            sprite_size: [8, 8],
+            bounds: [8, 8],
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 0],
+                anchor: "left"
+            }
+        },
+        {
+            widget: "moondust:icon",
+            name: "r",
+            sprite_size: [8, 8],
+            bounds: [8, 8],
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 0],
+                anchor: "right"
+            }
+        },
+
+
+        {
+            widget: "moondust:icon",
+            name: "m",
+            sprite_size: [8, 8],
+            bounds: [8, 8],
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 0],
+                anchor: "middle"
+            }
+        }
+    ]
+}

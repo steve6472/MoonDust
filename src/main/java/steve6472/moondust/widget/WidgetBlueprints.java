@@ -3,9 +3,12 @@ package steve6472.moondust.widget;
 import com.mojang.serialization.Codec;
 import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustRegistries;
+import steve6472.moondust.child.blueprint.SpriteSizeBlueprint;
+import steve6472.moondust.core.MoonDustComponentRegister;
 import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.core.blueprint.BlueprintEntry;
 import steve6472.moondust.core.blueprint.DefaultBlueprint;
+import steve6472.moondust.widget.blueprint.BoundsBlueprint;
 import steve6472.moondust.widget.blueprint.ChildrenBlueprint;
 import steve6472.moondust.widget.blueprint.CurrentSpriteBlueprint;
 import steve6472.moondust.widget.blueprint.SpritesBlueprint;
@@ -37,30 +40,27 @@ public class WidgetBlueprints
      */
 
     public static final BlueprintEntry<SpritesBlueprint> SPRITES = register(SpritesBlueprint.KEY, SpritesBlueprint.CODEC);
-    public static final BlueprintEntry<ChildrenBlueprint> CHILDREN = register(ChildrenBlueprint.KEY, ChildrenBlueprint.CODEC);
     public static final BlueprintEntry<CurrentSpriteBlueprint> CURRENT_SPRITE = register(CurrentSpriteBlueprint.KEY, CurrentSpriteBlueprint.CODEC);
+    public static final BlueprintEntry<SpriteSizeBlueprint> SPRITE_SIZE = register(SpriteSizeBlueprint.KEY, SpriteSizeBlueprint.CODEC);
+    public static final BlueprintEntry<ChildrenBlueprint> CHILDREN = register(ChildrenBlueprint.KEY, ChildrenBlueprint.CODEC);
+    public static final BlueprintEntry<BoundsBlueprint> BOUNDS = register(BoundsBlueprint.KEY, BoundsBlueprint.CODEC);
+
+    /*
+     * Register methods
+     */
 
     private static <T extends Blueprint> BlueprintEntry<T> register(Key key, Codec<T> codec)
     {
-        if (MoonDustRegistries.WIDGET_BLUEPRINT.get(key) != null)
-            throw new RuntimeException("Blueprint with key " + key + " already exists!");
-
-        BlueprintEntry<T> obj = new BlueprintEntry<>(key, codec);
-        MoonDustRegistries.WIDGET_BLUEPRINT.register(key, obj);
-        return obj;
+        return MoonDustComponentRegister.register(MoonDustRegistries.WIDGET_BLUEPRINT, key, codec);
     }
 
     private static <T extends Blueprint> BlueprintEntry<T> registerRequired(Key key, Codec<T> codec)
     {
-        BlueprintEntry<T> register = register(key, codec);
-        REQUIRED_BLUEPRINTS.add(register);
-        return register;
+        return MoonDustComponentRegister.registerRequired(MoonDustRegistries.WIDGET_BLUEPRINT, REQUIRED_BLUEPRINTS, key, codec);
     }
 
     private static <T extends Blueprint> BlueprintEntry<T> registerDefault(Key key, Codec<T> codec, T defaultValue)
     {
-        BlueprintEntry<T> register = register(key, codec);
-        DEFAULT_BLUEPRINTS.add(new DefaultBlueprint<>(register, defaultValue));
-        return register;
+        return MoonDustComponentRegister.registerDefault(MoonDustRegistries.WIDGET_BLUEPRINT, DEFAULT_BLUEPRINTS, key, codec, defaultValue);
     }
 }

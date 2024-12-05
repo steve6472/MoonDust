@@ -1,8 +1,4 @@
 {
-    sprites: {
-        "normal": "moondust:ui/box"
-    },
-
     enabled: true,
 
     children: [
@@ -10,6 +6,7 @@
             widget: "moondust:button",
             name: "left",
             enabled: false,
+            sprite_size: [10, 10],
 
             // Widget components on panel
             position: {
@@ -20,12 +17,19 @@
         {
             widget: "moondust:button",
             name: "right",
+            sprite_size: [10, 10],
+
+            position: {
+                type: "relative",
+                parent: "left",
+                offset: [10, 0]
+            }
 
             // Widget components on panel
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            }
+//            position: {
+//                type: "absolute",
+//                pos: [10, 0]
+//            }
         }
     ]
 }

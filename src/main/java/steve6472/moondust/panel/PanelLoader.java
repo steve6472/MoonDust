@@ -60,15 +60,16 @@ public class PanelLoader
                         }
                     }
 
+                    Key key = Key.withNamespace(namespace, id);
+
                     for (BlueprintEntry<?> requiredBlueprint : PanelBlueprints.REQUIRED_BLUEPRINTS)
                     {
                         if (!map.containsKey(requiredBlueprint))
                         {
-                            throw new RuntimeException("Panel does not contain required blueprint: '" + requiredBlueprint.key() + "'");
+                            throw new RuntimeException("Panel '" + key + "' does not contain required blueprint: '" + requiredBlueprint.key() + "'");
                         }
                     }
 
-                    Key key = Key.withNamespace(namespace, id);
                     BlueprintFactory factory = new BlueprintFactory(key, blueprints);
                     LOGGER.finest("Loaded blueprint " + key + " from " + module.name());
                     factories.put(key, factory);

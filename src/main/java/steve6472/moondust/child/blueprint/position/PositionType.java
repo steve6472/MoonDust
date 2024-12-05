@@ -5,8 +5,6 @@ import com.mojang.serialization.MapCodec;
 import steve6472.core.registry.Key;
 import steve6472.core.registry.Type;
 import steve6472.moondust.MoonDustRegistries;
-import steve6472.moondust.child.blueprint.position.impl.AbsolutePosBlueprint;
-import steve6472.moondust.child.blueprint.position.impl.RelativePosBlueprint;
 
 /**
  * Created by steve6472
@@ -17,6 +15,7 @@ public final class PositionType<T extends PositionBlueprint> extends Type<T>
 {
     public static final PositionType<AbsolutePosBlueprint> ABSOLUTE = register("absolute", AbsolutePosBlueprint.CODEC);
     public static final PositionType<RelativePosBlueprint> RELATIVE = register("relative", RelativePosBlueprint.CODEC);
+    public static final PositionType<AnchoredPosBlueprint> ANCHORED = register("anchored", AnchoredPosBlueprint.CODEC);
 
     public PositionType(Key key, MapCodec<T> codec)
     {

@@ -3,8 +3,10 @@
 
     position: {
         type: "absolute",
-        pos: [20, 20]
+        pos: [8, 8]
     },
+
+    bounds: [64, 64],
 
     // children, but with different name to fit the "location", has to use same codec and type
     widgets: [
@@ -19,7 +21,7 @@
             // Widget components on panel
             position: {
                 type: "absolute",
-                pos: [10, 15]
+                pos: [10, 10]
             }/*,
 
             // Widget components overrides
@@ -38,6 +40,22 @@
             position: {
                 type: "absolute",
                 pos: [0, 0]
+            }
+        },
+        {
+            widget: "moondust:lr_button",
+            name: "test_lr",
+            position: {
+                type: "absolute",
+                pos: [0, 20]
+            }
+        },
+        {
+            widget: "moondust:keypad",
+            name: "anchor_test",
+            position: {
+                type: "absolute",
+                pos: [32, 32]
             }
         }
     ]

@@ -1,6 +1,7 @@
 package steve6472.moondust;
 
 import steve6472.moondust.child.component.position.AbsolutePos;
+import steve6472.moondust.child.component.position.AnchoredPos;
 import steve6472.moondust.child.component.position.Position;
 import steve6472.moondust.child.component.position.RelativePos;
 
@@ -17,7 +18,7 @@ public final class ComponentRedirect
 
     static
     {
-        addRedirect(Position.class, AbsolutePos.class, RelativePos.class);
+        addRedirect(Position.class, AbsolutePos.class, RelativePos.class, AnchoredPos.class);
     }
 
     public static Collection<Class<?>> get(Class<?> objectType)

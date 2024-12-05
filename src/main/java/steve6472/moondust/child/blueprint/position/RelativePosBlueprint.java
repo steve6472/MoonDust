@@ -1,11 +1,10 @@
-package steve6472.moondust.child.blueprint.position.impl;
+package steve6472.moondust.child.blueprint.position;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.joml.Vector2i;
 import steve6472.core.util.ExtraCodecs;
-import steve6472.moondust.child.blueprint.position.PositionBlueprint;
-import steve6472.moondust.child.blueprint.position.PositionType;
+import steve6472.moondust.child.component.position.RelativePos;
 
 import java.util.List;
 
@@ -30,6 +29,6 @@ public record RelativePosBlueprint(Vector2i offset, String parent) implements Po
     @Override
     public List<?> createComponents()
     {
-        return List.of();
+        return List.of(new RelativePos(new Vector2i(offset), parent));
     }
 }

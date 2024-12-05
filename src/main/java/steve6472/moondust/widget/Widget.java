@@ -8,6 +8,8 @@ import steve6472.moondust.child.component.WidgetReference;
 import steve6472.moondust.child.component.position.Position;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.widget.component.Children;
+import steve6472.moondust.widget.component.Enabled;
+import steve6472.moondust.widget.component.Visible;
 
 import java.util.*;
 
@@ -22,7 +24,7 @@ public class Widget
     private final Map<String, Widget> children = new HashMap<>();
     private final Widget parent;
 
-    private Widget(BlueprintFactory blueprint, Widget parent)
+    protected Widget(BlueprintFactory blueprint, Widget parent)
     {
         this.parent = parent;
 
@@ -38,7 +40,8 @@ public class Widget
             Objects.requireNonNull(widgetItself);
             for (Object component : widgetItself.createComponents())
             {
-                addComponent(component);
+                if (!components.containsKey(component.getClass()))
+                    addComponent(component);
             }
         }
 
@@ -70,6 +73,8 @@ public class Widget
     public void addChild(Widget widget)
     {
         Name name = widget.getComponent(Name.class).orElseThrow();
+        if (children.containsKey(name.value()))
+            throw new IllegalStateException("Child widget with name '" + name.value() + "' already exists!");
         children.put(name.value(), widget);
     }
 
@@ -92,6 +97,16 @@ public class Widget
         Vector2i store = new Vector2i();
         getPosition(store);
         return store;
+    }
+
+    public boolean isVisible()
+    {
+        return getComponent(Visible.class).orElseThrow().flag();
+    }
+
+    public boolean isEnabled()
+    {
+        return getComponent(Enabled.class).orElseThrow().flag();
     }
 
     /*
