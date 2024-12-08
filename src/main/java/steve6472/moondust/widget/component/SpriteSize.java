@@ -1,4 +1,4 @@
-package steve6472.moondust.child.component;
+package steve6472.moondust.widget.component;
 
 /**
  * Created by steve6472

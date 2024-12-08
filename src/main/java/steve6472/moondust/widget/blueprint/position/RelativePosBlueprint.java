@@ -1,10 +1,10 @@
-package steve6472.moondust.child.blueprint.position;
+package steve6472.moondust.widget.blueprint.position;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.joml.Vector2i;
 import steve6472.core.util.ExtraCodecs;
-import steve6472.moondust.child.component.position.RelativePos;
+import steve6472.moondust.widget.component.position.RelativePos;
 
 import java.util.List;
 

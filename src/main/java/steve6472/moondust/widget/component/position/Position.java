@@ -1,4 +1,4 @@
-package steve6472.moondust.child.component.position;
+package steve6472.moondust.widget.component.position;
 
 import org.joml.Vector2i;
 import steve6472.moondust.widget.Widget;

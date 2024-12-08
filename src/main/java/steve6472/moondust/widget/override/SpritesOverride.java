@@ -1,10 +1,10 @@
-package steve6472.moondust.child.override;
+package steve6472.moondust.widget.override;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import steve6472.core.registry.Key;
 import steve6472.core.util.ExtraCodecs;
-import steve6472.moondust.child.CompOverride;
+import steve6472.moondust.widget.CompOverride;
 import steve6472.moondust.widget.component.Sprites;
 
 import java.util.HashMap;

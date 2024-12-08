@@ -4,6 +4,7 @@ import steve6472.core.registry.Key;
 import steve6472.core.registry.Keyable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
@@ -28,6 +29,11 @@ public class BlueprintFactory implements Keyable
         List<Object> components = new ArrayList<>(blueprints.size());
         blueprints.forEach(blueprint -> components.addAll(blueprint.createComponents()));
         return components;
+    }
+
+    public Collection<Blueprint> getBlueprints()
+    {
+        return List.copyOf(blueprints);
     }
 
     public <T> T createObject(Function<List<Object>, T> constructor)

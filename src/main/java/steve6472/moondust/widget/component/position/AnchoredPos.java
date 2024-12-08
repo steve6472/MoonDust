@@ -1,4 +1,4 @@
-package steve6472.moondust.child.component.position;
+package steve6472.moondust.widget.component.position;
 
 import com.mojang.serialization.Codec;
 import org.joml.Vector2i;

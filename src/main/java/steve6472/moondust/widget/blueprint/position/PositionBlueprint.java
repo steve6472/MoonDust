@@ -1,4 +1,4 @@
-package steve6472.moondust.child.blueprint.position;
+package steve6472.moondust.widget.blueprint.position;
 
 import com.mojang.serialization.Codec;
 import steve6472.core.registry.Key;

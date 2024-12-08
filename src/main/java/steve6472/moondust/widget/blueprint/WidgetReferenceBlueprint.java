@@ -1,9 +1,9 @@
-package steve6472.moondust.child.blueprint;
+package steve6472.moondust.widget.blueprint;
 
 import com.mojang.serialization.Codec;
 import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustConstants;
-import steve6472.moondust.child.component.WidgetReference;
+import steve6472.moondust.widget.component.WidgetReference;
 import steve6472.moondust.core.blueprint.Blueprint;
 
 import java.util.List;

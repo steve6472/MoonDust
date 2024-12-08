@@ -5,11 +5,13 @@
         type: "absolute",
         pos: [8, 8]
     },
+    layout: {
+        type: "absolute"
+    },
 
     bounds: [64, 64],
 
-    // children, but with different name to fit the "location", has to use same codec and type
-    widgets: [
+    children: [
         {
             // The widget type, required
             widget: "moondust:button",

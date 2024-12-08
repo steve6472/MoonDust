@@ -8,8 +8,8 @@ import steve6472.core.registry.Key;
 import steve6472.flare.render.UIRender;
 import steve6472.flare.ui.textures.SpriteEntry;
 import steve6472.moondust.widget.component.Bounds;
-import steve6472.moondust.child.component.SpriteSize;
-import steve6472.moondust.panel.Panel;
+import steve6472.moondust.widget.component.SpriteSize;
+import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.CurrentSprite;
 import steve6472.moondust.widget.component.Sprites;
@@ -22,7 +22,7 @@ import steve6472.moondust.widget.component.Sprites;
 public class MoonDustUIRender extends UIRender
 {
     private static boolean DEBUG = false;
-    private static boolean DEBUG_BOUNDS = false;
+    private static boolean DEBUG_BOUNDS = true;
 
     private static Key DEBUG_OUTLINE = Key.withNamespace("moondust", "outline");
     private static Key DEBUG_OUTLINE_TRANSPARENT = Key.withNamespace("moondust", "outline_transparent");

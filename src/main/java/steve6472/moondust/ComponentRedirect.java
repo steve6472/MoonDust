@@ -1,9 +1,9 @@
 package steve6472.moondust;
 
-import steve6472.moondust.child.component.position.AbsolutePos;
-import steve6472.moondust.child.component.position.AnchoredPos;
-import steve6472.moondust.child.component.position.Position;
-import steve6472.moondust.child.component.position.RelativePos;
+import steve6472.moondust.widget.component.position.AbsolutePos;
+import steve6472.moondust.widget.component.position.AnchoredPos;
+import steve6472.moondust.widget.component.position.Position;
+import steve6472.moondust.widget.component.position.RelativePos;
 
 import java.util.*;
 
