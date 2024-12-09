@@ -1,5 +1,6 @@
 package steve6472.moondust.widget;
 
+import org.joml.Vector2i;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.flare.core.Flare;
@@ -10,9 +11,7 @@ import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.core.blueprint.BlueprintEntry;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.core.blueprint.DefaultBlueprint;
-import steve6472.moondust.widget.blueprint.ChildrenBlueprint;
-import steve6472.moondust.widget.blueprint.NameBlueprint;
-import steve6472.moondust.widget.blueprint.WidgetReferenceBlueprint;
+import steve6472.moondust.widget.blueprint.*;
 import steve6472.moondust.widget.blueprint.layout.LayoutBlueprint;
 import steve6472.moondust.widget.blueprint.position.PositionBlueprint;
 
@@ -73,6 +72,13 @@ public class WidgetLoader
             if (!map.containsKey(genericBlueprint.entry()))
             {
                 blueprints.add(genericBlueprint.defaultValue());
+            } else
+            {
+                Object current = map.get(genericBlueprint.entry());
+                if (current.equals(genericBlueprint.defaultValue()))
+                {
+                    LOGGER.fine("Pointless declaration of default component '" + genericBlueprint.entry().key() + "' with default value '" + current + "' in: " + key);
+                }
             }
         }
 
@@ -87,7 +93,24 @@ public class WidgetLoader
         ChildrenBlueprint children = (ChildrenBlueprint) map.get(WidgetBlueprints.CHILDREN);
         validateChildren(children, blueprints);
 
+        fillSpecialDefaults(blueprints, key);
+
         return new BlueprintFactory(key, blueprints);
+    }
+
+    private static void fillSpecialDefaults(Collection<Blueprint> blueprints, Key key)
+    {
+        // Add sprite_size if it is not defined, uses bounds size if defined, otherwise nothing is added
+        find(blueprints, SpriteSizeBlueprint.class).ifPresentOrElse(spriteSize -> {
+            find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
+                if (spriteSize.size().equals(bounds.bounds()))
+                    LOGGER.fine("Pointless declaration of '%s', it has same size as '%s', value: %s in: %s".formatted(WidgetBlueprints.SPRITE_SIZE.key(), WidgetBlueprints.BOUNDS.key(), bounds.bounds(), key));
+            });
+        }, () -> {
+            find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
+                blueprints.add(new SpriteSizeBlueprint(new Vector2i(bounds.bounds())));
+            });
+        });
     }
 
     // Position is checked separately due to being typed and different layouts requiring different position types
@@ -98,7 +121,7 @@ public class WidgetLoader
         if (children == null)
             return;
 
-        LayoutBlueprint layout = widget.stream().filter(a -> a instanceof LayoutBlueprint).map(a -> (LayoutBlueprint) a).findFirst().orElseThrow();
+        LayoutBlueprint layout = find(widget, LayoutBlueprint.class).orElseThrow();
 
         for (BlueprintFactory child : children.children())
         {
@@ -113,8 +136,7 @@ public class WidgetLoader
                 throw new IllegalStateException("Child " + name + " is missing some components, found: " + collectStrings + ", required: " + requiredStrings);
             }
 
-            Optional<PositionBlueprint> positionOptional = blueprints.stream().filter(a -> a instanceof PositionBlueprint).map(a -> (PositionBlueprint) a).findFirst();
-            positionOptional.ifPresentOrElse(position ->
+            find(blueprints, PositionBlueprint.class).ifPresentOrElse(position ->
             {
                 if (!layout.acceptedPositionTypes().contains(position.getClass()))
                 {
@@ -122,5 +144,23 @@ public class WidgetLoader
                 }
             }, () -> {throw new IllegalStateException("Child " + name + " is missing required Position component!");});
         }
+    }
+
+    /// Util function to shorten code to\
+    /// Finds first type in a list\
+    /// Returns optional
+    private static <T extends Blueprint> Optional<T> find(Collection<Blueprint> list, Class<T> type)
+    {
+        //noinspection unchecked
+        return list
+            .stream()
+            .filter(a ->
+            {
+                if (type.isInterface())
+                    return Set.of(a.getClass().getInterfaces()).contains(type);
+                return a.getClass().equals(type);
+            })
+            .map(b -> (T) b)
+            .findFirst();
     }
 }

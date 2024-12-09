@@ -51,14 +51,6 @@
                 type: "absolute",
                 pos: [0, 20]
             }
-        },
-        {
-            widget: "moondust:keypad",
-            name: "anchor_test",
-            position: {
-                type: "absolute",
-                pos: [32, 32]
-            }
         }
     ]
 }

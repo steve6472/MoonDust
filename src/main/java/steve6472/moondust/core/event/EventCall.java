@@ -1,4 +1,4 @@
-package steve6472.moondust.core;
+package steve6472.moondust.core.event;
 
 import steve6472.moondust.widget.blueprint.event.UIEvent;
 import steve6472.moondust.widget.Widget;

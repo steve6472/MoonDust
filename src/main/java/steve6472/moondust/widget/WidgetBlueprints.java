@@ -3,18 +3,12 @@ package steve6472.moondust.widget;
 import com.mojang.serialization.Codec;
 import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustRegistries;
-import steve6472.moondust.widget.blueprint.NameBlueprint;
-import steve6472.moondust.widget.blueprint.WidgetReferenceBlueprint;
+import steve6472.moondust.widget.blueprint.*;
 import steve6472.moondust.widget.blueprint.position.PositionBlueprint;
-import steve6472.moondust.widget.blueprint.SpriteSizeBlueprint;
 import steve6472.moondust.core.MoonDustComponentRegister;
 import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.core.blueprint.BlueprintEntry;
 import steve6472.moondust.core.blueprint.DefaultBlueprint;
-import steve6472.moondust.widget.blueprint.BoundsBlueprint;
-import steve6472.moondust.widget.blueprint.ChildrenBlueprint;
-import steve6472.moondust.widget.blueprint.CurrentSpriteBlueprint;
-import steve6472.moondust.widget.blueprint.SpritesBlueprint;
 import steve6472.moondust.widget.blueprint.generic.EnabledBlueprint;
 import steve6472.moondust.widget.blueprint.generic.VisibleBlueprint;
 import steve6472.moondust.widget.blueprint.layout.LayoutBlueprint;
@@ -44,12 +38,16 @@ public class WidgetBlueprints
      * Normal
      */
 
+    // Sprites/Rendering
     public static final BlueprintEntry<SpritesBlueprint> SPRITES = register(SpritesBlueprint.KEY, SpritesBlueprint.CODEC);
     public static final BlueprintEntry<CurrentSpriteBlueprint> CURRENT_SPRITE = register(CurrentSpriteBlueprint.KEY, CurrentSpriteBlueprint.CODEC);
     public static final BlueprintEntry<SpriteSizeBlueprint> SPRITE_SIZE = register(SpriteSizeBlueprint.KEY, SpriteSizeBlueprint.CODEC);
+    public static final BlueprintEntry<SpriteOffsetBlueprint> SPRITE_OFFSET = register(SpriteOffsetBlueprint.KEY, SpriteOffsetBlueprint.CODEC);
+
     public static final BlueprintEntry<ChildrenBlueprint> CHILDREN = register(ChildrenBlueprint.KEY, ChildrenBlueprint.CODEC);
     public static final BlueprintEntry<BoundsBlueprint> BOUNDS = register(BoundsBlueprint.KEY, BoundsBlueprint.CODEC);
 
+    // Children specific
     public static final BlueprintEntry<WidgetReferenceBlueprint> WIDGET = register(WidgetReferenceBlueprint.KEY, WidgetReferenceBlueprint.CODEC);
     public static final BlueprintEntry<NameBlueprint> NAME = register(NameBlueprint.KEY, NameBlueprint.CODEC);
     public static final BlueprintEntry<PositionBlueprint> POSITION = register(PositionBlueprint.KEY, PositionBlueprint.CODEC);

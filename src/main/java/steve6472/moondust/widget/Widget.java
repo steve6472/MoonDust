@@ -3,13 +3,9 @@ package steve6472.moondust.widget;
 import org.joml.Vector2i;
 import steve6472.moondust.ComponentRedirect;
 import steve6472.moondust.MoonDustRegistries;
-import steve6472.moondust.widget.component.Name;
-import steve6472.moondust.widget.component.WidgetReference;
+import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.position.Position;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
-import steve6472.moondust.widget.component.Children;
-import steve6472.moondust.widget.component.Enabled;
-import steve6472.moondust.widget.component.Visible;
 
 import java.util.*;
 
@@ -107,6 +103,23 @@ public class Widget
     public boolean isEnabled()
     {
         return getComponent(Enabled.class).orElseThrow().flag();
+    }
+
+    public void setVisible(boolean visible)
+    {
+        addComponent(visible ? Visible.YES : Visible.NO);
+    }
+
+    public void setEnabled(boolean enabled)
+    {
+        addComponent(enabled ? Enabled.YES : Enabled.NO);
+    }
+
+    public void setBounds(int width, int height)
+    {
+        Bounds bounds = getComponent(Bounds.class).orElseThrow();
+        bounds.width = width;
+        bounds.height = height;
     }
 
     /*

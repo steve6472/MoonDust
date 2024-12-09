@@ -5,13 +5,11 @@
 
     bounds: [32, 32],
     current_sprite: "background",
-    sprite_size: [32, 32],
 
     children: [
         {
             widget: "moondust:button",
             name: "tl",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             position: {
@@ -23,7 +21,6 @@
         {
             widget: "moondust:button",
             name: "tr",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             position: {
@@ -35,7 +32,6 @@
         {
             widget: "moondust:button",
             name: "bl",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             position: {
@@ -47,7 +43,6 @@
         {
             widget: "moondust:button",
             name: "br",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             position: {
@@ -61,7 +56,6 @@
         {
             widget: "moondust:button",
             name: "t",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             position: {
@@ -73,7 +67,6 @@
         {
             widget: "moondust:button",
             name: "b",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             position: {
@@ -85,7 +78,6 @@
         {
             widget: "moondust:button",
             name: "l",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             position: {
@@ -97,7 +89,6 @@
         {
             widget: "moondust:button",
             name: "r",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             position: {
@@ -111,7 +102,6 @@
         {
             widget: "moondust:button",
             name: "m",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             position: {

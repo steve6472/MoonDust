@@ -3,8 +3,8 @@ package steve6472.moondust;
 import steve6472.core.registry.Key;
 import steve6472.moondust.widget.blueprint.event.UIEvent;
 import steve6472.moondust.widget.blueprint.event.impl.RandomTick;
-import steve6472.moondust.core.EventCall;
-import steve6472.moondust.core.EventCallWrapper;
+import steve6472.moondust.core.event.EventCall;
+import steve6472.moondust.core.event.EventCallWrapper;
 
 /**
  * Created by steve6472

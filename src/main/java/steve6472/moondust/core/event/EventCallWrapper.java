@@ -1,4 +1,4 @@
-package steve6472.moondust.core;
+package steve6472.moondust.core.event;
 
 import com.mojang.serialization.Codec;
 import steve6472.core.registry.Key;

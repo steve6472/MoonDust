@@ -21,6 +21,8 @@ import java.util.Map;
  */
 public record ChildrenBlueprint(List<BlueprintFactory> children) implements Blueprint
 {
+    private static final Key KEY_CHILD_COMPONENT = Key.withNamespace("moondust", "__temp_child_component");
+
     public static final Key KEY = Key.withNamespace(MoonDustConstants.NAMESPACE, "children");
     public static final Codec<ChildrenBlueprint> CODEC = MoonDustRegistries.WIDGET_BLUEPRINT.valueMapCodec().listOf()
         .xmap(list ->
@@ -29,11 +31,11 @@ public record ChildrenBlueprint(List<BlueprintFactory> children) implements Blue
 
             for (Map<BlueprintEntry<?>, Object> map : list)
             {
-                factories.add(WidgetLoader.createWidgetFactory(map, Key.withNamespace("unused", "easter_egg")));
+                factories.add(WidgetLoader.createWidgetFactory(map, KEY_CHILD_COMPONENT));
             }
 
             return new ChildrenBlueprint(factories);
-        }, children ->
+        }, _ ->
         {
             throw new RuntimeException("Encoding of Children Blueprint is not yet implemented, it was late and I wanted to get other stuff done.");
         });

@@ -5,13 +5,11 @@
 
     bounds: [32, 32],
     current_sprite: "background",
-    sprite_size: [32, 32],
 
     children: [
         {
             widget: "moondust:icon",
             name: "tl",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             // Widget components on panel
@@ -24,7 +22,6 @@
         {
             widget: "moondust:icon",
             name: "tr",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             // Widget components on panel
@@ -37,7 +34,6 @@
         {
             widget: "moondust:icon",
             name: "bl",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             // Widget components on panel
@@ -50,7 +46,6 @@
         {
             widget: "moondust:icon",
             name: "br",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             // Widget components on panel
@@ -65,7 +60,6 @@
         {
             widget: "moondust:icon",
             name: "t",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             // Widget components on panel
@@ -78,7 +72,6 @@
         {
             widget: "moondust:icon",
             name: "b",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             // Widget components on panel
@@ -91,7 +84,6 @@
         {
             widget: "moondust:icon",
             name: "l",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             // Widget components on panel
@@ -104,7 +96,6 @@
         {
             widget: "moondust:icon",
             name: "r",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             // Widget components on panel
@@ -119,7 +110,6 @@
         {
             widget: "moondust:icon",
             name: "m",
-            sprite_size: [8, 8],
             bounds: [8, 8],
 
             // Widget components on panel

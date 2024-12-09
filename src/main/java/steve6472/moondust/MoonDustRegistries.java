@@ -9,7 +9,7 @@ import steve6472.moondust.widget.blueprint.event.UIEventType;
 import steve6472.moondust.widget.blueprint.position.PositionType;
 import steve6472.moondust.core.blueprint.BlueprintEntry;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
-import steve6472.moondust.core.EventCallWrapper;
+import steve6472.moondust.core.event.EventCallWrapper;
 import steve6472.moondust.widget.WidgetBlueprints;
 import steve6472.moondust.widget.WidgetLoader;
 

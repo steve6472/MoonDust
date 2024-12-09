@@ -1,6 +1,7 @@
 {
     sprites: {
-        "normal": "moondust:box"
+        normal: "moondust:box",
+        disabled: "moondust:outline"
     },
 
     current_sprite: "normal"
