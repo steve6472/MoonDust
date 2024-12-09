@@ -29,6 +29,7 @@ public class MoonDustTest extends FlareApp
     protected void initRegistries()
     {
         initRegistry(MoonDustRegistries.POSITION_TYPE);
+        MoonDustEventCalls.init();
     }
 
     @Override
@@ -39,7 +40,7 @@ public class MoonDustTest extends FlareApp
     @Override
     protected void createRenderSystems()
     {
-        addRenderSystem(new UIRenderSystem(masterRenderer(), new MoonDustUIRender()));
+        addRenderSystem(new UIRenderSystem(masterRenderer(), new MoonDustUIRender(this)));
     }
 
     @Override

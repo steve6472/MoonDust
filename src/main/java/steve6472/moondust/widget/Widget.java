@@ -1,9 +1,13 @@
 package steve6472.moondust.widget;
 
 import org.joml.Vector2i;
+import steve6472.core.registry.Key;
 import steve6472.moondust.ComponentRedirect;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.widget.component.*;
+import steve6472.moondust.widget.component.event.UIEvent;
+import steve6472.moondust.widget.component.event.UIEventCallEntry;
+import steve6472.moondust.widget.component.event.UIEvents;
 import steve6472.moondust.widget.component.position.Position;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 
@@ -23,6 +27,9 @@ public class Widget
     protected Widget(BlueprintFactory blueprint, Widget parent)
     {
         this.parent = parent;
+
+        // Create InternalStates, a super-default component
+        addComponent(new InternalStates());
 
         for (Object component : blueprint.createComponents())
         {
@@ -50,6 +57,11 @@ public class Widget
                 addChild(childWidget);
             }
         }
+    }
+
+    public static Widget create(Key key)
+    {
+        return create(MoonDustRegistries.WIDGET_FACTORY.get(key));
     }
 
     public static Widget create(BlueprintFactory blueprint)
@@ -95,6 +107,11 @@ public class Widget
         return store;
     }
 
+    public InternalStates internalStates()
+    {
+        return getComponent(InternalStates.class).orElseThrow();
+    }
+
     public boolean isVisible()
     {
         return getComponent(Visible.class).orElseThrow().flag();
@@ -105,6 +122,11 @@ public class Widget
         return getComponent(Enabled.class).orElseThrow().flag();
     }
 
+    public boolean isClickable()
+    {
+        return getComponent(Clickable.class).orElseThrow().flag();
+    }
+
     public void setVisible(boolean visible)
     {
         addComponent(visible ? Visible.YES : Visible.NO);
@@ -113,6 +135,11 @@ public class Widget
     public void setEnabled(boolean enabled)
     {
         addComponent(enabled ? Enabled.YES : Enabled.NO);
+    }
+
+    public void setClickable(boolean clickable)
+    {
+        addComponent(clickable ? Clickable.YES : Clickable.NO);
     }
 
     public void setBounds(int width, int height)
@@ -126,9 +153,27 @@ public class Widget
      * Getters
      */
 
+    public <T extends UIEvent> List<UIEventCallEntry> getEvents(Class<T> eventType)
+    {
+        Optional<UIEvents> component = getComponent(UIEvents.class);
+        if (component.isEmpty())
+            return List.of();
+        UIEvents uiEvents = component.get();
+        return uiEvents.events().stream().filter(event -> event.event().getClass().equals(eventType)).toList();
+    }
+
     public Optional<Widget> parent()
     {
         return Optional.ofNullable(parent);
+    }
+
+    public String getPath()
+    {
+        if (parent == null)
+            return "-root-";
+
+        String name = getComponent(Name.class).orElse(new Name("-unnamed-")).value();
+        return parent.getPath() + "." + name;
     }
 
     public Widget getChild(String name)

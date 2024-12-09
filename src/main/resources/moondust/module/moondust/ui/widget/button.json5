@@ -1,10 +1,27 @@
 {
     sprites: {
         normal: "moondust:box",
-        disabled: "moondust:outline"
+        disabled: "moondust:outline",
+        hovered: "moondust:box_background"
     },
 
-    current_sprite: "normal"
+    current_sprite: "normal",
+    clickable: true,
+    events: [
+        {
+            call: "moondust:button/hover_on",
+            event: {
+                type: "on_mouse_enter"
+            }
+            // condition: {...}
+        },
+        {
+            call: "moondust:button/hover_off",
+            event: {
+                type: "on_mouse_leave"
+            }
+        }
+    ]
 
 //    events: [
 //        {

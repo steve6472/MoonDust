@@ -4,6 +4,9 @@
             widget: "moondust:button",
             name: "left",
             bounds: [10, 10],
+            clickable: true,
+//            sprite_size: [8, 8],
+//            sprite_offset: [1, 1],
 
             // Widget components on panel
             position: {
@@ -15,6 +18,7 @@
             widget: "moondust:button",
             name: "right",
             bounds: [10, 10],
+            clickable: true,
 
             position: {
                 type: "relative",

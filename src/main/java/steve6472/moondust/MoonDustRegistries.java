@@ -9,9 +9,12 @@ import steve6472.moondust.widget.blueprint.event.UIEventType;
 import steve6472.moondust.widget.blueprint.position.PositionType;
 import steve6472.moondust.core.blueprint.BlueprintEntry;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
-import steve6472.moondust.core.event.EventCallWrapper;
 import steve6472.moondust.widget.WidgetBlueprints;
 import steve6472.moondust.widget.WidgetLoader;
+import steve6472.moondust.widget.component.event.UIEventCall;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by steve6472
@@ -30,7 +33,7 @@ public class MoonDustRegistries extends RegistryCreators
 
     public static final ObjectRegistry<BlueprintFactory> WIDGET_FACTORY = createObjectRegistry(key("widget_factory"), WidgetLoader::load);
 
-    public static final ObjectRegistry<EventCallWrapper<?>> EVENT_CALLS = createObjectRegistry(key("event_call"), () -> MoonDustEventCalls.Button.RANDOM_TEST);
+    public static final Map<Key, UIEventCall<?>> EVENT_CALLS = new HashMap<>();
 
     private static Key key(String id)
     {

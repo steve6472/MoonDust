@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.widget.blueprint.*;
+import steve6472.moondust.widget.blueprint.event.EventsBlueprint;
+import steve6472.moondust.widget.blueprint.generic.ClickableBlueprint;
 import steve6472.moondust.widget.blueprint.position.PositionBlueprint;
 import steve6472.moondust.core.MoonDustComponentRegister;
 import steve6472.moondust.core.blueprint.Blueprint;
@@ -24,7 +26,6 @@ import java.util.List;
 public class WidgetBlueprints
 {
     public static final List<DefaultBlueprint<?>> DEFAULT_BLUEPRINTS = new ArrayList<>();
-    public static final List<BlueprintEntry<?>> REQUIRED_BLUEPRINTS = new ArrayList<>();
 
     /*
      * Default Blueprints
@@ -32,6 +33,7 @@ public class WidgetBlueprints
      */
     public static final BlueprintEntry<EnabledBlueprint> ENABLED = registerDefault(EnabledBlueprint.KEY, EnabledBlueprint.CODEC, EnabledBlueprint.DEFAULT);
     public static final BlueprintEntry<VisibleBlueprint> VISIBLE = registerDefault(VisibleBlueprint.KEY, VisibleBlueprint.CODEC, VisibleBlueprint.DEFAULT);
+    public static final BlueprintEntry<ClickableBlueprint> CLICKABLE = registerDefault(ClickableBlueprint.KEY, ClickableBlueprint.CODEC, ClickableBlueprint.DEFAULT);
     public static final BlueprintEntry<LayoutBlueprint> LAYOUT = registerDefault(LayoutBlueprint.KEY, LayoutBlueprint.CODEC, LayoutBlueprint.DEFAULT);
 
     /*
@@ -44,8 +46,13 @@ public class WidgetBlueprints
     public static final BlueprintEntry<SpriteSizeBlueprint> SPRITE_SIZE = register(SpriteSizeBlueprint.KEY, SpriteSizeBlueprint.CODEC);
     public static final BlueprintEntry<SpriteOffsetBlueprint> SPRITE_OFFSET = register(SpriteOffsetBlueprint.KEY, SpriteOffsetBlueprint.CODEC);
 
+    // Clickbox
+    public static final BlueprintEntry<ClickboxSizeBlueprint> CLICKBOX_SIZE = register(ClickboxSizeBlueprint.KEY, ClickboxSizeBlueprint.CODEC);
+    public static final BlueprintEntry<ClickboxOffsetBlueprint> CLICKBOX_OFFSET = register(ClickboxOffsetBlueprint.KEY, ClickboxOffsetBlueprint.CODEC);
+
     public static final BlueprintEntry<ChildrenBlueprint> CHILDREN = register(ChildrenBlueprint.KEY, ChildrenBlueprint.CODEC);
     public static final BlueprintEntry<BoundsBlueprint> BOUNDS = register(BoundsBlueprint.KEY, BoundsBlueprint.CODEC);
+    public static final BlueprintEntry<EventsBlueprint> EVENTS = register(EventsBlueprint.KEY, EventsBlueprint.CODEC);
 
     // Children specific
     public static final BlueprintEntry<WidgetReferenceBlueprint> WIDGET = register(WidgetReferenceBlueprint.KEY, WidgetReferenceBlueprint.CODEC);
@@ -59,11 +66,6 @@ public class WidgetBlueprints
     private static <T extends Blueprint> BlueprintEntry<T> register(Key key, Codec<T> codec)
     {
         return MoonDustComponentRegister.register(MoonDustRegistries.WIDGET_BLUEPRINT, key, codec);
-    }
-
-    private static <T extends Blueprint> BlueprintEntry<T> registerRequired(Key key, Codec<T> codec)
-    {
-        return MoonDustComponentRegister.registerRequired(MoonDustRegistries.WIDGET_BLUEPRINT, REQUIRED_BLUEPRINTS, key, codec);
     }
 
     private static <T extends Blueprint> BlueprintEntry<T> registerDefault(Key key, Codec<T> codec, T defaultValue)

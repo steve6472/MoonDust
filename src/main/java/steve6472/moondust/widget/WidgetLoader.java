@@ -12,8 +12,10 @@ import steve6472.moondust.core.blueprint.BlueprintEntry;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.core.blueprint.DefaultBlueprint;
 import steve6472.moondust.widget.blueprint.*;
+import steve6472.moondust.widget.blueprint.generic.ClickableBlueprint;
 import steve6472.moondust.widget.blueprint.layout.LayoutBlueprint;
 import steve6472.moondust.widget.blueprint.position.PositionBlueprint;
+import steve6472.moondust.widget.component.Clickable;
 
 import java.io.File;
 import java.util.*;
@@ -82,14 +84,6 @@ public class WidgetLoader
             }
         }
 
-        for (BlueprintEntry<?> requiredBlueprint : WidgetBlueprints.REQUIRED_BLUEPRINTS)
-        {
-            if (!map.containsKey(requiredBlueprint))
-            {
-                throw new RuntimeException("Widget does not contain required blueprint: '" + requiredBlueprint.key() + "'");
-            }
-        }
-
         ChildrenBlueprint children = (ChildrenBlueprint) map.get(WidgetBlueprints.CHILDREN);
         validateChildren(children, blueprints);
 
@@ -98,9 +92,10 @@ public class WidgetLoader
         return new BlueprintFactory(key, blueprints);
     }
 
+    // TODO: add special defaults/verification in a bit more expandable way
     private static void fillSpecialDefaults(Collection<Blueprint> blueprints, Key key)
     {
-        // Add sprite_size if it is not defined, uses bounds size if defined, otherwise nothing is added
+        // Add sprite_size if it is not defined, uses size size if defined, otherwise nothing is added
         find(blueprints, SpriteSizeBlueprint.class).ifPresentOrElse(spriteSize -> {
             find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
                 if (spriteSize.size().equals(bounds.bounds()))
@@ -109,6 +104,23 @@ public class WidgetLoader
         }, () -> {
             find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
                 blueprints.add(new SpriteSizeBlueprint(new Vector2i(bounds.bounds())));
+            });
+        });
+
+        // Add clickbox_size if clickable is defined as yes, use bounds size as default if defined
+        find(blueprints, ClickboxSizeBlueprint.class).ifPresentOrElse(clickboxSize -> {
+            if (find(blueprints, ClickableBlueprint.class).orElseThrow().state() == Clickable.NO)
+            {
+                LOGGER.fine("'%s' defined, but widget is not clickable. in: %s".formatted(WidgetBlueprints.CLICKBOX_SIZE.key(), key));
+            }
+            find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
+                if (clickboxSize.size().equals(bounds.bounds()))
+                    LOGGER.fine("Pointless declaration of '%s', it has same size as '%s', value: %s in: %s".formatted(WidgetBlueprints.CLICKBOX_SIZE.key(), WidgetBlueprints.BOUNDS.key(), bounds.bounds(), key));
+            });
+        }, () -> {
+            find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
+                if (find(blueprints, ClickableBlueprint.class).orElseThrow().state() == Clickable.YES)
+                    blueprints.add(new ClickboxSizeBlueprint(new Vector2i(bounds.bounds())));
             });
         });
     }
