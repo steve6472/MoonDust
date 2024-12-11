@@ -5,6 +5,7 @@ import steve6472.flare.Camera;
 import steve6472.flare.core.FlareApp;
 import steve6472.flare.core.FrameInfo;
 import steve6472.flare.input.KeybindUpdater;
+import steve6472.flare.pipeline.Pipelines;
 import steve6472.flare.render.UIRenderSystem;
 
 /**
@@ -50,6 +51,7 @@ public class MoonDustTest extends FlareApp
     protected void createRenderSystems()
     {
         addRenderSystem(new UIRenderSystem(masterRenderer(), new MoonDustUIRender(this)));
+        addRenderSystem(UIFontRender::new, Pipelines.FONT_SDF);
     }
 
     @Override

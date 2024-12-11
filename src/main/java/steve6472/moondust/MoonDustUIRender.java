@@ -8,6 +8,8 @@ import org.lwjgl.glfw.GLFW;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.flare.render.UIRender;
+import steve6472.flare.ui.font.render.Billboard;
+import steve6472.flare.ui.font.render.TextLine;
 import steve6472.flare.ui.textures.SpriteEntry;
 import steve6472.moondust.core.MoonDustKeybinds;
 import steve6472.moondust.widget.blueprint.event.condition.Tristate;
@@ -35,7 +37,7 @@ public class MoonDustUIRender extends UIRender
     private static Key ERROR_FOCUSED = Key.withNamespace("moondust", "widget/error/focused");
     private final MoonDustTest main;
 
-    int pixelScale = 2;
+    int pixelScale = 8;
 
     Panel testPanel;
 
@@ -217,14 +219,25 @@ public class MoonDustUIRender extends UIRender
                     widget.getComponent(FocusedSprite.class).ifPresentOrElse(focusedSprite -> {
                         SpriteEntry textureEntry = getTextureEntry(focusedSprite.sprite());
                         if (textureEntry == null)
-                            sprite(position.x, position.y, 0, spriteSize.width, spriteSize.height, ERROR_FOCUSED);
+                            sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, ERROR_FOCUSED);
                         else
-                            sprite(position.x, position.y, 0, spriteSize.width, spriteSize.height, focusedSprite.sprite());
+                            sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, focusedSprite.sprite());
                     }, () -> {
-                        sprite(position.x, position.y, 0, spriteSize.width, spriteSize.height, ERROR_FOCUSED);
+                        sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, ERROR_FOCUSED);
                     });
                 });
             }
+
+            widget.getComponent(UITextLine.class).ifPresent(uiTextLine -> {
+                Vector2i position = widget.getPosition();
+                widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
+
+                TextLine textLine = uiTextLine.line();
+                TextLine textLineCopy = new TextLine(textLine.charEntries(), textLine.size() * pixelScale * 6f, textLine.style(), textLine.anchor(), Billboard.FIXED);
+
+                UIFontRender.uiTextRender.line(textLineCopy,
+                    new Matrix4f().translate((uiTextLine.offset().x + position.x) * pixelScale, (uiTextLine.offset().y + position.y - 2.5f) * pixelScale, 0f));
+            });
 
             widget.getComponent(CurrentSprite.class).ifPresent(currentSprite -> {
                 widget.getComponent(Sprites.class).ifPresent(sprites -> {
@@ -237,7 +250,7 @@ public class MoonDustUIRender extends UIRender
                     widget.getComponent(SpriteSize.class).ifPresent(spriteSize -> {
                         Vector2i position = widget.getPosition();
                         widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
-                        sprite(position.x, position.y, 0, spriteSize.width, spriteSize.height, currentSpriteKey);
+                        sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, currentSpriteKey);
                     });
                 });
             });

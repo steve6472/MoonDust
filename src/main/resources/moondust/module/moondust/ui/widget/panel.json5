@@ -21,6 +21,15 @@
             bounds: [32, 32],
             clickable: true,
 
+            text_line: {
+                text: {
+                    text: "Button!!",
+                    style: "moondust:tiny_pixie2",
+                    anchor: "bottom_left"
+                },
+                offset: [3, 12]
+            },
+
             // Widget components on panel
             position: {
                 type: "absolute",

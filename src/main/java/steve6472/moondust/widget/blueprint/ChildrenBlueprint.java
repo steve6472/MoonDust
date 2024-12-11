@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public record ChildrenBlueprint(List<BlueprintFactory> children) implements Blueprint
 {
-    private static final Key KEY_CHILD_COMPONENT = Key.withNamespace("moondust", "__temp_child_component");
+    private static final Key KEY_CHILD_COMPONENT = Key.withNamespace(MoonDustConstants.NAMESPACE, "__temp_child_component");
 
     public static final Key KEY = Key.withNamespace(MoonDustConstants.NAMESPACE, "children");
     public static final Codec<ChildrenBlueprint> CODEC = MoonDustRegistries.WIDGET_BLUEPRINT.valueMapCodec().listOf()

@@ -48,6 +48,7 @@ public class WidgetBlueprints
     public static final BlueprintEntry<SpriteSizeBlueprint> SPRITE_SIZE = register(SpriteSizeBlueprint.KEY, SpriteSizeBlueprint.CODEC);
     public static final BlueprintEntry<SpriteOffsetBlueprint> SPRITE_OFFSET = register(SpriteOffsetBlueprint.KEY, SpriteOffsetBlueprint.CODEC);
     public static final BlueprintEntry<FocusedSpriteBlueprint> FOCUSED_SPRITE = register(FocusedSpriteBlueprint.KEY, FocusedSpriteBlueprint.CODEC);
+    public static final BlueprintEntry<TextLineBlueprint> TEXT_LINE = register(TextLineBlueprint.KEY, TextLineBlueprint.CODEC);
 
     // Clickbox
     public static final BlueprintEntry<ClickboxSizeBlueprint> CLICKBOX_SIZE = register(ClickboxSizeBlueprint.KEY, ClickboxSizeBlueprint.CODEC);
