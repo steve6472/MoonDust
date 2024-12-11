@@ -12,7 +12,9 @@ public class InternalStates
 {
     public boolean hovered;
     public boolean focused;
-    public boolean pressStart;
+
+    /// True only if mouse is hovering over the widget, does not care about mouse state
+    public boolean directHover;
 
 
 

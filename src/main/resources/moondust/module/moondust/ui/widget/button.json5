@@ -1,9 +1,9 @@
 {
     sprites: {
-        normal: "moondust:generic_dark_pixel/button/round/normal",
-        disabled: "moondust:generic_dark_pixel/button/round/disabled",
-        hovered: "moondust:generic_dark_pixel/button/round/hover",
-        pressed: "moondust:generic_dark_pixel/button/round/pressed"
+        normal: "moondust:generic_dark_pixel/button/generic/round/normal",
+        disabled: "moondust:generic_dark_pixel/button/generic/round/disabled",
+        hovered: "moondust:generic_dark_pixel/button/generic/round/hover",
+        pressed: "moondust:generic_dark_pixel/button/generic/round/pressed"
     },
     current_sprite: "normal",
 
@@ -11,11 +11,11 @@
     focused_sprite: "moondust:generic_dark_pixel/button/round/focus",
 
     clickable: true,
+    bounds: [8, 8],
     events: [
         {
             call: "moondust:button/hover_on",
             event: { type: "on_mouse_enter" }
-            // condition: {...}
         },
         {
             call: "moondust:button/hover_off",
@@ -30,30 +30,4 @@
             event: { type: "on_mouse_release" }
         }
     ]
-
-//    events: [
-//        {
-//            call: "moondust:button/press",
-//            event: {
-//                type: "press",
-//
-//                // Allow for only one entry!
-//                /*conditions:
-//                    {
-//                        type: "state",
-//                        enabled: true
-//                    },*/
-//
-//                conditions: [
-//                    { type: "state",  enabled: true },
-//                    {
-//                        or: [
-//                            { "type": "xmas",  "xmas": true },
-//                            { "type": "halloween",  "halloween": true }
-//                        ]
-//                    }
-//                ]
-//            }
-//        }
-//    ]
 }

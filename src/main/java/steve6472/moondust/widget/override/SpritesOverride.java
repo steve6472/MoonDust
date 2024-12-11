@@ -4,7 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import steve6472.core.registry.Key;
 import steve6472.core.util.ExtraCodecs;
-import steve6472.moondust.widget.CompOverride;
+import steve6472.moondust.MoonDustConstants;
+import steve6472.moondust.widget.BlueprintOverride;
 import steve6472.moondust.widget.component.Sprites;
 
 import java.util.HashMap;
@@ -15,8 +16,9 @@ import java.util.Map;
  * Date: 12/2/2024
  * Project: MoonDust <br>
  */
-public record SpritesOverride(Map<String, Key> replace, Map<String, Key> add, Map<String, Key> remove) implements CompOverride<Sprites>
+public record SpritesOverride(Map<String, Key> replace, Map<String, Key> add, Map<String, Key> remove) implements BlueprintOverride<Sprites>
 {
+    public static final Key KEY = Key.withNamespace(MoonDustConstants.NAMESPACE, "sprites");
     public static final Codec<SpritesOverride> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ExtraCodecs.MAP_STRING_KEY.optionalFieldOf("replace", Map.of()).forGetter(SpritesOverride::replace),
         ExtraCodecs.MAP_STRING_KEY.optionalFieldOf("add", Map.of()).forGetter(SpritesOverride::add),
@@ -32,5 +34,11 @@ public record SpritesOverride(Map<String, Key> replace, Map<String, Key> add, Ma
         remove.forEach(sprites::remove);
 
         return new Sprites(sprites);
+    }
+
+    @Override
+    public Class<Sprites> target()
+    {
+        return Sprites.class;
     }
 }

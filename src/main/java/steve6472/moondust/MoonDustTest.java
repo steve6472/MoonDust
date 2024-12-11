@@ -14,6 +14,13 @@ import steve6472.flare.render.UIRenderSystem;
  */
 public class MoonDustTest extends FlareApp
 {
+    public static MoonDustTest instance;
+
+    public MoonDustTest()
+    {
+        instance = this;
+    }
+
     @Override
     protected void preInit()
     {
@@ -31,6 +38,7 @@ public class MoonDustTest extends FlareApp
     {
         initRegistry(MoonDustRegistries.POSITION_TYPE);
         MoonDustEventCalls.init();
+        TestEventCalls.init();
     }
 
     @Override

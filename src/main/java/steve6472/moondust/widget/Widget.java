@@ -25,13 +25,16 @@ public class Widget
     private final Map<String, Widget> children = new HashMap<>();
     private final Widget parent;
 
+    private final InternalStates internalStates;
+    private final CustomData customData;
+
     protected Widget(BlueprintFactory blueprint, Widget parent)
     {
         this.parent = parent;
 
         // Create InternalStates and CustomData, a super-default components
-        addComponent(new InternalStates());
-        addComponent(new CustomData());
+        addComponent(internalStates = new InternalStates());
+        addComponent(customData = new CustomData());
 
         for (Object component : blueprint.createComponents())
         {
@@ -57,6 +60,25 @@ public class Widget
             {
                 Widget childWidget = Widget.withParent(child, this);
                 addChild(childWidget);
+            }
+        }
+
+        remove = components.remove(Overrides.class);
+        if (remove instanceof Overrides overrides)
+        {
+            //noinspection rawtypes
+            for (BlueprintOverride override : overrides.overrides())
+            {
+                //noinspection unchecked
+                Optional<?> component = getComponent(override.target());
+                if (component.isEmpty())
+                {
+                    throw new RuntimeException("Override present, but component for type %s not found".formatted(override.target().getSimpleName()));
+                }
+                //noinspection unchecked
+                Object overriden = override.override(component.get());
+                components.remove(override.target());
+                addComponent(overriden);
             }
         }
     }
@@ -111,12 +133,12 @@ public class Widget
 
     public InternalStates internalStates()
     {
-        return getComponent(InternalStates.class).orElseThrow();
+        return internalStates;
     }
 
     public CustomData customData()
     {
-        return getComponent(CustomData.class).orElseThrow();
+        return customData;
     }
 
     public boolean isVisible()
@@ -176,7 +198,7 @@ public class Widget
         if (component.isEmpty())
             return List.of();
         UIEvents uiEvents = component.get();
-        return uiEvents.events().stream().filter(event -> event.event().getClass().equals(eventType)).toList();
+        return uiEvents.events().stream().filter(event -> event.event().getClass().equals(eventType)).filter(event -> event.condition().test(this)).toList();
     }
 
     public Optional<Widget> parent()

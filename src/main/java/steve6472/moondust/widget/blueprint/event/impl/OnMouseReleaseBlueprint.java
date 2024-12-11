@@ -2,7 +2,7 @@ package steve6472.moondust.widget.blueprint.event.impl;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import steve6472.moondust.core.event.condition.Tristate;
+import steve6472.moondust.widget.blueprint.event.condition.Tristate;
 import steve6472.moondust.widget.blueprint.event.UIEventBlueprint;
 import steve6472.moondust.widget.blueprint.event.UIEventType;
 import steve6472.moondust.widget.component.event.OnMouseRelease;

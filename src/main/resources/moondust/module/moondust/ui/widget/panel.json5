@@ -3,13 +3,13 @@
 
     position: {
         type: "absolute",
-        pos: [8, 8]
+        pos: [0, 0]
     },
     layout: {
         type: "absolute"
     },
 
-    bounds: [64, 64],
+    bounds: [0, 0],
 
     children: [
         {
@@ -51,6 +51,42 @@
             position: {
                 type: "absolute",
                 pos: [0, 20]
+            }
+        },
+        {
+            widget: "moondust:button",
+            name: "close_button",
+            bounds: [13, 13],
+            clickable: true,
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 0],
+                anchor: "top_right"
+            },
+
+            sprites: {
+                normal: "moondust:generic_dark_pixel/button/close_red/normal",
+                disabled: "moondust:generic_dark_pixel/button/close_red/disabled",
+                hovered: "moondust:generic_dark_pixel/button/close_red/hover",
+                pressed: "moondust:generic_dark_pixel/button/close_red/pressed"
+            },
+
+            overrides: {
+                events: {
+                    add: [
+                        {
+                            call: "moondust:button/exit_app",
+                            event: { type: "on_mouse_release" },
+                            condition: {
+                                states: {
+                                    direct_hover: true
+                                }
+                            }
+                        }
+                    ]
+                }
             }
         }
     ]

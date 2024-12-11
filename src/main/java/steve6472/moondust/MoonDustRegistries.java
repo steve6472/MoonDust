@@ -6,6 +6,7 @@ import steve6472.core.registry.Registry;
 import steve6472.flare.input.Keybind;
 import steve6472.flare.registry.RegistryCreators;
 import steve6472.moondust.core.MoonDustKeybinds;
+import steve6472.moondust.widget.BlueprintOverrides;
 import steve6472.moondust.widget.blueprint.layout.LayoutType;
 import steve6472.moondust.widget.blueprint.event.UIEventType;
 import steve6472.moondust.widget.blueprint.position.PositionType;
@@ -14,6 +15,7 @@ import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.widget.WidgetBlueprints;
 import steve6472.moondust.widget.WidgetLoader;
 import steve6472.moondust.widget.component.event.UIEventCall;
+import steve6472.moondust.widget.override.OverrideEntry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,7 @@ public class MoonDustRegistries extends RegistryCreators
 
     public static final Registry<UIEventType<?>> EVENT_TYPE = createRegistry(key("event_type"), () -> UIEventType.RANDOM_TICK);
 
+    public static final Registry<OverrideEntry<?>> OVERRIDE = createRegistry(key("override"), () -> BlueprintOverrides.EVENTS);
     public static final Registry<BlueprintEntry<?>> WIDGET_BLUEPRINT = createRegistry(key("widget_blueprint"), () -> WidgetBlueprints.SPRITES);
 
     public static final ObjectRegistry<BlueprintFactory> WIDGET_FACTORY = createObjectRegistry(key("widget_factory"), WidgetLoader::load);

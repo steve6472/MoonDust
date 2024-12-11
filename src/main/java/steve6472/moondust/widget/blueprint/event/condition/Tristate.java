@@ -1,4 +1,4 @@
-package steve6472.moondust.core.event.condition;
+package steve6472.moondust.widget.blueprint.event.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -19,4 +19,12 @@ public enum Tristate
         .xmap(_ -> IGNORE, Enum::name);
 
     public static final Codec<Tristate> CODEC = Codec.withAlternative(CODEC_IGNORE, Codec.BOOL, b -> b ? TRUE : FALSE);
+
+    public boolean test(boolean value)
+    {
+        if (this == IGNORE)
+            return true;
+        else
+            return (this == TRUE && value) || (this == FALSE && !value);
+    }
 }

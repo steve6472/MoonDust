@@ -5,7 +5,9 @@ package steve6472.moondust.widget;
  * Date: 12/2/2024
  * Project: MoonDust <br>
  */
-public interface CompOverride<Target>
+public interface BlueprintOverride<Target>
 {
     Target override(Target source);
+
+    Class<Target> target();
 }

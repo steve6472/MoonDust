@@ -91,8 +91,7 @@ public class WidgetLoader
         ChildrenBlueprint children = (ChildrenBlueprint) map.get(WidgetBlueprints.CHILDREN);
         validateChildren(children, blueprints);
 
-//        if (includeDefault)
-            fillSpecialDefaults(blueprints, key);
+        fillSpecialDefaults(blueprints, key);
 
         return new BlueprintFactory(key, blueprints);
     }

@@ -10,7 +10,7 @@ import steve6472.core.registry.Key;
 import steve6472.flare.render.UIRender;
 import steve6472.flare.ui.textures.SpriteEntry;
 import steve6472.moondust.core.MoonDustKeybinds;
-import steve6472.moondust.core.event.condition.Tristate;
+import steve6472.moondust.widget.blueprint.event.condition.Tristate;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
@@ -35,7 +35,7 @@ public class MoonDustUIRender extends UIRender
     private static Key ERROR_FOCUSED = Key.withNamespace("moondust", "widget/error/focused");
     private final MoonDustTest main;
 
-    int pixelScale = 8;
+    int pixelScale = 2;
 
     Panel testPanel;
 
@@ -53,6 +53,7 @@ public class MoonDustUIRender extends UIRender
     @Override
     public void render()
     {
+        testPanel.setBounds(main.window().getWidth() / pixelScale, main.window().getHeight() / pixelScale);
         if (MoonDustKeybinds.NEXT_WIDGET.isActive())
         {
             if (MoonDustKeybinds.BACK_MODIFIER.isActive())
@@ -77,34 +78,41 @@ public class MoonDustUIRender extends UIRender
 
         long window = main.window().window();
         boolean leftPress = GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
-        if (pressedWidget != null && !leftPress)
+
+        if (pressedWidget != null)
         {
             pressedWidget.getComponent(ClickboxSize.class).ifPresent(clickboxSize -> {
                 Vector2i clickboxPosition = pressedWidget.getPosition();
                 pressedWidget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
                 boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width, clickboxPosition.y + clickboxSize.height, mousePos.x, mousePos.y);
-
-                pressedWidget.getEvents(OnMouseRelease.class).forEach(e ->
+                pressedWidget.internalStates().directHover = hovered;
+                if (!leftPress)
                 {
-                    UIEventCall<OnMouseRelease> uiEventCall = (UIEventCall<OnMouseRelease>) MoonDustRegistries.EVENT_CALLS.get(e.call());
-                    if (uiEventCall != null)
+                    pressedWidget.getEvents(OnMouseRelease.class).forEach(e ->
                     {
-                        OnMouseRelease event = (OnMouseRelease) e.event();
-                        if (event.cursorInside() == Tristate.IGNORE)
-                            uiEventCall.call(pressedWidget, event);
-                        else if (event.cursorInside() == Tristate.TRUE && hovered)
-                            uiEventCall.call(pressedWidget, event);
-                        else if (event.cursorInside() == Tristate.FALSE && !hovered)
-                            uiEventCall.call(pressedWidget, event);
-                        else
-                            throw new RuntimeException("Unexpected state for OnMouseRelease call!");
-                    } else
-                    {
-                        LOGGER.warning("No event call found for " + e.call());
-                    }
-                });
+                        UIEventCall<OnMouseRelease> uiEventCall = (UIEventCall<OnMouseRelease>) MoonDustRegistries.EVENT_CALLS.get(e.call());
+                        if (uiEventCall != null)
+                        {
+                            OnMouseRelease event = (OnMouseRelease) e.event();
+                            if (event.cursorInside() == Tristate.IGNORE)
+                                uiEventCall.call(pressedWidget, event);
+                            else if (event.cursorInside() == Tristate.TRUE && hovered)
+                                uiEventCall.call(pressedWidget, event);
+                            else if (event.cursorInside() == Tristate.FALSE && !hovered)
+                                uiEventCall.call(pressedWidget, event);
+                            else
+                                throw new RuntimeException("Unexpected state for OnMouseRelease call!");
+                        } else
+                        {
+                            LOGGER.warning("No event call found for " + e.call());
+                        }
+                    });
+                }
             });
-            pressedWidget = null;
+            if (!leftPress)
+            {
+                pressedWidget = null;
+            }
         }
 
         if (!leftPress)
@@ -146,6 +154,7 @@ public class MoonDustUIRender extends UIRender
                     widget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
                     boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width, clickboxPosition.y + clickboxSize.height, mousePos.x, mousePos.y);
 
+                    widget.internalStates().directHover = hovered;
                     // Hover events
                     if (widget.internalStates().hovered != hovered && canInteract)
                     {

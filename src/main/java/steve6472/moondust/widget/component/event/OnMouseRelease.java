@@ -1,6 +1,6 @@
 package steve6472.moondust.widget.component.event;
 
-import steve6472.moondust.core.event.condition.Tristate;
+import steve6472.moondust.widget.blueprint.event.condition.Tristate;
 
 /**
  * Created by steve6472
