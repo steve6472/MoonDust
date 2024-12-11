@@ -4,19 +4,19 @@ import com.mojang.serialization.Codec;
 import steve6472.moondust.widget.blueprint.event.SimpleCallEventBlueprint;
 import steve6472.moondust.widget.blueprint.event.UIEventType;
 import steve6472.moondust.widget.component.event.OnMouseEnter;
+import steve6472.moondust.widget.component.event.OnMousePress;
 
 /**
  * Created by steve6472
- * Date: 12/1/2024
+ * Date: 12/11/2024
  * Project: MoonDust <br>
  */
-public class OnMouseEnterBlueprint extends SimpleCallEventBlueprint
+public class OnMousePressBlueprint extends SimpleCallEventBlueprint
 {
-    private static final OnMouseEnterBlueprint INSTANCE = new OnMouseEnterBlueprint();
-    public static final Codec<OnMouseEnterBlueprint> CODEC = createCodec(() -> INSTANCE);
+    public static final Codec<OnMousePressBlueprint> CODEC = createCodec(OnMousePressBlueprint::new);
 
-    protected OnMouseEnterBlueprint()
+    protected OnMousePressBlueprint()
     {
-        super(UIEventType.ON_MOUSE_ENTER, OnMouseEnter.INSTANCE);
+        super(UIEventType.ON_MOUSE_PRESS, OnMousePress.INSTANCE);
     }
 }

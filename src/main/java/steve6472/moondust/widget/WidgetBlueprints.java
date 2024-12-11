@@ -6,6 +6,7 @@ import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.widget.blueprint.*;
 import steve6472.moondust.widget.blueprint.event.EventsBlueprint;
 import steve6472.moondust.widget.blueprint.generic.ClickableBlueprint;
+import steve6472.moondust.widget.blueprint.generic.FocusableBlueprint;
 import steve6472.moondust.widget.blueprint.position.PositionBlueprint;
 import steve6472.moondust.core.MoonDustComponentRegister;
 import steve6472.moondust.core.blueprint.Blueprint;
@@ -34,6 +35,7 @@ public class WidgetBlueprints
     public static final BlueprintEntry<EnabledBlueprint> ENABLED = registerDefault(EnabledBlueprint.KEY, EnabledBlueprint.CODEC, EnabledBlueprint.DEFAULT);
     public static final BlueprintEntry<VisibleBlueprint> VISIBLE = registerDefault(VisibleBlueprint.KEY, VisibleBlueprint.CODEC, VisibleBlueprint.DEFAULT);
     public static final BlueprintEntry<ClickableBlueprint> CLICKABLE = registerDefault(ClickableBlueprint.KEY, ClickableBlueprint.CODEC, ClickableBlueprint.DEFAULT);
+    public static final BlueprintEntry<FocusableBlueprint> FOCUSABLE = registerDefault(FocusableBlueprint.KEY, FocusableBlueprint.CODEC, FocusableBlueprint.DEFAULT);
     public static final BlueprintEntry<LayoutBlueprint> LAYOUT = registerDefault(LayoutBlueprint.KEY, LayoutBlueprint.CODEC, LayoutBlueprint.DEFAULT);
 
     /*
@@ -45,6 +47,7 @@ public class WidgetBlueprints
     public static final BlueprintEntry<CurrentSpriteBlueprint> CURRENT_SPRITE = register(CurrentSpriteBlueprint.KEY, CurrentSpriteBlueprint.CODEC);
     public static final BlueprintEntry<SpriteSizeBlueprint> SPRITE_SIZE = register(SpriteSizeBlueprint.KEY, SpriteSizeBlueprint.CODEC);
     public static final BlueprintEntry<SpriteOffsetBlueprint> SPRITE_OFFSET = register(SpriteOffsetBlueprint.KEY, SpriteOffsetBlueprint.CODEC);
+    public static final BlueprintEntry<FocusedSpriteBlueprint> FOCUSED_SPRITE = register(FocusedSpriteBlueprint.KEY, FocusedSpriteBlueprint.CODEC);
 
     // Clickbox
     public static final BlueprintEntry<ClickboxSizeBlueprint> CLICKBOX_SIZE = register(ClickboxSizeBlueprint.KEY, ClickboxSizeBlueprint.CODEC);

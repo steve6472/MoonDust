@@ -14,4 +14,10 @@ public class Bounds
         this.width = width;
         this.height = height;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Bounds{" + "width=" + width + ", height=" + height + '}';
+    }
 }

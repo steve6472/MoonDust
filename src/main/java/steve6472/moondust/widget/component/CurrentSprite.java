@@ -23,4 +23,10 @@ public class CurrentSprite
     {
         return sprite;
     }
+
+    @Override
+    public String toString()
+    {
+        return "CurrentSprite{" + "sprite='" + sprite + '\'' + '}';
+    }
 }

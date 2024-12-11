@@ -11,7 +11,8 @@ import java.lang.reflect.Field;
 public class InternalStates
 {
     public boolean hovered;
-
+    public boolean focused;
+    public boolean pressStart;
 
 
 

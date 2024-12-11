@@ -18,12 +18,13 @@
 
             // Non-namespaced name, required
             name: "test_button",
-            sprite_size: [32, 8],
+            bounds: [32, 32],
+            clickable: true,
 
             // Widget components on panel
             position: {
                 type: "absolute",
-                pos: [10, 10]
+                pos: [30, 10]
             }/*,
 
             // Widget components overrides

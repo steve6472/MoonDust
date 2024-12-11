@@ -14,4 +14,10 @@ public class ClickboxSize
         this.width = width;
         this.height = height;
     }
+
+    @Override
+    public String toString()
+    {
+        return "ClickboxSize{" + "width=" + width + ", height=" + height + '}';
+    }
 }

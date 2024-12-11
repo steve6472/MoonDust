@@ -2,10 +2,7 @@ package steve6472.moondust;
 
 import steve6472.core.registry.Key;
 import steve6472.moondust.widget.component.CurrentSprite;
-import steve6472.moondust.widget.component.event.OnMouseEnter;
-import steve6472.moondust.widget.component.event.OnMouseLeave;
-import steve6472.moondust.widget.component.event.UIEvent;
-import steve6472.moondust.widget.component.event.UIEventCall;
+import steve6472.moondust.widget.component.event.*;
 
 /**
  * Created by steve6472
@@ -18,12 +15,27 @@ public interface MoonDustEventCalls
     {
         UIEventCall<OnMouseEnter> MOUSE_ENTER = create(key("button/hover_on"), (widget, event) -> {
             widget.getComponent(CurrentSprite.class).ifPresent(currentSprite -> {
-                currentSprite.setSprite("hovered");
+                if (currentSprite.sprite.equals("normal"))
+                    currentSprite.setSprite("hovered");
             });
         });
         UIEventCall<OnMouseLeave> MOUSE_LEAVE = create(key("button/hover_off"), (widget, event) -> {
             widget.getComponent(CurrentSprite.class).ifPresent(currentSprite -> {
-                currentSprite.setSprite("normal");
+                if (currentSprite.sprite.equals("hovered"))
+                    currentSprite.setSprite("normal");
+            });
+        });
+        UIEventCall<OnMousePress> MOUSE_PRESS = create(key("button/press"), (widget, event) -> {
+            widget.getComponent(CurrentSprite.class).ifPresent(currentSprite -> {
+                currentSprite.setSprite("pressed");
+            });
+        });
+        UIEventCall<OnMouseRelease> MOUSE_RELEASE = create(key("button/release"), (widget, event) -> {
+            widget.getComponent(CurrentSprite.class).ifPresent(currentSprite -> {
+                if (widget.internalStates().hovered)
+                    currentSprite.setSprite("hovered");
+                else
+                    currentSprite.setSprite("normal");
             });
         });
     }
@@ -41,6 +53,9 @@ public interface MoonDustEventCalls
 
     static void init()
     {
-        UIEventCall<OnMouseEnter> mouseEnter = Button.MOUSE_ENTER;
+        init(Button.MOUSE_ENTER);
     }
+
+    private static void init(Object ignored)
+    {}
 }

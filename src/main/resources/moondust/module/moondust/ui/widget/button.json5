@@ -1,25 +1,33 @@
 {
     sprites: {
-        normal: "moondust:box",
-        disabled: "moondust:outline",
-        hovered: "moondust:box_background"
+        normal: "moondust:generic_dark_pixel/button/round/normal",
+        disabled: "moondust:generic_dark_pixel/button/round/disabled",
+        hovered: "moondust:generic_dark_pixel/button/round/hover",
+        pressed: "moondust:generic_dark_pixel/button/round/pressed"
     },
-
     current_sprite: "normal",
+
+    focusable: true,
+    focused_sprite: "moondust:generic_dark_pixel/button/round/focus",
+
     clickable: true,
     events: [
         {
             call: "moondust:button/hover_on",
-            event: {
-                type: "on_mouse_enter"
-            }
+            event: { type: "on_mouse_enter" }
             // condition: {...}
         },
         {
             call: "moondust:button/hover_off",
-            event: {
-                type: "on_mouse_leave"
-            }
+            event: { type: "on_mouse_leave" }
+        },
+        {
+            call: "moondust:button/press",
+            event: { type: "on_mouse_press" }
+        },
+        {
+            call: "moondust:button/release",
+            event: { type: "on_mouse_release" }
         }
     ]
 

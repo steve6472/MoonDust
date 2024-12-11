@@ -13,4 +13,10 @@ public class OnMouseEnter implements UIEvent
     {
 
     }
+
+    @Override
+    public String toString()
+    {
+        return "OnMouseEnter{}";
+    }
 }

@@ -14,4 +14,10 @@ public class SpriteSize
         this.width = width;
         this.height = height;
     }
+
+    @Override
+    public String toString()
+    {
+        return "SpriteSize{" + "width=" + width + ", height=" + height + '}';
+    }
 }

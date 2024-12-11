@@ -13,4 +13,10 @@ public class OnMouseLeave implements UIEvent
     {
 
     }
+
+    @Override
+    public String toString()
+    {
+        return "OnMouseLeave{}";
+    }
 }

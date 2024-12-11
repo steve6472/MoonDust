@@ -10,4 +10,10 @@ public class AbsoluteLayout implements Layout
     public static final AbsoluteLayout INSTANCE = new AbsoluteLayout();
 
     private AbsoluteLayout() {}
+
+    @Override
+    public String toString()
+    {
+        return "AbsoluteLayout{}";
+    }
 }

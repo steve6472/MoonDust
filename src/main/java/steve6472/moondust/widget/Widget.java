@@ -12,6 +12,7 @@ import steve6472.moondust.widget.component.position.Position;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * Created by steve6472
@@ -28,8 +29,9 @@ public class Widget
     {
         this.parent = parent;
 
-        // Create InternalStates, a super-default component
+        // Create InternalStates and CustomData, a super-default components
         addComponent(new InternalStates());
+        addComponent(new CustomData());
 
         for (Object component : blueprint.createComponents())
         {
@@ -112,6 +114,11 @@ public class Widget
         return getComponent(InternalStates.class).orElseThrow();
     }
 
+    public CustomData customData()
+    {
+        return getComponent(CustomData.class).orElseThrow();
+    }
+
     public boolean isVisible()
     {
         return getComponent(Visible.class).orElseThrow().flag();
@@ -127,6 +134,11 @@ public class Widget
         return getComponent(Clickable.class).orElseThrow().flag();
     }
 
+    public boolean isFocusable()
+    {
+        return getComponent(Focusable.class).orElseThrow().flag();
+    }
+
     public void setVisible(boolean visible)
     {
         addComponent(visible ? Visible.YES : Visible.NO);
@@ -140,6 +152,11 @@ public class Widget
     public void setClickable(boolean clickable)
     {
         addComponent(clickable ? Clickable.YES : Clickable.NO);
+    }
+
+    public void setFocusable(boolean focusable)
+    {
+        addComponent(focusable ? Focusable.YES : Focusable.NO);
     }
 
     public void setBounds(int width, int height)
@@ -206,9 +223,28 @@ public class Widget
         return Optional.ofNullable((T) components.get(type));
     }
 
+    protected boolean iterateChildren(Function<Widget, Boolean> stopCondition)
+    {
+        if (stopCondition.apply(this))
+            return true;
+
+        for (Widget child : getChildren())
+        {
+            if (child.iterateChildren(stopCondition))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public String toString()
     {
-        return "Widget{" + "components=" + components + ", children=" + children + ", parent=" + (parent == null ? "none" : parent.getComponent(Name.class).orElse(new Name("-unnamed-")).value()) + '}';
+        Map<String, Object> mapped = new HashMap<>();
+        components.forEach((key, value) -> mapped.put(key.getSimpleName(), value));
+
+        return "Widget{" + "parent=" + (parent == null ? "none" : parent.getComponent(Name.class).orElse(new Name("-unnamed-")).value()) + ", components=" + mapped + ", children=" + children + '}';
     }
 }

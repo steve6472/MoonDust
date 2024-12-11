@@ -4,6 +4,7 @@ import org.lwjgl.system.MemoryStack;
 import steve6472.flare.Camera;
 import steve6472.flare.core.FlareApp;
 import steve6472.flare.core.FrameInfo;
+import steve6472.flare.input.KeybindUpdater;
 import steve6472.flare.render.UIRenderSystem;
 
 /**
@@ -46,6 +47,7 @@ public class MoonDustTest extends FlareApp
     @Override
     public void postInit()
     {
+        KeybindUpdater.updateKeybinds(MoonDustRegistries.KEYBIND, input());
     }
 
     @Override

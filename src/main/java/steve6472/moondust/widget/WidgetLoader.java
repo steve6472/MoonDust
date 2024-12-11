@@ -13,6 +13,7 @@ import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.core.blueprint.DefaultBlueprint;
 import steve6472.moondust.widget.blueprint.*;
 import steve6472.moondust.widget.blueprint.generic.ClickableBlueprint;
+import steve6472.moondust.widget.blueprint.generic.FocusableBlueprint;
 import steve6472.moondust.widget.blueprint.layout.LayoutBlueprint;
 import steve6472.moondust.widget.blueprint.position.PositionBlueprint;
 import steve6472.moondust.widget.component.Clickable;
@@ -43,7 +44,7 @@ public class WidgetLoader
                 ResourceCrawl.crawlAndLoadJsonCodec(file, MoonDustRegistries.WIDGET_BLUEPRINT.valueMapCodec(), (map, id) ->
                 {
                     Key key = Key.withNamespace(namespace, id);
-                    BlueprintFactory factory = createWidgetFactory(map, key);
+                    BlueprintFactory factory = createWidgetFactory(map, true, key);
                     LOGGER.finest("Loaded blueprint " + key + " from " + module.name());
                     factories.put(key, factory);
                 });
@@ -53,7 +54,7 @@ public class WidgetLoader
         factories.values().forEach(MoonDustRegistries.WIDGET_FACTORY::register);
     }
 
-    public static BlueprintFactory createWidgetFactory(Map<BlueprintEntry<?>, Object> map, Key key)
+    public static BlueprintFactory createWidgetFactory(Map<BlueprintEntry<?>, Object> map, boolean includeDefault, Key key)
     {
         List<Blueprint> blueprints = new ArrayList<>(map.size());
 
@@ -69,17 +70,20 @@ public class WidgetLoader
             blueprints.add(blueprint);
         }
 
-        for (DefaultBlueprint<?> genericBlueprint : WidgetBlueprints.DEFAULT_BLUEPRINTS)
+        if (includeDefault)
         {
-            if (!map.containsKey(genericBlueprint.entry()))
+            for (DefaultBlueprint<?> genericBlueprint : WidgetBlueprints.DEFAULT_BLUEPRINTS)
             {
-                blueprints.add(genericBlueprint.defaultValue());
-            } else
-            {
-                Object current = map.get(genericBlueprint.entry());
-                if (current.equals(genericBlueprint.defaultValue()))
+                if (!map.containsKey(genericBlueprint.entry()))
                 {
-                    LOGGER.fine("Pointless declaration of default component '" + genericBlueprint.entry().key() + "' with default value '" + current + "' in: " + key);
+                    blueprints.add(genericBlueprint.defaultValue());
+                } else
+                {
+                    Object current = map.get(genericBlueprint.entry());
+                    if (current.equals(genericBlueprint.defaultValue()))
+                    {
+                        LOGGER.fine("Pointless declaration of default component '" + genericBlueprint.entry().key() + "' with default value '" + current + "' in: " + key);
+                    }
                 }
             }
         }
@@ -87,7 +91,8 @@ public class WidgetLoader
         ChildrenBlueprint children = (ChildrenBlueprint) map.get(WidgetBlueprints.CHILDREN);
         validateChildren(children, blueprints);
 
-        fillSpecialDefaults(blueprints, key);
+//        if (includeDefault)
+            fillSpecialDefaults(blueprints, key);
 
         return new BlueprintFactory(key, blueprints);
     }
@@ -119,9 +124,20 @@ public class WidgetLoader
             });
         }, () -> {
             find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
-                if (find(blueprints, ClickableBlueprint.class).orElseThrow().state() == Clickable.YES)
-                    blueprints.add(new ClickboxSizeBlueprint(new Vector2i(bounds.bounds())));
+                find(blueprints, ClickableBlueprint.class).ifPresent(clickable -> {
+                    if (clickable.state() == Clickable.YES)
+                        blueprints.add(new ClickboxSizeBlueprint(new Vector2i(bounds.bounds())));
+                });
             });
+        });
+
+        find(blueprints, FocusableBlueprint.class).ifPresent(focusable -> {
+            if (focusable.state().flag())
+            {
+                find(blueprints, FocusedSpriteBlueprint.class).ifPresentOrElse(_ -> {}, () -> {
+                    LOGGER.warning(String.format("Widget '%s' is focusable, but lacks '%s' blueprint!", key, WidgetBlueprints.FOCUSED_SPRITE.key()));
+                });
+            }
         });
     }
 
