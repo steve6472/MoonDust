@@ -8,7 +8,7 @@
     current_sprite: "normal",
 
     focusable: true,
-    focused_sprite: "moondust:generic_dark_pixel/button/round/focus",
+    focused_sprite: "moondust:generic_dark_pixel/button/generic/round/focus",
 
     clickable: true,
     bounds: [8, 8],

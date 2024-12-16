@@ -7,80 +7,71 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
-import steve6472.flare.render.UIRender;
-import steve6472.flare.ui.font.render.Billboard;
-import steve6472.flare.ui.font.render.TextLine;
+import steve6472.flare.FlareConstants;
+import steve6472.flare.Window;
+import steve6472.flare.input.UserInput;
+import steve6472.flare.render.impl.UIRenderImpl;
 import steve6472.flare.ui.textures.SpriteEntry;
-import steve6472.moondust.core.MoonDustKeybinds;
-import steve6472.moondust.widget.blueprint.event.condition.Tristate;
-import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
+import steve6472.moondust.widget.blueprint.event.condition.Tristate;
+import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
  * Created by steve6472
- * Date: 12/1/2024
+ * Date: 12/15/2024
  * Project: MoonDust <br>
  */
-public class MoonDustUIRender extends UIRender
+public class MoonDustUIRender extends UIRenderImpl
 {
     private static final Logger LOGGER = Log.getLogger(MoonDustUIRender.class);
+    private static final boolean DEBUG_CURSOR = true;
+    private static final Set<String> MISSING_SPRITES = new HashSet<>(16);
 
-    private static boolean DEBUG = false;
-    private static boolean DEBUG_BOUNDS = false;
+    private final Window window;
+    private final UserInput input;
 
-    private static Key DEBUG_OUTLINE = Key.withNamespace("moondust", "outline");
-    private static Key DEBUG_OUTLINE_TRANSPARENT = Key.withNamespace("moondust", "outline_transparent");
-    private static Key ERROR_FOCUSED = Key.withNamespace("moondust", "widget/error/focused");
-    private final MoonDustTest main;
-
-    int pixelScale = 8;
-
-    Panel testPanel;
+    Widget pressedWidget = null;
+    boolean canInteract = true;
 
     public MoonDustUIRender(MoonDustTest main)
     {
-        this.main = main;
-        testPanel = Panel.create(Key.withNamespace("moondust", "panel"));
-        testPanel.clearFocus();
-//        System.out.println(Widget.create(Key.withNamespace("moondust", "button")));
+        this.window = main.window();
+        this.input = main.input();
     }
-
-    float boundsIndex = -256f;
-    float widgetIndex = -256f;
 
     @Override
     public void render()
     {
-        testPanel.setBounds(main.window().getWidth() / pixelScale, main.window().getHeight() / pixelScale);
-        if (MoonDustKeybinds.NEXT_WIDGET.isActive())
+        MoonDust moonDust = MoonDust.getInstance();
+        float pixelScale = moonDust.getPixelScale();
+        moonDust.iterate((depth, widget) ->
         {
-            if (MoonDustKeybinds.BACK_MODIFIER.isActive())
+            if (depth == 0 && widget instanceof Panel panel)
             {
-                testPanel.backwardFocus();
-            } else
-            {
-                testPanel.forwardFocus();
+                panel.setBounds((int) (window.getWidth() / pixelScale), (int) (window.getHeight() / pixelScale));
             }
-        } else if (MoonDustKeybinds.UNFOCUS_ALL.isActive())
-        {
-            testPanel.clearFocus();
-        }
+        });
 
-        boundsIndex = -256f;
-        widgetIndex = -256f;
+        moonDust.tickFocus();
 
-        Vector2i mousePos = main.input().getMousePositionRelativeToTopLeftOfTheWindow();
+        Vector2i mousePos = input.getMousePositionRelativeToTopLeftOfTheWindow();
         mousePos.div(pixelScale);
 
-        sprite(mousePos.x, mousePos.y, 0, 1, 1, new Vector3f(0, 1, 0), Key.withNamespace("moondust","sprites/pixel"));
+        if (DEBUG_CURSOR)
+        {
+            sprite(mousePos.x, mousePos.y, 0, 1, 1, new Vector3f(0, 1, 0), Key.withNamespace("moondust","sprites/pixel"));
+        }
 
-        long window = main.window().window();
+        long window = this.window.window();
         boolean leftPress = GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
 
+        // Handles the "pressed a component but drag the mouse away from it"
         if (pressedWidget != null)
         {
             pressedWidget.getComponent(ClickboxSize.class).ifPresent(clickboxSize -> {
@@ -88,29 +79,30 @@ public class MoonDustUIRender extends UIRender
                 pressedWidget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
                 boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width, clickboxPosition.y + clickboxSize.height, mousePos.x, mousePos.y);
                 pressedWidget.internalStates().directHover = hovered;
-                if (!leftPress)
+                if (leftPress)
+                    return;
+
+                pressedWidget.getEvents(OnMouseRelease.class).forEach(e ->
                 {
-                    pressedWidget.getEvents(OnMouseRelease.class).forEach(e ->
+                    UIEventCall<OnMouseRelease> uiEventCall = (UIEventCall<OnMouseRelease>) MoonDustRegistries.EVENT_CALLS.get(e.call());
+                    if (uiEventCall != null)
                     {
-                        UIEventCall<OnMouseRelease> uiEventCall = (UIEventCall<OnMouseRelease>) MoonDustRegistries.EVENT_CALLS.get(e.call());
-                        if (uiEventCall != null)
-                        {
-                            OnMouseRelease event = (OnMouseRelease) e.event();
-                            if (event.cursorInside() == Tristate.IGNORE)
-                                uiEventCall.call(pressedWidget, event);
-                            else if (event.cursorInside() == Tristate.TRUE && hovered)
-                                uiEventCall.call(pressedWidget, event);
-                            else if (event.cursorInside() == Tristate.FALSE && !hovered)
-                                uiEventCall.call(pressedWidget, event);
-                            else
-                                throw new RuntimeException("Unexpected state for OnMouseRelease call!");
-                        } else
-                        {
-                            LOGGER.warning("No event call found for " + e.call());
-                        }
-                    });
-                }
+                        OnMouseRelease event = (OnMouseRelease) e.event();
+                        if (event.cursorInside() == Tristate.IGNORE)
+                            uiEventCall.call(pressedWidget, event);
+                        else if (event.cursorInside() == Tristate.TRUE && hovered)
+                            uiEventCall.call(pressedWidget, event);
+                        else if (event.cursorInside() == Tristate.FALSE && !hovered)
+                            uiEventCall.call(pressedWidget, event);
+                        else
+                            throw new RuntimeException("Unexpected state for OnMouseRelease call!");
+                    } else
+                    {
+                        LOGGER.warning("No event call found for " + e.call());
+                    }
+                });
             });
+
             if (!leftPress)
             {
                 pressedWidget = null;
@@ -120,149 +112,124 @@ public class MoonDustUIRender extends UIRender
         if (!leftPress)
             canInteract = true;
 
-        processEvents(testPanel);
-        renderWidget(testPanel);
+        moonDust.iterate(widget ->
+        {
+            processEvents(widget);
+            renderWidget(widget);
+        });
 
         if (leftPress)
             canInteract = false;
-
-//        DEBUG = System.currentTimeMillis() % 2000 < 1000;
     }
 
-    private static boolean isInRectangle(int rminx, int rminy, int rmaxx, int rmaxy, int px, int py) {
+    private static boolean isInRectangle(int rminx, int rminy, int rmaxx, int rmaxy, int px, int py)
+    {
         return px >= rminx && px < rmaxx && py >= rminy && py < rmaxy;
     }
-
-    Widget pressedWidget = null;
-    boolean canInteract = true;
 
     private void processEvents(Widget widget)
     {
         if (!canInteract)
             return;
 
-        Vector2i mousePos = main.input().getMousePositionRelativeToTopLeftOfTheWindow();
+        if (!widget.isVisible() || !widget.isClickable())
+            return;
+
+        MoonDust moonDust = MoonDust.getInstance();
+        float pixelScale = moonDust.getPixelScale();
+
+        Vector2i mousePos = input.getMousePositionRelativeToTopLeftOfTheWindow();
         mousePos.div(pixelScale);
 
-        long window = main.window().window();
+        long window = this.window.window();
         boolean leftPress = GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
 
-        if (widget.isVisible())
+        widget.getComponent(ClickboxSize.class).ifPresent(clickboxSize ->
         {
-            if (widget.isClickable())
+            Vector2i clickboxPosition = widget.getPosition();
+            widget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
+            boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width, clickboxPosition.y + clickboxSize.height, mousePos.x, mousePos.y);
+
+            widget.internalStates().directHover = hovered;
+            // Hover events
+            if (widget.internalStates().hovered != hovered && canInteract)
             {
-                widget.getComponent(ClickboxSize.class).ifPresent(clickboxSize -> {
-                    Vector2i clickboxPosition = widget.getPosition();
-                    widget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
-                    boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width, clickboxPosition.y + clickboxSize.height, mousePos.x, mousePos.y);
-
-                    widget.internalStates().directHover = hovered;
-                    // Hover events
-                    if (widget.internalStates().hovered != hovered && canInteract)
-                    {
-                        if (hovered)
-                        {
-                            handleEvents(widget, OnMouseEnter.class);
-                        } else
-                        {
-                            handleEvents(widget, OnMouseLeave.class);
-                        }
-                        widget.internalStates().hovered = true;
-                    }
-
-                    // Click events
-                    if (widget.internalStates().hovered && widget.isClickable())
-                    {
-                        if (leftPress && pressedWidget == null)
-                        {
-                            pressedWidget = widget;
-                            handleEvents(widget, OnMousePress.class);
-                        }
-                    }
-
-                    widget.internalStates().hovered = hovered;
-                });
+                if (hovered)
+                {
+                    widget.handleEvents(OnMouseEnter.class);
+                } else
+                {
+                    widget.handleEvents(OnMouseLeave.class);
+                }
+                widget.internalStates().hovered = true;
             }
 
-            widget.getChildren().forEach(this::processEvents);
-        }
-    }
-
-    public static <T extends UIEvent> void handleEvents(Widget widget, Class<T> eventType)
-    {
-        widget.getEvents(eventType).forEach(e ->
-        {
-            @SuppressWarnings("unchecked")
-            UIEventCall<T> uiEventCall = (UIEventCall<T>) MoonDustRegistries.EVENT_CALLS.get(e.call());
-
-            if (uiEventCall != null)
+            // Click events
+            if (widget.internalStates().hovered && widget.isClickable())
             {
-                uiEventCall.call(widget, eventType.cast(e.event()));
-            } else
-            {
-                LOGGER.warning("No event call found for " + e.call());
+                if (leftPress && pressedWidget == null)
+                {
+                    pressedWidget = widget;
+                    widget.handleEvents(OnMousePress.class);
+                }
             }
+
+            widget.internalStates().hovered = hovered;
         });
     }
 
+    // TODO: correctly add zIndex, make sure font has the same but like 0.5f difference in front of widgets
     private void renderWidget(Widget widget)
     {
-        if (widget.isVisible())
+        if (!widget.isVisible())
+            return;
+
+        if (widget.isFocusable() && widget.internalStates().focused)
         {
-            widget.getChildren().forEach(this::renderWidget);
-
-            if (widget.isFocusable() && widget.internalStates().focused)
+            widget.getComponent(SpriteSize.class).ifPresent(spriteSize ->
             {
-                widget.getComponent(SpriteSize.class).ifPresent(spriteSize -> {
-                    Vector2i position = widget.getPosition();
-                    widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
-                    widget.getComponent(FocusedSprite.class).ifPresentOrElse(focusedSprite -> {
-                        SpriteEntry textureEntry = getTextureEntry(focusedSprite.sprite());
-                        if (textureEntry == null)
-                            sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, ERROR_FOCUSED);
-                        else
-                            sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, focusedSprite.sprite());
-                    }, () -> {
-                        sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, ERROR_FOCUSED);
-                    });
-                });
-            }
-
-            widget.getComponent(UITextLine.class).ifPresent(uiTextLine -> {
                 Vector2i position = widget.getPosition();
                 widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
-
-                TextLine textLine = uiTextLine.line();
-                TextLine textLineCopy = new TextLine(textLine.charEntries(), textLine.size() * pixelScale * 6f, textLine.style(), textLine.anchor(), Billboard.FIXED);
-
-                UIFontRender.uiTextRender.line(textLineCopy,
-                    new Matrix4f().translate((uiTextLine.offset().x + position.x) * pixelScale, (uiTextLine.offset().y + position.y - 2.5f) * pixelScale, 0f));
-            });
-
-            widget.getComponent(CurrentSprite.class).ifPresent(currentSprite -> {
-                widget.getComponent(Sprites.class).ifPresent(sprites -> {
-                    Key currentSpriteKey = sprites.sprites().get(currentSprite.sprite());
-                    if (currentSpriteKey == null)
-                    {
-                        // TODO: log warning
-                        return;
-                    }
-                    widget.getComponent(SpriteSize.class).ifPresent(spriteSize -> {
-                        Vector2i position = widget.getPosition();
-                        widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
-                        sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, currentSpriteKey);
-                    });
+                widget.getComponent(FocusedSprite.class).ifPresentOrElse(focusedSprite ->
+                {
+                    SpriteEntry textureEntry = getTextureEntry(focusedSprite.sprite());
+                    if (textureEntry == null)
+                        sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, MoonDust.ERROR_FOCUSED);
+                    else
+                        sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, focusedSprite.sprite());
+                }, () -> {
+                    sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, MoonDust.ERROR_FOCUSED);
                 });
             });
         }
 
-        if (DEBUG_BOUNDS)
+        widget.getComponents(CurrentSprite.class, Sprites.class).ifPresent(result ->
         {
-            widget.getComponent(Bounds.class).ifPresent(bounds -> {
+            Key sprite = getSprite(result.comp1(), result.comp2());
+
+            widget.getComponent(SpriteSize.class).ifPresent(spriteSize ->
+            {
                 Vector2i position = widget.getPosition();
-                sprite(position.x, position.y, (boundsIndex += 0.001f), bounds.width, bounds.height, DEBUG_OUTLINE_TRANSPARENT);
+                widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
+                sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, sprite);
             });
+        });
+    }
+
+    protected Key getSprite(CurrentSprite currentSprite, Sprites sprites)
+    {
+        String sprite = currentSprite.sprite();
+        Key spriteKey = sprites.sprites().get(sprite);
+        if (spriteKey == null)
+        {
+            if (!MISSING_SPRITES.contains(sprite))
+            {
+                MISSING_SPRITES.add(sprite);
+                LOGGER.warning("Missing Sprite '%s'".formatted(sprite));
+            }
+            return FlareConstants.ERROR_TEXTURE;
         }
+        return spriteKey;
     }
 
     protected final void sprite(
@@ -270,9 +237,8 @@ public class MoonDustUIRender extends UIRender
         int width, int height,
         Key textureKey)
     {
-        if (DEBUG)
-            textureKey = DEBUG_OUTLINE;
-        createSprite(x * pixelScale, y * pixelScale, zIndex, width * pixelScale, height * pixelScale, width, height, NO_TINT, getTextureEntry(textureKey));
+        float pixelScale = MoonDust.getInstance().getPixelScale();
+        createSprite((int) (x * pixelScale), (int) (y * pixelScale), zIndex, (int) (width * pixelScale), (int) (height * pixelScale), width, height, NO_TINT, getTextureEntry(textureKey));
     }
 
     protected final void sprite(
@@ -280,9 +246,8 @@ public class MoonDustUIRender extends UIRender
         int width, int height,
         Vector3f tint, Key textureKey)
     {
-        if (DEBUG)
-            textureKey = DEBUG_OUTLINE;
-        createSprite(x * pixelScale, y * pixelScale, zIndex, width * pixelScale, height * pixelScale, width, height, tint, getTextureEntry(textureKey));
+        float pixelScale = MoonDust.getInstance().getPixelScale();
+        createSprite((int) (x * pixelScale), (int) (y * pixelScale), zIndex, (int) (width * pixelScale), (int) (height * pixelScale), width, height, tint, getTextureEntry(textureKey));
     }
 
     // TODO: this (rotation) won't work with parented widgets

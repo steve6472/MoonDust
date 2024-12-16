@@ -26,7 +26,7 @@ public class MoonDustTestMain
                 .sorted(Comparator.reverseOrder())
                 .forEach(File::delete);
         }
-        MoonDust.init();
+        MoonDust.getInstance().init();
         Flare.start(new MoonDustTest());
     }
 }

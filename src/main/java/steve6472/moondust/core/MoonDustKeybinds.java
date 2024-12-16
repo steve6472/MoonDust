@@ -17,6 +17,7 @@ public class MoonDustKeybinds
     public static final Keybind BACK_MODIFIER = register(new Keybind(Key.withNamespace(MoonDustConstants.NAMESPACE, "back_modifier"), KeybindType.REPEAT, GLFW.GLFW_KEY_LEFT_SHIFT));
     public static final Keybind NEXT_WIDGET = register(new Keybind(Key.withNamespace(MoonDustConstants.NAMESPACE, "next_widget"), KeybindType.ONCE, GLFW.GLFW_KEY_TAB));
     public static final Keybind UNFOCUS_ALL = register(new Keybind(Key.withNamespace(MoonDustConstants.NAMESPACE, "unfocus_all"), KeybindType.ONCE, GLFW.GLFW_KEY_ESCAPE));
+    public static final Keybind CONFIRM = register(new Keybind(Key.withNamespace(MoonDustConstants.NAMESPACE, "confirm"), KeybindType.ONCE, GLFW.GLFW_KEY_ENTER));
 
     private static Keybind register(Keybind keybind) {
         MoonDustRegistries.KEYBIND.register(keybind);

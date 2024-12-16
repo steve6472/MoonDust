@@ -1,11 +1,13 @@
 package steve6472.moondust.widget;
 
 import org.joml.Vector2i;
+import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.moondust.ComponentRedirect;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.UIEvent;
+import steve6472.moondust.widget.component.event.UIEventCall;
 import steve6472.moondust.widget.component.event.UIEventCallEntry;
 import steve6472.moondust.widget.component.event.UIEvents;
 import steve6472.moondust.widget.component.position.Position;
@@ -13,14 +15,17 @@ import steve6472.moondust.core.blueprint.BlueprintFactory;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.logging.Logger;
 
 /**
  * Created by steve6472
  * Date: 12/1/2024
  * Project: MoonDust <br>
  */
-public class Widget
+public class Widget implements WidgetComponentGetter
 {
+    private static final Logger LOGGER = Log.getLogger(Widget.class);
+
     private final Map<Class<?>, Object> components = new HashMap<>();
     private final Map<String, Widget> children = new HashMap<>();
     private final Widget parent;
@@ -113,6 +118,22 @@ public class Widget
     public <T> void addComponent(T component)
     {
         this.components.put(component.getClass(), component);
+    }
+
+    public <T extends UIEvent> void handleEvents(Class<T> eventType)
+    {
+        getEvents(eventType).forEach(e ->
+        {
+            @SuppressWarnings("unchecked") UIEventCall<T> uiEventCall = (UIEventCall<T>) MoonDustRegistries.EVENT_CALLS.get(e.call());
+
+            if (uiEventCall != null)
+            {
+                uiEventCall.call(this, eventType.cast(e.event()));
+            } else
+            {
+                LOGGER.warning("No event call found for " + e.call());
+            }
+        });
     }
 
     /*
@@ -227,6 +248,7 @@ public class Widget
         return List.copyOf(children.values());
     }
 
+    @Override
     public <T> Optional<T> getComponent(Class<T> type)
     {
         Collection<Class<?>> redirectClasses = ComponentRedirect.get(type);

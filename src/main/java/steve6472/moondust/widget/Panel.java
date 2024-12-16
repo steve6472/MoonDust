@@ -60,29 +60,43 @@ public class Panel extends Widget
         return Optional.ofNullable(focusOrder.get(currentFocusIndex));
     }
 
-    public void forwardFocus()
+    /// Return true when this panel ran out of widgets to forward focus to
+    public boolean forwardFocus()
     {
         if (focusOrder.isEmpty())
-            return;
+            return true;
+
+        boolean ret = false;
 
         if (currentFocusIndex != NO_FOCUS)
             focusOrder.get(currentFocusIndex).internalStates().focused = false;
         currentFocusIndex++;
         if (currentFocusIndex >= focusOrder.size())
+        {
             currentFocusIndex = 0;
+            ret = true;
+        }
         focusOrder.get(currentFocusIndex).internalStates().focused = true;
+        return ret;
     }
 
-    public void backwardFocus()
+    /// Return true when this panel ran out of widgets to backward focus to
+    public boolean backwardFocus()
     {
         if (focusOrder.isEmpty())
-            return;
+            return true;
+
+        boolean ret = false;
 
         if (currentFocusIndex != NO_FOCUS)
             focusOrder.get(currentFocusIndex).internalStates().focused = false;
         currentFocusIndex--;
         if (currentFocusIndex < 0)
+        {
             currentFocusIndex = focusOrder.size() - 1;
+            ret = true;
+        }
         focusOrder.get(currentFocusIndex).internalStates().focused = true;
+        return ret;
     }
 }

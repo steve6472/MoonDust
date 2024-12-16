@@ -1,12 +1,14 @@
 package steve6472.moondust;
 
 import org.lwjgl.system.MemoryStack;
+import steve6472.core.registry.Key;
 import steve6472.flare.Camera;
 import steve6472.flare.core.FlareApp;
 import steve6472.flare.core.FrameInfo;
 import steve6472.flare.input.KeybindUpdater;
-import steve6472.flare.pipeline.Pipelines;
+import steve6472.flare.render.UIFontRender;
 import steve6472.flare.render.UIRenderSystem;
+import steve6472.moondust.widget.Panel;
 
 /**
  * Created by steve6472
@@ -16,6 +18,7 @@ import steve6472.flare.render.UIRenderSystem;
 public class MoonDustTest extends FlareApp
 {
     public static MoonDustTest instance;
+
 
     public MoonDustTest()
     {
@@ -50,13 +53,17 @@ public class MoonDustTest extends FlareApp
     @Override
     protected void createRenderSystems()
     {
-        addRenderSystem(new UIRenderSystem(masterRenderer(), new MoonDustUIRender(this)));
-        addRenderSystem(UIFontRender::new, Pipelines.FONT_SDF);
+        addRenderSystem(new UIRenderSystem(masterRenderer(), new MoonDustUIRender(this), 256f));
+        addRenderSystem(new UIFontRender(masterRenderer(), new MoonDustUIFontRender()));
     }
 
     @Override
     public void postInit()
     {
+        Panel testPanel = Panel.create(Key.withNamespace("moondust", "panel"));
+        testPanel.clearFocus();
+        MoonDust.getInstance().addPanel(testPanel);
+
         KeybindUpdater.updateKeybinds(MoonDustRegistries.KEYBIND, input());
     }
 
