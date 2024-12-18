@@ -16,7 +16,7 @@ import java.util.List;
 public record AnchoredPosBlueprint(Vector2i offset, AnchoredPos.Anchor anchor) implements PositionBlueprint
 {
     public static final Codec<AnchoredPosBlueprint> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        ExtraCodecs.VEC_2I.fieldOf("offset").forGetter(AnchoredPosBlueprint::offset),
+        ExtraCodecs.VEC_2I.optionalFieldOf("offset", new Vector2i()).forGetter(AnchoredPosBlueprint::offset),
         AnchoredPos.Anchor.CODEC.fieldOf("anchor").forGetter(AnchoredPosBlueprint::anchor)
     ).apply(instance, AnchoredPosBlueprint::new));
 

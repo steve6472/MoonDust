@@ -11,6 +11,7 @@ import steve6472.flare.FlareConstants;
 import steve6472.flare.Window;
 import steve6472.flare.input.UserInput;
 import steve6472.flare.render.impl.UIRenderImpl;
+import steve6472.flare.ui.font.render.UITextLine;
 import steve6472.flare.ui.textures.SpriteEntry;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
@@ -66,6 +67,15 @@ public class MoonDustUIRender extends UIRenderImpl
         if (DEBUG_CURSOR)
         {
             sprite(mousePos.x, mousePos.y, 0, 1, 1, new Vector3f(0, 1, 0), Key.withNamespace("moondust","sprites/pixel"));
+            moonDust.iterate((depth, widget) -> {
+                if (depth != 0)
+                    return;
+
+                widget.getChild("debug_label").ifPresent(label -> {
+                    label.getComponent(MDTextLine.class)
+                        .ifPresent(mdTextLine -> label.addComponent(new MDTextLine(new UITextLine("Cursor: " + mousePos, mdTextLine.line().size(), mdTextLine.line().style(), mdTextLine.line().anchor()), mdTextLine.offset())));
+                });
+            });
         }
 
         long window = this.window.window();

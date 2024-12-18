@@ -58,6 +58,7 @@ public class WidgetBlueprints
     public static final BlueprintEntry<BoundsBlueprint> BOUNDS = register(BoundsBlueprint.KEY, BoundsBlueprint.CODEC);
     public static final BlueprintEntry<EventsBlueprint> EVENTS = register(EventsBlueprint.KEY, EventsBlueprint.CODEC);
     public static final BlueprintEntry<OverridesBlueprint> OVERRIDES = register(OverridesBlueprint.KEY, OverridesBlueprint.CODEC);
+    public static final BlueprintEntry<CustomDataBlueprint> DATA = register(CustomDataBlueprint.KEY, CustomDataBlueprint.CODEC);
 
     // Children specific
     public static final BlueprintEntry<WidgetReferenceBlueprint> WIDGET = register(WidgetReferenceBlueprint.KEY, WidgetReferenceBlueprint.CODEC);

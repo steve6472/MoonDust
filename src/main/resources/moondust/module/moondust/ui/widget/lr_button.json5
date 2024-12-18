@@ -5,10 +5,7 @@
             name: "left",
             bounds: [10, 10],
             clickable: true,
-//            sprite_size: [8, 8],
-//            sprite_offset: [1, 1],
 
-            // Widget components on panel
             position: {
                 type: "absolute",
                 pos: [0, 0]
@@ -25,12 +22,6 @@
                 parent: "left",
                 offset: [10, 0]
             }
-
-            // Widget components on panel
-//            position: {
-//                type: "absolute",
-//                pos: [10, 0]
-//            }
         }
     ]
 }

@@ -6,10 +6,7 @@ import steve6472.core.registry.Key;
 import steve6472.moondust.ComponentRedirect;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.widget.component.*;
-import steve6472.moondust.widget.component.event.UIEvent;
-import steve6472.moondust.widget.component.event.UIEventCall;
-import steve6472.moondust.widget.component.event.UIEventCallEntry;
-import steve6472.moondust.widget.component.event.UIEvents;
+import steve6472.moondust.widget.component.event.*;
 import steve6472.moondust.widget.component.position.Position;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 
@@ -37,9 +34,8 @@ public class Widget implements WidgetComponentGetter
     {
         this.parent = parent;
 
-        // Create InternalStates and CustomData, a super-default components
+        // Create InternalStates, a super-default components
         addComponent(internalStates = new InternalStates());
-        addComponent(customData = new CustomData());
 
         for (Object component : blueprint.createComponents())
         {
@@ -86,6 +82,11 @@ public class Widget implements WidgetComponentGetter
                 addComponent(overriden);
             }
         }
+
+        // If custom data was not created via blueprints, add a default empty one
+        customData = (CustomData) components.computeIfAbsent(CustomData.class, _ -> new CustomData());
+
+        handleEvents(OnInit.class);
     }
 
     public static Widget create(Key key)
@@ -236,11 +237,9 @@ public class Widget implements WidgetComponentGetter
         return parent.getPath() + "." + name;
     }
 
-    public Widget getChild(String name)
+    public Optional<Widget> getChild(String name)
     {
-        Widget widget = children.get(name);
-        Objects.requireNonNull(widget, "Widget with name '" + name + "' not found");
-        return widget;
+        return Optional.ofNullable(children.get(name));
     }
 
     public Collection<Widget> getChildren()
@@ -261,10 +260,28 @@ public class Widget implements WidgetComponentGetter
                     //noinspection unchecked
                     return Optional.of((T) o);
             }
+            return Optional.empty();
         }
 
         //noinspection unchecked
         return Optional.ofNullable((T) components.get(type));
+    }
+
+    public <T> boolean removeComponent(Class<T> type)
+    {
+        Collection<Class<?>> redirectClasses = ComponentRedirect.get(type);
+        if (redirectClasses != null)
+        {
+            for (Class<?> redirectClass : redirectClasses)
+            {
+                Object o = components.remove(redirectClass);
+                if (o != null)
+                    return true;
+            }
+            return false;
+        }
+
+        return components.remove(type) != null;
     }
 
     protected boolean iterateChildren(Function<Widget, Boolean> stopCondition)

@@ -20,6 +20,7 @@ public final class UIEventType<T extends UIEventBlueprint> extends Type<T>
     public static final UIEventType<OnMouseLeaveBlueprint> ON_MOUSE_LEAVE = register("on_mouse_leave", OnMouseLeaveBlueprint.CODEC);
     public static final UIEventType<OnMousePressBlueprint> ON_MOUSE_PRESS = register("on_mouse_press", OnMousePressBlueprint.CODEC);
     public static final UIEventType<OnMouseReleaseBlueprint> ON_MOUSE_RELEASE = register("on_mouse_release", OnMouseReleaseBlueprint.CODEC);
+    public static final UIEventType<OnInitBlueprint> ON_INIT = register("on_init", OnInitBlueprint.CODEC);
 
     public UIEventType(Key key, MapCodec<T> codec)
     {

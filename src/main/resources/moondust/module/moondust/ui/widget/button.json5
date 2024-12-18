@@ -14,6 +14,10 @@
     bounds: [8, 8],
     events: [
         {
+            call: "moondust:button/init_label",
+            event: { type: "on_init" }
+        },
+        {
             call: "moondust:button/hover_on",
             event: { type: "on_mouse_enter" }
         },
@@ -28,6 +32,19 @@
         {
             call: "moondust:button/release",
             event: { type: "on_mouse_release" }
+        }
+    ],
+
+    children: [
+        {
+            widget: "moondust:button_label",
+            name: "label",
+            position: {
+                type: "anchored",
+                anchor: "center",
+                offset: [0, 0]
+            },
+            bounds: [0, 0]
         }
     ]
 }

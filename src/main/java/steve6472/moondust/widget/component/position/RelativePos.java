@@ -14,9 +14,10 @@ public record RelativePos(Vector2i offset, String parent) implements Position
     public void evaluatePosition(Vector2i store, Widget widget)
     {
         widget.parent().ifPresent(parentWidget -> {
-            Widget child = parentWidget.getChild(parent);
-            Vector2i position = child.getPosition();
-            store.set(position).add(offset);
+            parentWidget.getChild(parent).ifPresent(child -> {
+                Vector2i position = child.getPosition();
+                store.set(position).add(offset);
+            });
         });
     }
 }

@@ -107,7 +107,7 @@
             position: {
                 type: "anchored",
                 offset: [0, 0],
-                anchor: "middle"
+                anchor: "center"
             }
         }
     ]

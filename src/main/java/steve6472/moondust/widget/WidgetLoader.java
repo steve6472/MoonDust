@@ -148,7 +148,10 @@ public class WidgetLoader
         if (children == null)
             return;
 
-        LayoutBlueprint layout = find(widget, LayoutBlueprint.class).orElseThrow();
+        Optional<LayoutBlueprint> layoutBlueprint = find(widget, LayoutBlueprint.class);
+        if (layoutBlueprint.isEmpty())
+            throw new IllegalStateException("Layout Blueprint is required");
+        LayoutBlueprint layout = layoutBlueprint.orElseThrow();
 
         for (BlueprintFactory child : children.children())
         {
@@ -160,16 +163,16 @@ public class WidgetLoader
             {
                 Collection<String> requiredStrings = REQUIRED_CHILDREN.stream().map(Class::getSimpleName).collect(Collectors.toSet());
                 Collection<String> collectStrings = collectRequired.stream().map(a -> a.getClass().getSimpleName()).collect(Collectors.toSet());
-                throw new IllegalStateException("Child " + name + " is missing some components, found: " + collectStrings + ", required: " + requiredStrings);
+                throw new IllegalStateException("Child '" + name + "' is missing some components, found: " + collectStrings + ", required: " + requiredStrings);
             }
 
             find(blueprints, PositionBlueprint.class).ifPresentOrElse(position ->
             {
                 if (!layout.acceptedPositionTypes().contains(position.getClass()))
                 {
-                    throw new IllegalStateException("Child " + name + " widget has incompatible position type (" + position.getClass().getSimpleName() + ") for layout " + layout.getClass().getSimpleName());
+                    throw new IllegalStateException("Child '" + name + "' widget has incompatible position type (" + position.getClass().getSimpleName() + ") for layout " + layout.getClass().getSimpleName());
                 }
-            }, () -> {throw new IllegalStateException("Child " + name + " is missing required Position component!");});
+            }, () -> {throw new IllegalStateException("Child '" + name + "' is missing required Position component!");});
         }
     }
 

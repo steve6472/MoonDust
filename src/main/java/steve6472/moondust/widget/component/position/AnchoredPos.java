@@ -31,7 +31,7 @@ public record AnchoredPos(Vector2i offset, Anchor anchor) implements Position
 
     public enum Anchor implements StringValue
     {
-        MIDDLE,
+        CENTER,
         TOP,
         LEFT,
         BOTTOM,
@@ -44,52 +44,54 @@ public record AnchoredPos(Vector2i offset, Anchor anchor) implements Position
 
         public static final Codec<Anchor> CODEC = StringValue.fromValues(Anchor::values);
 
-        public void setPos(Vector2i store, Vector2i offset, Vector2i parentPos, Bounds parentBounds, Bounds bounds) {
+        public void setPos(Vector2i store, Vector2i offset, Vector2i parentPos, Bounds parentBounds, Bounds bounds)
+        {
+            store.set(parentPos);
             switch (this) {
-                case MIDDLE -> {
-                    int x = parentPos.x + parentBounds.width / 2 - bounds.width / 2 + offset.x;
-                    int y = parentPos.y + parentBounds.height / 2 - bounds.height / 2 + offset.y;
-                    store.set(x, y);
+                case CENTER -> {
+                    int x = parentBounds.width / 2 - bounds.width / 2 + offset.x;
+                    int y = parentBounds.height / 2 - bounds.height / 2 + offset.y;
+                    store.add(x, y);
                 }
                 case TOP -> {
-                    int x = parentPos.x + parentBounds.width / 2 - bounds.width / 2 + offset.x;
-                    int y = parentPos.y + offset.y;
-                    store.set(x, y);
+                    int x = parentBounds.width / 2 - bounds.width / 2 + offset.x;
+                    int y = offset.y;
+                    store.add(x, y);
                 }
                 case LEFT -> {
-                    int x = parentPos.x + offset.x;
-                    int y = parentPos.y + parentBounds.height / 2 - bounds.height / 2 + offset.y;
-                    store.set(x, y);
+                    int x = offset.x;
+                    int y = parentBounds.height / 2 - bounds.height / 2 + offset.y;
+                    store.add(x, y);
                 }
                 case BOTTOM -> {
-                    int x = parentPos.x + parentBounds.width / 2 - bounds.width / 2 + offset.x;
-                    int y = parentPos.y + parentBounds.height - bounds.height + offset.y;
-                    store.set(x, y);
+                    int x = parentBounds.width / 2 - bounds.width / 2 + offset.x;
+                    int y = parentBounds.height - bounds.height + offset.y;
+                    store.add(x, y);
                 }
                 case RIGHT -> {
-                    int x = parentPos.x + parentBounds.width - bounds.width + offset.x;
-                    int y = parentPos.y + parentBounds.height / 2 - bounds.height / 2 + offset.y;
-                    store.set(x, y);
+                    int x = parentBounds.width - bounds.width + offset.x;
+                    int y = parentBounds.height / 2 - bounds.height / 2 + offset.y;
+                    store.add(x, y);
                 }
                 case TOP_LEFT -> {
-                    int x = parentPos.x + offset.x;
-                    int y = parentPos.y + offset.y;
-                    store.set(x, y);
+                    int x = offset.x;
+                    int y = offset.y;
+                    store.add(x, y);
                 }
                 case BOTTOM_LEFT -> {
-                    int x = parentPos.x + offset.x;
-                    int y = parentPos.y + parentBounds.height - bounds.height + offset.y;
-                    store.set(x, y);
+                    int x = offset.x;
+                    int y = parentBounds.height - bounds.height + offset.y;
+                    store.add(x, y);
                 }
                 case TOP_RIGHT -> {
-                    int x = parentPos.x + parentBounds.width - bounds.width + offset.x;
-                    int y = parentPos.y + offset.y;
-                    store.set(x, y);
+                    int x = parentBounds.width - bounds.width + offset.x;
+                    int y = offset.y;
+                    store.add(x, y);
                 }
                 case BOTTOM_RIGHT -> {
-                    int x = parentPos.x + parentBounds.width - bounds.width + offset.x;
-                    int y = parentPos.y + parentBounds.height - bounds.height + offset.y;
-                    store.set(x, y);
+                    int x = parentBounds.width - bounds.width + offset.x;
+                    int y = parentBounds.height - bounds.height + offset.y;
+                    store.add(x, y);
                 }
             }
         }

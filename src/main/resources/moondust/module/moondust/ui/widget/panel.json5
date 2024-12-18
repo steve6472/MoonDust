@@ -10,8 +10,32 @@
     },
 
     bounds: [0, 0],
+    text_line: {
+        text: {
+            text: "MoonDust",
+            style: "moondust:tiny_pixie2",
+            anchor: "top_left"
+        },
+        offset: [8, 1]
+    },
 
     children: [
+        {
+            widget: "moondust:empty",
+            name: "debug_label",
+            position: {
+                type: "absolute",
+                pos: [0, 0]
+            },
+            text_line: {
+                text: {
+                    text: "DEBUG",
+                    style: "moondust:tiny_pixie2_shadow",
+                    anchor: "top_left"
+                },
+                offset: [64, 1]
+            }
+        },
         {
             // The widget type, required
             widget: "moondust:button",
@@ -21,13 +45,11 @@
             bounds: [32, 32],
             clickable: true,
 
-            text_line: {
-                text: {
-                    text: "Button!!",
-                    style: "moondust:tiny_pixie2",
-                    anchor: "bottom_left"
-                },
-                offset: [3, 12]
+            // Todo replace with custom component
+            data: {
+                strings: {
+                    "button:label": "Test Button"
+                }
             },
 
             // Widget components on panel
