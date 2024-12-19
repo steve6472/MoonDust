@@ -116,6 +116,11 @@ public class Widget implements WidgetComponentGetter
         children.put(name.value(), widget);
     }
 
+    public boolean removeChild(String name)
+    {
+        return children.remove(name) != null;
+    }
+
     public <T> void addComponent(T component)
     {
         this.components.put(component.getClass(), component);

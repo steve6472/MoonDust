@@ -68,6 +68,59 @@
             }*/
         },
         {
+            widget: "moondust:radio_button",
+            name: "radio_0",
+            position: {
+                type: "relative",
+                parent: "test_button",
+                offset: [40, 0]
+            },
+            clickable: true,
+            radio_group: {
+                group: "test",
+                selected: true
+            }
+        },
+        {
+            widget: "moondust:radio_button",
+            name: "radio_1",
+            position: {
+                type: "relative",
+                parent: "radio_0",
+                offset: [0, 8]
+            },
+            clickable: true,
+            radio_group: {
+                group: "test"
+            }
+        },
+        {
+            widget: "moondust:radio_button",
+            name: "radio_2",
+            position: {
+                type: "relative",
+                parent: "radio_1",
+                offset: [0, 8]
+            },
+            clickable: true,
+            radio_group: {
+                group: "test"
+            }
+        },
+        {
+            widget: "moondust:radio_button",
+            name: "radio_3",
+            position: {
+                type: "relative",
+                parent: "radio_2",
+                offset: [0, 8]
+            },
+            clickable: true,
+            radio_group: {
+                group: "test"
+            }
+        },
+        {
             widget: "moondust:icon",
             name: "test_icon",
             sprite_size: [8, 8],
@@ -77,11 +130,11 @@
             }
         },
         {
-            widget: "moondust:lr_button",
-            name: "test_lr",
+            widget: "moondust:mouse_view",
+            name: "mouse_view",
             position: {
                 type: "absolute",
-                pos: [0, 20]
+                pos: [4, 20]
             }
         },
         {

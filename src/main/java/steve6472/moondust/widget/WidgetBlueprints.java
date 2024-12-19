@@ -49,6 +49,7 @@ public class WidgetBlueprints
     public static final BlueprintEntry<SpriteOffsetBlueprint> SPRITE_OFFSET = register(SpriteOffsetBlueprint.KEY, SpriteOffsetBlueprint.CODEC);
     public static final BlueprintEntry<FocusedSpriteBlueprint> FOCUSED_SPRITE = register(FocusedSpriteBlueprint.KEY, FocusedSpriteBlueprint.CODEC);
     public static final BlueprintEntry<TextLineBlueprint> TEXT_LINE = register(TextLineBlueprint.KEY, TextLineBlueprint.CODEC);
+    public static final BlueprintEntry<ZIndexBlueprint> Z_INDEX = register(ZIndexBlueprint.KEY, ZIndexBlueprint.CODEC);
 
     // Clickbox
     public static final BlueprintEntry<ClickboxSizeBlueprint> CLICKBOX_SIZE = register(ClickboxSizeBlueprint.KEY, ClickboxSizeBlueprint.CODEC);
@@ -59,6 +60,7 @@ public class WidgetBlueprints
     public static final BlueprintEntry<EventsBlueprint> EVENTS = register(EventsBlueprint.KEY, EventsBlueprint.CODEC);
     public static final BlueprintEntry<OverridesBlueprint> OVERRIDES = register(OverridesBlueprint.KEY, OverridesBlueprint.CODEC);
     public static final BlueprintEntry<CustomDataBlueprint> DATA = register(CustomDataBlueprint.KEY, CustomDataBlueprint.CODEC);
+    public static final BlueprintEntry<RadioGroupBlueprint> RADIO_GROUP = register(RadioGroupBlueprint.KEY, RadioGroupBlueprint.CODEC);
 
     // Children specific
     public static final BlueprintEntry<WidgetReferenceBlueprint> WIDGET = register(WidgetReferenceBlueprint.KEY, WidgetReferenceBlueprint.CODEC);

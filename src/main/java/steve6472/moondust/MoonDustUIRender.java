@@ -194,6 +194,8 @@ public class MoonDustUIRender extends UIRenderImpl
         if (!widget.isVisible())
             return;
 
+        widget.handleEvents(OnRender.class);
+
         if (widget.isFocusable() && widget.internalStates().focused)
         {
             widget.getComponent(SpriteSize.class).ifPresent(spriteSize ->
@@ -202,13 +204,15 @@ public class MoonDustUIRender extends UIRenderImpl
                 widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
                 widget.getComponent(FocusedSprite.class).ifPresentOrElse(focusedSprite ->
                 {
+                    float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(-0.1f);
                     SpriteEntry textureEntry = getTextureEntry(focusedSprite.sprite());
                     if (textureEntry == null)
-                        sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, MoonDust.ERROR_FOCUSED);
+                        sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, MoonDust.ERROR_FOCUSED);
                     else
-                        sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, focusedSprite.sprite());
+                        sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, focusedSprite.sprite());
                 }, () -> {
-                    sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, MoonDust.ERROR_FOCUSED);
+                    float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(-0.1f);
+                    sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, MoonDust.ERROR_FOCUSED);
                 });
             });
         }
@@ -221,7 +225,8 @@ public class MoonDustUIRender extends UIRenderImpl
             {
                 Vector2i position = widget.getPosition();
                 widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
-                sprite(position.x, position.y, -0.1f, spriteSize.width, spriteSize.height, sprite);
+                float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(-0.1f);
+                sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, sprite);
             });
         });
     }

@@ -1,0 +1,13 @@
+{
+    sprites: {
+        "mouse": "sprites/mouse/inactive"
+    },
+    bounds: [13, 19],
+    current_sprite: "mouse",
+    events: [
+        {
+            call: "moondust:mouse/tick",
+            event: { type: "on_render" }
+        }
+    ]
+}

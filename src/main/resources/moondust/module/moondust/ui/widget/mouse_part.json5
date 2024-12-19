@@ -1,0 +1,15 @@
+{
+    sprites: {
+        "left": "sprites/mouse/left",
+        "right": "sprites/mouse/right",
+        "scroll_up": "sprites/mouse/scroll_up",
+        "scroll_down": "sprites/mouse/scroll_down",
+        "middle": "sprites/mouse/middle"
+    },
+    bounds: [13, 19],
+    position: {
+        type: "absolute",
+        pos: [0, 0]
+    },
+    z_index: -0.05
+}
