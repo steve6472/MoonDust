@@ -12,6 +12,7 @@ import steve6472.moondust.widget.component.event.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -257,6 +258,67 @@ public interface MoonDustEventCalls
         });
     }
 
+    interface Spinner
+    {
+        Key LABEL = Key.withNamespace("spinner", "label");
+        Key UNFORMATTED_LABEL = Key.withNamespace("spinner", "unformatted_label");
+        Key VALUE = Key.withNamespace("spinner", "value");
+        Key MIN = Key.withNamespace("spinner", "min");
+        Key MAX = Key.withNamespace("spinner", "max");
+        Key NUMBER_FORMAT = Key.withNamespace("spinner", "number_format");
+        String DEFAULT_NUMBER_FORMAT = "%.2f";
+
+        UIEventCall<OnInit> INIT = create(key("spinner/init"), (widget, _) -> {
+            widget.getChild("label").ifPresent(child -> {
+                child.getComponent(MDTextLine.class).ifPresent(mdLine -> {
+                    CustomData customData = widget.customData();
+                    String label = customData.getString(LABEL);
+                    if (label == null) return;
+                    child.addComponent(mdLine.replaceText(label));
+                    customData.putString(UNFORMATTED_LABEL, label);
+                });
+            });
+        });
+
+        UIEventCall<OnRender> RENDER = create(key("spinner/tick"), (widget, _) ->
+        {
+            widget.getChild("label").ifPresent(childLabel -> {
+                childLabel.getComponent(MDTextLine.class).ifPresent(label -> {
+                    CustomData data = widget.customData();
+                    String unformattedLabel = data.getString(UNFORMATTED_LABEL);
+                    if (unformattedLabel == null) return;
+
+                    String numberFormat = Optional.ofNullable(data.getString(NUMBER_FORMAT)).orElse(DEFAULT_NUMBER_FORMAT);
+
+                    unformattedLabel = unformattedLabel.replace("%value%", numberFormat.formatted(data.getFloat(VALUE)));
+                    unformattedLabel = unformattedLabel.replace("%min%", numberFormat.formatted(data.getFloat(MIN)));
+                    unformattedLabel = unformattedLabel.replace("%max%", numberFormat.formatted(data.getFloat(MAX)));
+
+                    childLabel.addComponent(label.replaceText(unformattedLabel));
+                });
+            });
+        });
+
+        UIEventCall<OnMouseRelease> UP = create(key("spinner/up"), (widget, _) -> {
+            widget.parent().ifPresent(parent -> {
+                CustomData data = parent.customData();
+                data.putFloat(VALUE, data.getFloat(VALUE) + 1);
+                if (data.getFloat(VALUE) > data.getFloat(MAX))
+                    data.putFloat(VALUE, data.getFloat(MAX));
+            });
+        });
+
+        UIEventCall<OnMouseRelease> DOWN = create(key("spinner/down"), (widget, _) -> {
+            widget.parent().ifPresent(parent ->
+            {
+                CustomData data = parent.customData();
+                data.putFloat(VALUE, data.getFloat(VALUE) - 1);
+                if (data.getFloat(VALUE) < data.getFloat(MIN))
+                    data.putFloat(VALUE, data.getFloat(MIN));
+            });
+        });
+    }
+
     private static <T extends UIEvent> UIEventCall<T> create(Key key, UIEventCall<T> eventCall)
     {
         MoonDustRegistries.EVENT_CALLS.put(key, eventCall);
@@ -273,6 +335,7 @@ public interface MoonDustEventCalls
         init(Button.MOUSE_ENTER);
         init(RadioButton.MOUSE_RELEASE);
         init(Mouse.RENDER);
+        init(Spinner.RENDER);
     }
 
     private static void init(Object ignored)

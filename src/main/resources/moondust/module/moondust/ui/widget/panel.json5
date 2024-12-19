@@ -257,6 +257,27 @@
                     ]
                 }
             }
+        },
+        {
+            widget: "moondust:spinner_buttons_y",
+            name: "test_spinner",
+            position: {
+                type: "relative",
+                parent: "test_button",
+                offset: [0, 40]
+            },
+            bounds: [10, 10],
+            data: {
+                strings: {
+                    "spinner:label": "val: %value% (%min% - %max%)",
+                    "spinner:number_format": "%.0f"
+                },
+                floats: {
+                    "spinner:min": 0,
+                    "spinner:max": 8,
+                    "spinner:value": 6
+                }
+            }
         }
     ]
 }

@@ -1,0 +1,95 @@
+{
+    events: [
+        {
+            call: "moondust:spinner/init",
+            event: { type: "on_init" }
+        },
+        {
+            // TODO: should be doing that only on press
+            call: "moondust:spinner/tick",
+            event: { type: "on_render" }
+        }
+    ],
+
+    children: [
+        {
+            widget: "moondust:button",
+            name: "up",
+            sprites: {
+                normal: "moondust:generic_dark_pixel/arrow/up_normal",
+                disabled: "moondust:generic_dark_pixel/arrow/up_disabled",
+                hovered: "moondust:generic_dark_pixel/arrow/up_hover",
+                pressed: "moondust:generic_dark_pixel/arrow/up_press"
+            },
+            bounds: [5, 5],
+            clickable: true,
+            focusable: true,
+            focused_sprite: "moondust:generic_dark_pixel/arrow/up_focus",
+            position: {
+                type: "anchored",
+                anchor: "right"
+            },
+
+            overrides: {
+                events: {
+                    add: [
+                        {
+                            call: "moondust:spinner/up",
+                            event: { type: "on_mouse_release" },
+                            condition: {
+                                states: {
+                                    direct_hover: true
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            widget: "moondust:button",
+            name: "down",
+            sprites: {
+                normal: "moondust:generic_dark_pixel/arrow/down_normal",
+                disabled: "moondust:generic_dark_pixel/arrow/down_disabled",
+                hovered: "moondust:generic_dark_pixel/arrow/down_hover",
+                pressed: "moondust:generic_dark_pixel/arrow/down_press"
+            },
+            bounds: [5, 5],
+            clickable: true,
+            focusable: true,
+            focused_sprite: "moondust:generic_dark_pixel/arrow/down_focus",
+            position: {
+                type: "relative",
+                parent: "up",
+                offset: [0, 4]
+            },
+
+            overrides: {
+                events: {
+                    add: [
+                        {
+                            call: "moondust:spinner/down",
+                            event: { type: "on_mouse_release" },
+                            condition: {
+                                states: {
+                                    direct_hover: true
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            widget: "moondust:spinner_label",
+            name: "label",
+            bounds: [100, 8],
+            position: {
+                type: "anchored",
+                anchor: "left",
+                offset: [11, 1]
+            }
+        }
+    ]
+}

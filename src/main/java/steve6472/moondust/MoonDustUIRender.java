@@ -205,6 +205,7 @@ public class MoonDustUIRender extends UIRenderImpl
                 widget.getComponent(FocusedSprite.class).ifPresentOrElse(focusedSprite ->
                 {
                     float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(-0.1f);
+                    index += 0.01f;
                     SpriteEntry textureEntry = getTextureEntry(focusedSprite.sprite());
                     if (textureEntry == null)
                         sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, MoonDust.ERROR_FOCUSED);

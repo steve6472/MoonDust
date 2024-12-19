@@ -10,4 +10,8 @@ import steve6472.flare.ui.font.render.UITextLine;
  */
 public record MDTextLine(UITextLine line, Vector2i offset)
 {
+    public MDTextLine replaceText(String newText)
+    {
+        return new MDTextLine(new UITextLine(newText, line.size(), line.style(), line.anchor()), new Vector2i(offset));
+    }
 }
