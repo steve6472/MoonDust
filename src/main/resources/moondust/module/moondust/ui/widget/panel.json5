@@ -79,6 +79,28 @@
             radio_group: {
                 group: "test",
                 selected: true
+            },
+            data: {
+                strings: {
+                    "radio_button:label": "6"
+                }
+            },
+
+            // TODO: replace with custom component
+            overrides: {
+                events: {
+                    add: [
+                        {
+                            call: "moondust:radio/scale_6",
+                            event: { type: "on_mouse_release" },
+                            condition: {
+                                states: {
+                                    direct_hover: true
+                                }
+                            }
+                        }
+                    ]
+                }
             }
         },
         {
@@ -92,6 +114,27 @@
             clickable: true,
             radio_group: {
                 group: "test"
+            },
+            data: {
+                strings: {
+                    "radio_button:label": "4"
+                }
+            },
+
+            overrides: {
+                events: {
+                    add: [
+                        {
+                            call: "moondust:radio/scale_4",
+                            event: { type: "on_mouse_release" },
+                            condition: {
+                                states: {
+                                    direct_hover: true
+                                }
+                            }
+                        }
+                    ]
+                }
             }
         },
         {
@@ -105,6 +148,27 @@
             clickable: true,
             radio_group: {
                 group: "test"
+            },
+            data: {
+                strings: {
+                    "radio_button:label": "2"
+                }
+            },
+
+            overrides: {
+                events: {
+                    add: [
+                        {
+                            call: "moondust:radio/scale_2",
+                            event: { type: "on_mouse_release" },
+                            condition: {
+                                states: {
+                                    direct_hover: true
+                                }
+                            }
+                        }
+                    ]
+                }
             }
         },
         {
@@ -118,6 +182,27 @@
             clickable: true,
             radio_group: {
                 group: "test"
+            },
+            data: {
+                strings: {
+                    "radio_button:label": "1"
+                }
+            },
+
+            overrides: {
+                events: {
+                    add: [
+                        {
+                            call: "moondust:radio/scale_1",
+                            event: { type: "on_mouse_release" },
+                            condition: {
+                                states: {
+                                    direct_hover: true
+                                }
+                            }
+                        }
+                    ]
+                }
             }
         },
         {

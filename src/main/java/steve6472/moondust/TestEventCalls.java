@@ -18,6 +18,22 @@ public class TestEventCalls
         create(key("button/exit_app"), (Widget _, OnMouseRelease _) -> {
             MoonDustTest.instance.window().closeWindow();
         });
+
+        create(key("radio/scale_6"), (Widget _, OnMouseRelease _) -> {
+            MoonDust.getInstance().setPixelScale(6f);
+        });
+
+        create(key("radio/scale_4"), (Widget _, OnMouseRelease _) -> {
+            MoonDust.getInstance().setPixelScale(4f);
+        });
+
+        create(key("radio/scale_2"), (Widget _, OnMouseRelease _) -> {
+            MoonDust.getInstance().setPixelScale(2f);
+        });
+
+        create(key("radio/scale_1"), (Widget _, OnMouseRelease _) -> {
+            MoonDust.getInstance().setPixelScale(1f);
+        });
     }
 
     private static <T extends UIEvent> UIEventCall<T> create(Key key, UIEventCall<T> eventCall)
