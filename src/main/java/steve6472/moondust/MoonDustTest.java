@@ -9,6 +9,7 @@ import steve6472.flare.input.KeybindUpdater;
 import steve6472.flare.render.UIFontRender;
 import steve6472.flare.render.UILineRender;
 import steve6472.flare.render.UIRenderSystem;
+import steve6472.moondust.builtin.BuiltinEventCalls;
 import steve6472.moondust.widget.Panel;
 
 /**
@@ -43,6 +44,7 @@ public class MoonDustTest extends FlareApp
     {
         initRegistry(MoonDustRegistries.POSITION_TYPE);
         MoonDustEventCalls.init();
+        BuiltinEventCalls.init();
         TestEventCalls.init();
     }
 

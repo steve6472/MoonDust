@@ -29,8 +29,6 @@ public class MoonDust
     private static final Logger LOGGER = Log.getLogger(MoonDust.class);
     private static final MoonDust INSTANCE = new MoonDust();
 
-    public static final Key DEBUG_OUTLINE = Key.withNamespace("moondust", "outline");
-    public static final Key DEBUG_OUTLINE_TRANSPARENT = Key.withNamespace("moondust", "outline_transparent");
     public static final Key ERROR_FOCUSED = Key.withNamespace("moondust", "widget/error/focused");
 
     private final List<Panel> panels = new ArrayList<>(2);

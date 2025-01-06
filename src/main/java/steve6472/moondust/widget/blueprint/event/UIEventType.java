@@ -15,7 +15,7 @@ import steve6472.moondust.widget.blueprint.event.impl.*;
  */
 public final class UIEventType<T extends UIEventBlueprint> extends Type<T>
 {
-    public static final UIEventType<RandomTickBlueprint> RANDOM_TICK = register("random_tick", RandomTickBlueprint.CODEC);
+    public static final UIEventType<OnRandomTickBlueprint> RANDOM_TICK = register("random_tick", OnRandomTickBlueprint.CODEC);
     public static final UIEventType<OnMouseEnterBlueprint> ON_MOUSE_ENTER = register("on_mouse_enter", OnMouseEnterBlueprint.CODEC);
     public static final UIEventType<OnMouseLeaveBlueprint> ON_MOUSE_LEAVE = register("on_mouse_leave", OnMouseLeaveBlueprint.CODEC);
     public static final UIEventType<OnMousePressBlueprint> ON_MOUSE_PRESS = register("on_mouse_press", OnMousePressBlueprint.CODEC);

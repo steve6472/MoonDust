@@ -54,27 +54,16 @@
             bounds: [32, 32],
             clickable: true,
 
-            // Todo replace with custom component
-            data: {
-                strings: {
-                    "button:label": "Test Button"
-                }
+            button: {
+                label: "Test Button",
+                label_shadow: true
             },
 
             // Widget components on panel
             position: {
                 type: "absolute",
                 pos: [30, 10]
-            }/*,
-
-            // Widget components overrides
-            overrides: {
-                sprites: {
-                    replace: {
-                        "normal": "moondust:ui/box_background"
-                    }
-                }
-            }*/
+            }
         },
         {
             widget: "moondust:radio_button",
@@ -251,33 +240,9 @@
                 pressed: "moondust:generic_dark_pixel/button/close_red/pressed"
             },
 
-            events: [
-                {
-                    call: "moondust:button/exit_app",
-                    event: { type: "on_mouse_release" },
-                    condition: {
-                        states: {
-                            direct_hover: true
-                        }
-                    }
-                }
-            ]
-
-            /*overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:button/exit_app",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        }
-                    ]
-                }
-            }*/
+            button: {
+                on_press: "moondust:button/exit_app"
+            }
         },
         {
             widget: "moondust:spinner_buttons_y",

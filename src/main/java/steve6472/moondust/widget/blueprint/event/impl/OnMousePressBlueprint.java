@@ -3,7 +3,6 @@ package steve6472.moondust.widget.blueprint.event.impl;
 import com.mojang.serialization.Codec;
 import steve6472.moondust.widget.blueprint.event.SimpleCallEventBlueprint;
 import steve6472.moondust.widget.blueprint.event.UIEventType;
-import steve6472.moondust.widget.component.event.OnMouseEnter;
 import steve6472.moondust.widget.component.event.OnMousePress;
 
 /**

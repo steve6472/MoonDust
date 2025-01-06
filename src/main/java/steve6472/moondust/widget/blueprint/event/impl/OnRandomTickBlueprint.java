@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import steve6472.moondust.widget.blueprint.event.UIEventBlueprint;
 import steve6472.moondust.widget.blueprint.event.UIEventType;
+import steve6472.moondust.widget.component.event.OnRandomTick;
 
 import java.util.List;
 
@@ -12,11 +13,11 @@ import java.util.List;
  * Date: 12/1/2024
  * Project: MoonDust <br>
  */
-public record RandomTickBlueprint(double probability) implements UIEventBlueprint
+public record OnRandomTickBlueprint(double probability) implements UIEventBlueprint
 {
-    public static final Codec<RandomTickBlueprint> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.DOUBLE.fieldOf("probability").forGetter(RandomTickBlueprint::probability)
-    ).apply(instance, RandomTickBlueprint::new));
+    public static final Codec<OnRandomTickBlueprint> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codec.DOUBLE.fieldOf("probability").forGetter(OnRandomTickBlueprint::probability)
+    ).apply(instance, OnRandomTickBlueprint::new));
 
     @Override
     public UIEventType<?> getType()
@@ -27,6 +28,6 @@ public record RandomTickBlueprint(double probability) implements UIEventBlueprin
     @Override
     public List<?> createComponents()
     {
-        return List.of();
+        return List.of(new OnRandomTick(probability));
     }
 }
