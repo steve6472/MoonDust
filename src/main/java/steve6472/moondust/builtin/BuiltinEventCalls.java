@@ -6,6 +6,7 @@ import steve6472.flare.registry.FlareRegistries;
 import steve6472.flare.ui.font.render.UITextLine;
 import steve6472.moondust.*;
 import steve6472.moondust.widget.Widget;
+import steve6472.moondust.widget.blueprint.event.condition.Tristate;
 import steve6472.moondust.widget.component.CurrentSprite;
 import steve6472.moondust.widget.component.CustomData;
 import steve6472.moondust.widget.component.MDTextLine;
@@ -25,16 +26,18 @@ public class BuiltinEventCalls
         /*
          * Icons
          */
-        create(key("icon/hover/on"),  (Widget widget, OnMouseEnter _) -> setCurrentSprite(widget, !widget.internalStates().hovered ? "hovered" : null));
-        create(key("icon/hover/off"), (Widget widget, OnMouseLeave _) -> setCurrentSprite(widget, widget.internalStates().hovered ? "normal" : null));
-        create(key("icon/press"),     (Widget widget, OnMousePress _) -> setCurrentSprite(widget, "pressed"));
-        create(key("icon/release"), (Widget widget, OnMouseRelease _) -> setCurrentSprite(widget, widget.internalStates().hovered ? "hovered" : "normal"));
+        create(key("icon/hover/on"),  (Widget widget, OnMouseEnter _) -> setCurrentSprite(widget, widget.isEnabled() && !widget.internalStates().hovered ? "hovered" : null));
+        create(key("icon/hover/off"), (Widget widget, OnMouseLeave _) -> setCurrentSprite(widget, widget.isEnabled() && widget.internalStates().hovered ? "normal" : null));
+        create(key("icon/press"),     (Widget widget, OnMousePress _) -> setCurrentSprite(widget, widget.isEnabled() ? "pressed" : null));
+        create(key("icon/release"), (Widget widget, OnMouseRelease _) -> setCurrentSprite(widget, widget.isEnabled() ? (widget.internalStates().hovered ? "hovered" : "normal") : null));
+        create(key("icon/change_enabled"), (Widget widget, OnEnableStateChange _) -> setCurrentSprite(widget, widget.isEnabled() ? (widget.internalStates().hovered ? "hovered" : "normal") : "disabled"));
 
         /*
          * Label
          */
         create(key("label/hover/on"),  (Widget widget, OnMouseEnter _) -> replaceStyle(widget, pickStyle(widget)));
         create(key("label/hover/off"), (Widget widget, OnMouseLeave _) -> replaceStyle(widget, pickStyle(widget)));
+        create(key("label/change_enabled"), (Widget widget, OnEnableStateChange _) -> replaceStyle(widget, pickStyle(widget)));
 
         /*
          * Specific
@@ -55,7 +58,7 @@ public class BuiltinEventCalls
                     child.addComponent(new MDTextLine(new UITextLine(label, line.size(), line.style(), line.anchor()), mdLine.offset()));
                 });
             });
-            replaceStyle(widget, pickStyle(widget));
+            replaceStyle(widget, pickStyle(widget, widget.internalStates().hovered || widget.internalStates().directHover ? Tristate.TRUE : Tristate.FALSE));
         });
     }
 
@@ -90,21 +93,34 @@ public class BuiltinEventCalls
         // Fonts
         Key BUTTON_SHADOW_HOVER = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/shadow/hover");
         Key BUTTON_SHADOW_NORMAL = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/shadow/normal");
+        Key BUTTON_SHADOW_DISABLED = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/shadow/disabled");
         Key BUTTON_HOVER = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/hover");
         Key BUTTON_NORMAL = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/normal");
+        Key BUTTON_DISABLED = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/disabled");
     }
 
 
 
     private static Key pickStyle(Widget widget)
     {
-        boolean hover = !widget.internalStates().hovered && !widget.internalStates().directHover;
+        return pickStyle(widget, Tristate.IGNORE);
+    }
+
+    private static Key pickStyle(Widget widget, Tristate hoverOverride)
+    {
+        boolean hover = hoverOverride == Tristate.IGNORE ? !widget.internalStates().hovered : (hoverOverride == Tristate.TRUE);
         boolean shadow = widget.customData().getFlag(Keys.GENERIC_LABEL_SHADOW);
 
-        if (shadow)
-            return hover ? Keys.BUTTON_SHADOW_HOVER : Keys.BUTTON_SHADOW_NORMAL;
-        else
-            return hover ? Keys.BUTTON_HOVER : Keys.BUTTON_NORMAL;
+        if (widget.isEnabled())
+        {
+            if (shadow)
+                return hover ? Keys.BUTTON_SHADOW_HOVER : Keys.BUTTON_SHADOW_NORMAL;
+            else
+                return hover ? Keys.BUTTON_HOVER : Keys.BUTTON_NORMAL;
+        } else
+        {
+            return shadow ? Keys.BUTTON_SHADOW_DISABLED : Keys.BUTTON_DISABLED;
+        }
     }
 
     private static void replaceStyle(Widget widget, Key styleKey)

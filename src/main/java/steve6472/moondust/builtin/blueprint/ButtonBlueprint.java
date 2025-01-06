@@ -9,7 +9,7 @@ import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.widget.blueprint.event.condition.EventCondition;
 import steve6472.moondust.widget.blueprint.event.condition.States;
 import steve6472.moondust.widget.blueprint.event.condition.Tristate;
-import steve6472.moondust.widget.component.Clickable;
+import steve6472.moondust.widget.component.flag.Clickable;
 import steve6472.moondust.widget.component.CustomData;
 import steve6472.moondust.widget.component.event.OnMouseRelease;
 import steve6472.moondust.widget.component.event.UIEventCallEntry;
@@ -33,7 +33,7 @@ public record ButtonBlueprint(Key pressCall, String label, boolean labelShadow) 
         Codec.BOOL.optionalFieldOf("label_shadow", false).forGetter(ButtonBlueprint::labelShadow)
     ).apply(instance, ButtonBlueprint::new));
 
-    private static final States CONDITION_STATES = new States(Tristate.IGNORE, Tristate.IGNORE, Tristate.IGNORE, Tristate.IGNORE, Tristate.TRUE);
+    private static final States CONDITION_STATES = new States(Tristate.TRUE, Tristate.TRUE, Tristate.TRUE, Tristate.IGNORE, Tristate.TRUE);
 
     @Override
     public List<?> createComponents()

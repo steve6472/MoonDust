@@ -22,7 +22,7 @@ public record OnRandomTickBlueprint(double probability) implements UIEventBluepr
     @Override
     public UIEventType<?> getType()
     {
-        return UIEventType.RANDOM_TICK;
+        return UIEventType.ON_RANDOM_TICK;
     }
 
     @Override

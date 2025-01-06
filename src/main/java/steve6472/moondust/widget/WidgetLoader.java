@@ -12,11 +12,11 @@ import steve6472.moondust.core.blueprint.BlueprintEntry;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.core.blueprint.DefaultBlueprint;
 import steve6472.moondust.widget.blueprint.*;
-import steve6472.moondust.widget.blueprint.generic.ClickableBlueprint;
-import steve6472.moondust.widget.blueprint.generic.FocusableBlueprint;
+import steve6472.moondust.widget.blueprint.flag.ClickableBlueprint;
+import steve6472.moondust.widget.blueprint.flag.FocusableBlueprint;
 import steve6472.moondust.widget.blueprint.layout.LayoutBlueprint;
 import steve6472.moondust.widget.blueprint.position.PositionBlueprint;
-import steve6472.moondust.widget.component.Clickable;
+import steve6472.moondust.widget.component.flag.Clickable;
 
 import java.io.File;
 import java.util.*;

@@ -32,7 +32,7 @@ public class MoonDustRegistries extends RegistryCreators
     public static final Registry<PositionType<?>> POSITION_TYPE = createRegistry(key("position_type"), () -> PositionType.ABSOLUTE);
     public static final Registry<LayoutType<?>> LAYOUT_TYPE = createRegistry(key("layout_type"), () -> LayoutType.ABSOLUTE);
 
-    public static final Registry<UIEventType<?>> EVENT_TYPE = createRegistry(key("event_type"), () -> UIEventType.RANDOM_TICK);
+    public static final Registry<UIEventType<?>> EVENT_TYPE = createRegistry(key("event_type"), () -> UIEventType.ON_RANDOM_TICK);
 
     public static final Registry<OverrideEntry<?>> OVERRIDE = createRegistry(key("override"), () -> BlueprintOverrides.EVENTS);
     public static final Registry<BlueprintEntry<?>> WIDGET_BLUEPRINT = createRegistry(key("widget_blueprint"), () ->

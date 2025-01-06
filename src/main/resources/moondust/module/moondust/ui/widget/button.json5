@@ -13,18 +13,20 @@
     clickable: true,
     bounds: [8, 8],
     events: [
-        // TODO: replace, use custom button blueprint
         { call: "moondust:init/button",         event: { type: "on_init" } },
         { call: "moondust:icon/press",          event: { type: "on_mouse_press" } },
         { call: "moondust:icon/release",        event: { type: "on_mouse_release" } },
         { call: "moondust:icon/hover/on",       event: { type: "on_mouse_enter" } },
         { call: "moondust:icon/hover/off",      event: { type: "on_mouse_leave" } },
+        { call: "moondust:icon/change_enabled", event: { type: "on_enable_change" } },
         { call: "moondust:label/hover/on",      event: { type: "on_mouse_enter" } },
-        { call: "moondust:label/hover/off",     event: { type: "on_mouse_leave" } }
+        { call: "moondust:label/hover/off",     event: { type: "on_mouse_leave" } },
+        { call: "moondust:label/change_enabled",event: { type: "on_enable_change" } }
     ],
 
     children: [
         {
+            // Gets removed in init/button if label is empty
             widget: "moondust:button_label",
             name: "label",
             position: {

@@ -1,4 +1,4 @@
-package steve6472.moondust.widget.component;
+package steve6472.moondust.widget.component.flag;
 
 import com.mojang.serialization.Codec;
 import steve6472.core.registry.StringValue;

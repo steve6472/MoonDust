@@ -1,4 +1,4 @@
-package steve6472.moondust.widget.component;
+package steve6472.moondust.widget.component.flag;
 
 import com.mojang.serialization.Codec;
 import steve6472.core.registry.StringValue;
@@ -7,15 +7,15 @@ import java.util.Locale;
 
 /**
  * Created by steve6472
- * Date: 12/2/2024
+ * Date: 12/11/2024
  * Project: MoonDust <br>
  */
-public enum Enabled implements StringValue
+public enum Focusable implements StringValue
 {
     YES,
     NO;
 
-    public static final Codec<Enabled> CODEC = StringValue.fromValues(Enabled::values);
+    public static final Codec<Focusable> CODEC = StringValue.fromValues(Focusable::values);
 
     public boolean flag()
     {

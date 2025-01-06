@@ -55,15 +55,22 @@
             clickable: true,
 
             button: {
+                on_press: "moondust:button/test_press",
                 label: "Test Button",
-                label_shadow: true
+                label_shadow: false
             },
 
             // Widget components on panel
             position: {
                 type: "absolute",
                 pos: [30, 10]
-            }
+            },
+
+            events: [
+                {
+                    call: "moondust:button/random_toggle_enabled",
+                    event: { type: "on_random_tick", probability: 0.0001 } }
+            ]
         },
         {
             widget: "moondust:radio_button",

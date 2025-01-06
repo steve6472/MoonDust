@@ -85,38 +85,28 @@ public class MoonDustUIRender extends UIRenderImpl
         // Handles the "pressed a component but drag the mouse away from it"
         if (pressedWidget != null)
         {
-            pressedWidget.getComponent(ClickboxSize.class).ifPresent(clickboxSize -> {
-                Vector2i clickboxPosition = pressedWidget.getPosition();
-                pressedWidget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
-                boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width, clickboxPosition.y + clickboxSize.height, mousePos.x, mousePos.y);
-                pressedWidget.internalStates().directHover = hovered;
-                if (leftPress)
-                    return;
-
-                pressedWidget.getEvents(OnMouseRelease.class).forEach(e ->
-                {
-                    UIEventCall<OnMouseRelease> uiEventCall = (UIEventCall<OnMouseRelease>) MoonDustRegistries.EVENT_CALLS.get(e.call());
-                    if (uiEventCall != null)
-                    {
-                        OnMouseRelease event = (OnMouseRelease) e.event();
-                        if (event.cursorInside() == Tristate.IGNORE)
-                            uiEventCall.call(pressedWidget, event);
-                        else if (event.cursorInside() == Tristate.TRUE && hovered)
-                            uiEventCall.call(pressedWidget, event);
-                        else if (event.cursorInside() == Tristate.FALSE && !hovered)
-                            uiEventCall.call(pressedWidget, event);
-                        else
-                            throw new RuntimeException("Unexpected state for OnMouseRelease call!");
-                    } else
-                    {
-                        LOGGER.warning("No event call found for " + e.call());
-                    }
-                });
-            });
-
-            if (!leftPress)
+            if (!pressedWidget.isEnabled())
             {
+                pressedWidget.internalStates().directHover = false;
+                pressedWidget.internalStates().hovered = false;
                 pressedWidget = null;
+            } else
+            {
+                pressedWidget.getComponent(ClickboxSize.class).ifPresent(clickboxSize -> {
+                    Vector2i clickboxPosition = pressedWidget.getPosition();
+                    pressedWidget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
+                    boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width, clickboxPosition.y + clickboxSize.height, mousePos.x, mousePos.y);
+                    pressedWidget.internalStates().directHover = hovered;
+                    if (leftPress)
+                        return;
+
+                    pressedWidget.handleEvents(OnMouseRelease.class, event -> event.cursorInside().test(hovered));
+                });
+
+                if (!leftPress)
+                {
+                    pressedWidget = null;
+                }
             }
         }
 

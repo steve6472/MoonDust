@@ -6,14 +6,19 @@ import steve6472.core.registry.Key;
 import steve6472.moondust.ComponentRedirect;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.core.Mergeable;
-import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
+import steve6472.moondust.widget.component.flag.Clickable;
+import steve6472.moondust.widget.component.flag.Enabled;
+import steve6472.moondust.widget.component.flag.Focusable;
+import steve6472.moondust.widget.component.flag.Visible;
 import steve6472.moondust.widget.component.position.Position;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 /**
@@ -159,6 +164,26 @@ public class Widget implements WidgetComponentGetter
         });
     }
 
+    public <T extends UIEvent> void handleEvents(Class<T> eventType, Predicate<T> test)
+    {
+        getEvents(eventType).forEach(e ->
+        {
+            @SuppressWarnings("unchecked") UIEventCall<T> uiEventCall = (UIEventCall<T>) MoonDustRegistries.EVENT_CALLS.get(e.call());
+
+            if (uiEventCall != null)
+            {
+                T event = eventType.cast(e.event());
+                if (test.test(event))
+                {
+                    uiEventCall.call(this, event);
+                }
+            } else
+            {
+                LOGGER.warning("No event call found for " + e.call());
+            }
+        });
+    }
+
     /*
      * Required components shorthands
      */
@@ -213,6 +238,7 @@ public class Widget implements WidgetComponentGetter
     public void setEnabled(boolean enabled)
     {
         addComponent(enabled ? Enabled.YES : Enabled.NO);
+        handleEvents(OnEnableStateChange.class, event -> event.enabled().test(enabled));
     }
 
     public void setClickable(boolean clickable)

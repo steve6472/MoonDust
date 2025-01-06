@@ -1,11 +1,10 @@
-package steve6472.moondust.widget.blueprint.generic;
+package steve6472.moondust.widget.blueprint.flag;
 
 import com.mojang.serialization.Codec;
 import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.core.blueprint.Blueprint;
-import steve6472.moondust.widget.component.Clickable;
-import steve6472.moondust.widget.component.Enabled;
+import steve6472.moondust.widget.component.flag.Clickable;
 
 import java.util.List;
 
