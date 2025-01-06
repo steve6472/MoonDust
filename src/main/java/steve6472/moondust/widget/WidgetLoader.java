@@ -56,7 +56,7 @@ public class WidgetLoader
 
     public static BlueprintFactory createWidgetFactory(Map<BlueprintEntry<?>, Object> map, boolean includeDefault, Key key)
     {
-        List<Blueprint> blueprints = new ArrayList<>(map.size());
+        Map<Key, Blueprint> blueprints = new LinkedHashMap<>(map.size());
 
         for (BlueprintEntry<?> blueprintEntry : map.keySet())
         {
@@ -67,7 +67,7 @@ public class WidgetLoader
                 throw new RuntimeException("Not instance of Blueprint!");
             }
 
-            blueprints.add(blueprint);
+            blueprints.put(blueprintEntry.key(), blueprint);
         }
 
         if (includeDefault)
@@ -76,7 +76,7 @@ public class WidgetLoader
             {
                 if (!map.containsKey(genericBlueprint.entry()))
                 {
-                    blueprints.add(genericBlueprint.defaultValue());
+                    blueprints.put(genericBlueprint.entry().key(), genericBlueprint.defaultValue());
                 } else
                 {
                     Object current = map.get(genericBlueprint.entry());
@@ -91,13 +91,14 @@ public class WidgetLoader
         ChildrenBlueprint children = (ChildrenBlueprint) map.get(WidgetBlueprints.CHILDREN);
         validateChildren(children, blueprints);
 
+        // TODO: this can override components from widget reference, is this correct ? (I don't think it should be called from child)
         fillSpecialDefaults(blueprints, key);
 
         return new BlueprintFactory(key, blueprints);
     }
 
     // TODO: add special defaults/verification in a bit more expandable way
-    private static void fillSpecialDefaults(Collection<Blueprint> blueprints, Key key)
+    private static void fillSpecialDefaults(Map<Key, Blueprint> blueprints, Key key)
     {
         // Add sprite_size if it is not defined, uses size size if defined, otherwise nothing is added
         find(blueprints, SpriteSizeBlueprint.class).ifPresentOrElse(spriteSize -> {
@@ -107,7 +108,7 @@ public class WidgetLoader
             });
         }, () -> {
             find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
-                blueprints.add(new SpriteSizeBlueprint(new Vector2i(bounds.bounds())));
+                blueprints.put(SpriteSizeBlueprint.KEY, new SpriteSizeBlueprint(new Vector2i(bounds.bounds())));
             });
         });
 
@@ -125,7 +126,7 @@ public class WidgetLoader
             find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
                 find(blueprints, ClickableBlueprint.class).ifPresent(clickable -> {
                     if (clickable.state() == Clickable.YES)
-                        blueprints.add(new ClickboxSizeBlueprint(new Vector2i(bounds.bounds())));
+                        blueprints.put(ClickboxSizeBlueprint.KEY, new ClickboxSizeBlueprint(new Vector2i(bounds.bounds())));
                 });
             });
         });
@@ -143,7 +144,7 @@ public class WidgetLoader
     // Position is checked separately due to being typed and different layouts requiring different position types
     private static final Collection<Class<? extends Blueprint>> REQUIRED_CHILDREN = Set.of(WidgetReferenceBlueprint.class, NameBlueprint.class);
 
-    private static void validateChildren(ChildrenBlueprint children, List<Blueprint> widget)
+    private static void validateChildren(ChildrenBlueprint children, Map<Key, Blueprint> widget)
     {
         if (children == null)
             return;
@@ -155,9 +156,9 @@ public class WidgetLoader
 
         for (BlueprintFactory child : children.children())
         {
-            Collection<Blueprint> blueprints = child.getBlueprints();
-            Collection<Blueprint> collectRequired = blueprints.stream().filter(b -> REQUIRED_CHILDREN.contains(b.getClass())).collect(Collectors.toSet());
-            String name = blueprints.stream().filter(a -> a instanceof NameBlueprint).map(b -> ((NameBlueprint) b).value()).findFirst().orElse("<name component missing>");
+            Map<Key, Blueprint> blueprints = child.blueprints();
+            Collection<Blueprint> collectRequired = blueprints.values().stream().filter(b -> REQUIRED_CHILDREN.contains(b.getClass())).collect(Collectors.toSet());
+            String name = blueprints.values().stream().filter(a -> a instanceof NameBlueprint).map(b -> ((NameBlueprint) b).value()).findFirst().orElse("<name component missing>");
 
             if (collectRequired.size() != REQUIRED_CHILDREN.size())
             {
@@ -179,10 +180,11 @@ public class WidgetLoader
     /// Util function to shorten code to\
     /// Finds first type in a list\
     /// Returns optional
-    private static <T extends Blueprint> Optional<T> find(Collection<Blueprint> list, Class<T> type)
+    private static <T extends Blueprint> Optional<T> find(Map<Key, Blueprint> list, Class<T> type)
     {
         //noinspection unchecked
         return list
+            .values()
             .stream()
             .filter(a ->
             {

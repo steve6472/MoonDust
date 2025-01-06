@@ -116,30 +116,6 @@ public interface MoonDustEventCalls
     {
         Logger LOGGER = Log.getLogger(RadioButton.class);
 
-        interface Style
-        {
-            interface Shadow
-            {
-                Key HOVER = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/shadow/hover");
-                Key NORMAL = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/shadow/normal");
-            }
-
-            Key HOVER = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/hover");
-            Key NORMAL = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/normal");
-        }
-
-        boolean SHADOW = false;
-
-        static void replaceStyle(Widget widget, Key styleKey)
-        {
-            widget.getChild("label").ifPresent(child -> {
-                child.getComponent(MDTextLine.class).ifPresent(mdLine -> {
-                    UITextLine line = mdLine.line();
-                    child.addComponent(new MDTextLine(new UITextLine(line.text(), line.size(), FlareRegistries.FONT_STYLE.get(styleKey), line.anchor()), mdLine.offset()));
-                });
-            });
-        }
-
         static String pickSprite(boolean enabled, boolean checked)
         {
             if (checked)
@@ -319,6 +295,45 @@ public interface MoonDustEventCalls
         });
     }
 
+    interface Checkbox
+    {
+        Logger LOGGER = Log.getLogger(Checkbox.class);
+        Key CHECKED = Key.withNamespace("checkbox", "checked");
+
+        static String pickSprite(boolean enabled, boolean checked)
+        {
+            if (checked)
+                return enabled ? "checked" : "checked_disabled";
+            else
+                return enabled ? "unchecked" : "unchecked_disabled";
+        }
+
+        UIEventCall<OnMouseRelease> MOUSE_RELEASE = create(key("checkbox/release"), (widget, event) -> {
+            widget.getComponents(CurrentSprite.class).ifPresent(result -> {
+                CurrentSprite currentSprite = result.comp1();
+
+                // Toggle
+                int checked = widget.customData().getInt(CHECKED);
+                checked = checked == 1 ? 0 : 1;
+                widget.customData().putInt(CHECKED, checked);
+
+                currentSprite.sprite = pickSprite(true, checked == 1);
+            });
+        });
+
+        UIEventCall<OnInit> INIT = create(key("checkbox/init"), (widget, _) -> {
+            widget.getChild("label").ifPresent(child -> {
+                child.getComponent(MDTextLine.class).ifPresent(mdLine -> {
+                    UITextLine line = mdLine.line();
+                    CustomData customData = widget.customData();
+                    String label = customData.getString(Key.withNamespace("checkbox", "label"));
+                    if (label == null) return;
+                    child.addComponent(new MDTextLine(new UITextLine(label, line.size(), line.style(), line.anchor()), mdLine.offset()));
+                });
+            });
+        });
+    }
+
     private static <T extends UIEvent> UIEventCall<T> create(Key key, UIEventCall<T> eventCall)
     {
         MoonDustRegistries.EVENT_CALLS.put(key, eventCall);
@@ -336,6 +351,7 @@ public interface MoonDustEventCalls
         init(RadioButton.MOUSE_RELEASE);
         init(Mouse.RENDER);
         init(Spinner.RENDER);
+        init(Checkbox.INIT);
     }
 
     private static void init(Object ignored)

@@ -4,8 +4,9 @@ import steve6472.core.registry.Key;
 import steve6472.core.registry.Keyable;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -15,10 +16,10 @@ import java.util.function.Function;
  */
 public class BlueprintFactory implements Keyable
 {
-    private final List<Blueprint> blueprints;
+    private final Map<Key, Blueprint> blueprints;
     private final Key key;
 
-    public BlueprintFactory(Key key, List<Blueprint> blueprints)
+    public BlueprintFactory(Key key, Map<Key, Blueprint> blueprints)
     {
         this.key = key;
         this.blueprints = blueprints;
@@ -27,13 +28,13 @@ public class BlueprintFactory implements Keyable
     public List<Object> createComponents()
     {
         List<Object> components = new ArrayList<>(blueprints.size());
-        blueprints.forEach(blueprint -> components.addAll(blueprint.createComponents()));
+        blueprints.values().forEach(blueprint -> components.addAll(blueprint.createComponents()));
         return components;
     }
 
-    public Collection<Blueprint> getBlueprints()
+    public Map<Key, Blueprint> blueprints()
     {
-        return List.copyOf(blueprints);
+        return new LinkedHashMap<>(blueprints);
     }
 
     public <T> T createObject(Function<List<Object>, T> constructor)

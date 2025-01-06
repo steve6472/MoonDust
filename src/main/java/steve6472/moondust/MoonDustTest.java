@@ -7,6 +7,7 @@ import steve6472.flare.core.FlareApp;
 import steve6472.flare.core.FrameInfo;
 import steve6472.flare.input.KeybindUpdater;
 import steve6472.flare.render.UIFontRender;
+import steve6472.flare.render.UILineRender;
 import steve6472.flare.render.UIRenderSystem;
 import steve6472.moondust.widget.Panel;
 
@@ -55,6 +56,7 @@ public class MoonDustTest extends FlareApp
     {
         addRenderSystem(new UIRenderSystem(masterRenderer(), new MoonDustUIRender(this), 256f));
         addRenderSystem(new UIFontRender(masterRenderer(), new MoonDustUIFontRender()));
+        addRenderSystem(new UILineRender(masterRenderer(), new DebugUILines()));
     }
 
     @Override

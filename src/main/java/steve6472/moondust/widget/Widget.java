@@ -5,6 +5,8 @@ import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.moondust.ComponentRedirect;
 import steve6472.moondust.MoonDustRegistries;
+import steve6472.moondust.core.Mergeable;
+import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 import steve6472.moondust.widget.component.position.Position;
@@ -24,7 +26,7 @@ public class Widget implements WidgetComponentGetter
     private static final Logger LOGGER = Log.getLogger(Widget.class);
 
     private final Map<Class<?>, Object> components = new HashMap<>();
-    private final Map<String, Widget> children = new HashMap<>();
+    private final Map<String, Widget> children = new LinkedHashMap<>();
     private final Widget parent;
 
     private final InternalStates internalStates;
@@ -42,16 +44,36 @@ public class Widget implements WidgetComponentGetter
             addComponent(component);
         }
 
+        Object mergeOptions_ = components.remove(MergeOptions.class);
         Object remove = components.remove(WidgetReference.class);
         if (remove instanceof WidgetReference ref)
         {
+            // Needs to be ternary so it is final
+            MergeOptions mergeOptions = (mergeOptions_ instanceof MergeOptions) ? (MergeOptions) mergeOptions_ : MergeOptions.DEFAULT;
+
             BlueprintFactory widgetItself = MoonDustRegistries.WIDGET_FACTORY.get(ref.reference());
             Objects.requireNonNull(widgetItself);
-            for (Object component : widgetItself.createComponents())
+
+            widgetItself.blueprints().forEach((key, prnt) ->
             {
-                if (!components.containsKey(component.getClass()))
-                    addComponent(component);
-            }
+                boolean shouldMerge = mergeOptions.shouldMerge(key);
+                for (Object component : prnt.createComponents())
+                {
+                    if (shouldMerge)
+                    {
+                        if (component instanceof Mergeable<?>)
+                        {
+                            addComponent(component);
+                        } else if (!components.containsKey(component.getClass()))
+                        {
+                            addComponent(component);
+                        }
+                    } else
+                    {
+                        replaceComponent(component);
+                    }
+                }
+            });
         }
 
         remove = components.remove(Children.class);
@@ -121,11 +143,6 @@ public class Widget implements WidgetComponentGetter
         return children.remove(name) != null;
     }
 
-    public <T> void addComponent(T component)
-    {
-        this.components.put(component.getClass(), component);
-    }
-
     public <T extends UIEvent> void handleEvents(Class<T> eventType)
     {
         getEvents(eventType).forEach(e ->
@@ -170,22 +187,22 @@ public class Widget implements WidgetComponentGetter
 
     public boolean isVisible()
     {
-        return getComponent(Visible.class).orElseThrow().flag();
+        return getComponent(Visible.class).orElseThrow(() -> new RuntimeException("Visible component not found!")).flag();
     }
 
     public boolean isEnabled()
     {
-        return getComponent(Enabled.class).orElseThrow().flag();
+        return getComponent(Enabled.class).orElseThrow(() -> new RuntimeException("Enabled component not found!")).flag();
     }
 
     public boolean isClickable()
     {
-        return getComponent(Clickable.class).orElseThrow().flag();
+        return getComponent(Clickable.class).orElseThrow(() -> new RuntimeException("Clickable component not found!")).flag();
     }
 
     public boolean isFocusable()
     {
-        return getComponent(Focusable.class).orElseThrow().flag();
+        return getComponent(Focusable.class).orElseThrow(() -> new RuntimeException("Focusable component not found!")).flag();
     }
 
     public void setVisible(boolean visible)
@@ -270,6 +287,32 @@ public class Widget implements WidgetComponentGetter
 
         //noinspection unchecked
         return Optional.ofNullable((T) components.get(type));
+    }
+
+    /// Does NOT merge components
+    public <T> void replaceComponent(T component)
+    {
+        removeComponent(component.getClass());
+        addComponent(component);
+    }
+
+    /// Can merge components
+    public <T> void addComponent(T component)
+    {
+        if (component instanceof Mergeable<?> mergable)
+        {
+            Optional<?> existing = getComponent(component.getClass());
+
+            existing.ifPresentOrElse(comp ->
+            {
+                //noinspection unchecked
+                this.components.put(component.getClass(), ((Mergeable<T>) mergable).merge(component, (T) comp));
+            }, () -> this.components.put(component.getClass(), component));
+
+        } else
+        {
+            this.components.put(component.getClass(), component);
+        }
     }
 
     public <T> boolean removeComponent(Class<T> type)

@@ -27,7 +27,7 @@
             focused_sprite: "moondust:generic_dark_pixel/arrow/up_focus",
             position: {
                 type: "anchored",
-                anchor: "right"
+                anchor: "top_left"
             },
 
             overrides: {
@@ -84,11 +84,11 @@
         {
             widget: "moondust:spinner_label",
             name: "label",
-            bounds: [100, 8],
+            bounds: [100, 9],
             position: {
                 type: "anchored",
                 anchor: "left",
-                offset: [11, 1]
+                offset: [6, 0]
             }
         }
     ]

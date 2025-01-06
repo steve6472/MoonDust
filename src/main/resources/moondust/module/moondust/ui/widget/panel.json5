@@ -21,6 +21,15 @@
 
     children: [
         {
+            widget: "moondust:debug/outlines",
+            name: "debug_outlines",
+            position: {
+                type: "anchored",
+                anchor: "bottom_left",
+                offset: [1, 0]
+            }
+        },
+        {
             widget: "moondust:empty",
             name: "debug_label",
             position: {
@@ -242,7 +251,19 @@
                 pressed: "moondust:generic_dark_pixel/button/close_red/pressed"
             },
 
-            overrides: {
+            events: [
+                {
+                    call: "moondust:button/exit_app",
+                    event: { type: "on_mouse_release" },
+                    condition: {
+                        states: {
+                            direct_hover: true
+                        }
+                    }
+                }
+            ]
+
+            /*overrides: {
                 events: {
                     add: [
                         {
@@ -256,7 +277,7 @@
                         }
                     ]
                 }
-            }
+            }*/
         },
         {
             widget: "moondust:spinner_buttons_y",
@@ -264,12 +285,12 @@
             position: {
                 type: "relative",
                 parent: "test_button",
-                offset: [0, 40]
+                offset: [0, 34]
             },
-            bounds: [10, 10],
+            bounds: [5, 9],
             data: {
                 strings: {
-                    "spinner:label": "val: %value% (%min% - %max%)",
+                    "spinner:label": "val: %value% (%min%  %max%)",
                     "spinner:number_format": "%.0f"
                 },
                 floats: {

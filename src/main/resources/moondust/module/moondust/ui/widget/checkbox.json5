@@ -1,0 +1,44 @@
+{
+    sprites: {
+        unchecked: "moondust:generic_dark_pixel/checkbox/icon/normal/unchecked",
+        checked: "moondust:generic_dark_pixel/checkbox/icon/normal/checked",
+        unchecked_disabled: "moondust:generic_dark_pixel/checkbox/icon/normal/unchecked_disabled",
+        checked_disabled: "moondust:generic_dark_pixel/checkbox/icon/normal/checked_disabled"
+    },
+    current_sprite: "unchecked",
+
+    focusable: true,
+    focused_sprite: "moondust:generic_dark_pixel/generic/focus/square",
+
+    clickable: true,
+    bounds: [64, 7],
+    sprite_size: [7, 7],
+    events: [
+        {
+            call: "moondust:checkbox/init",
+            event: { type: "on_init" }
+        },
+        {
+            call: "moondust:checkbox/release",
+            event: {type: "on_mouse_release"},
+            condition: {
+                states: {
+                    direct_hover: true
+                }
+            }
+        }
+    ],
+
+    children: [
+        {
+            widget: "moondust:radio_button_label",
+            name: "label",
+            position: {
+                type: "anchored",
+                anchor: "left",
+                offset: [8, 0]
+            },
+            bounds: [56, 7]
+        }
+    ]
+}
