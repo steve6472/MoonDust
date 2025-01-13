@@ -9,6 +9,7 @@ import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.widget.blueprint.event.condition.EventCondition;
 import steve6472.moondust.widget.blueprint.event.condition.States;
 import steve6472.moondust.widget.blueprint.event.condition.Tristate;
+import steve6472.moondust.widget.component.Styles;
 import steve6472.moondust.widget.component.flag.Clickable;
 import steve6472.moondust.widget.component.CustomData;
 import steve6472.moondust.widget.component.event.OnMouseRelease;
@@ -16,7 +17,9 @@ import steve6472.moondust.widget.component.event.UIEventCallEntry;
 import steve6472.moondust.widget.component.event.UIEvents;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by steve6472
@@ -38,14 +41,29 @@ public record ButtonBlueprint(Key pressCall, String label, boolean labelShadow) 
     @Override
     public List<?> createComponents()
     {
+        List<Object> components = new ArrayList<>();
         List<UIEventCallEntry> events = new ArrayList<>();
         if (!pressCall.equals(NO_CALL))
+        {
             events.add(new UIEventCallEntry(pressCall, new OnMouseRelease(Tristate.IGNORE), new EventCondition(CONDITION_STATES)));
+            components.add(new UIEvents(events));
+        }
 
-        CustomData data = new CustomData();
-        data.putFlag(BuiltinEventCalls.Keys.GENERIC_LABEL_SHADOW, labelShadow);
-        if (!label.isBlank()) data.putString(BuiltinEventCalls.Keys.GENERIC_LABEL, label);
+        if (!label.isBlank())
+        {
+            CustomData data = new CustomData();
+            data.putString(BuiltinEventCalls.Keys.GENERIC_LABEL, label);
+            components.add(data);
 
-        return List.of(new UIEvents(events), Clickable.YES, data);
+            Map<String, Key> stylesMap = new HashMap<>();
+            stylesMap.put(BuiltinEventCalls.ID.STYLE_NORMAL, labelShadow ? BuiltinEventCalls.Keys.BUTTON_SHADOW_NORMAL : BuiltinEventCalls.Keys.BUTTON_NORMAL);
+            stylesMap.put(BuiltinEventCalls.ID.STYLE_DISABLED, labelShadow ? BuiltinEventCalls.Keys.BUTTON_SHADOW_DISABLED : BuiltinEventCalls.Keys.BUTTON_DISABLED);
+            stylesMap.put(BuiltinEventCalls.ID.STYLE_HOVER, labelShadow ? BuiltinEventCalls.Keys.BUTTON_SHADOW_HOVER : BuiltinEventCalls.Keys.BUTTON_HOVER);
+            Styles styles = new Styles(stylesMap);
+            components.add(styles);
+        }
+
+        components.add(Clickable.YES);
+        return components;
     }
 }

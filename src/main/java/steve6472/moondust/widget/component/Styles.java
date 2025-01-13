@@ -11,18 +11,18 @@ import java.util.Map;
  * Date: 12/1/2024
  * Project: MoonDust <br>
  */
-public record Sprites(Map<String, Key> sprites) implements Mergeable<Sprites>
+public record Styles(Map<String, Key> styles) implements Mergeable<Styles>
 {
     @Override
-    public Sprites merge(Sprites left, Sprites right)
+    public Styles merge(Styles left, Styles right)
     {
-        Map<String, Key> map = new HashMap<>(left.sprites);
-        map.putAll(right.sprites);
-        return new Sprites(map);
+        Map<String, Key> map = new HashMap<>(left.styles);
+        map.putAll(right.styles);
+        return new Styles(map);
     }
 
     public Key get(String id)
     {
-        return sprites.get(id);
+        return styles.get(id);
     }
 }

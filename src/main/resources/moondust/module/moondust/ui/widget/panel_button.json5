@@ -1,0 +1,47 @@
+{
+//    tick_call: "moondust:panel/tick_test",
+
+    position: {
+        type: "absolute",
+        pos: [0, 0]
+    },
+
+    bounds: [0, 0],
+
+    children: [
+        {
+            // The widget type, required
+            widget: "moondust:button",
+
+            // Non-namespaced name, required
+            name: "test_button",
+            bounds: [32, 32],
+            clickable: true,
+
+            button: {
+                on_press: "moondust:button/test_press",
+                label: "Test Button",
+                label_shadow: false
+            },
+
+            styles: {
+                disabled: "flare:arial"
+            },
+
+            position: {
+                type: "absolute",
+                pos: [30, 10]
+            },
+
+            events: [
+                {
+                    call: "moondust:button/random_toggle_enabled",
+                    event: {
+                        type: "on_random_tick",
+                        probability: 0.0001
+                    }
+                }
+            ]
+        }
+    ]
+}

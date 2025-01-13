@@ -24,8 +24,6 @@ import java.util.List;
  */
 public class MoonDustUIFontRender extends UIFontRenderImpl
 {
-    private static final Key DEFAULT_FONT = Key.withNamespace(MoonDustConstants.NAMESPACE, "tiny_pixie2");
-
     public MoonDustUIFontRender()
     {
         super(256f);

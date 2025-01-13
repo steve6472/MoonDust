@@ -60,7 +60,10 @@
                 label_shadow: false
             },
 
-            // Widget components on panel
+            styles: {
+                disabled: "flare:arial"
+            },
+
             position: {
                 type: "absolute",
                 pos: [30, 10]
@@ -69,7 +72,11 @@
             events: [
                 {
                     call: "moondust:button/random_toggle_enabled",
-                    event: { type: "on_random_tick", probability: 0.0001 } }
+                    event: {
+                        type: "on_random_tick",
+                        probability: 0.0001
+                    }
+                }
             ]
         },
         {
@@ -233,6 +240,10 @@
             bounds: [13, 13],
             clickable: true,
 
+            button: {
+                on_press: "moondust:button/exit_app"
+            },
+
             // Widget components on panel
             position: {
                 type: "anchored",
@@ -243,14 +254,10 @@
             sprites: {
                 normal: "moondust:generic_dark_pixel/button/close_red/normal",
                 disabled: "moondust:generic_dark_pixel/button/close_red/disabled",
-                hovered: "moondust:generic_dark_pixel/button/close_red/hover",
+                hover: "moondust:generic_dark_pixel/button/close_red/hover",
                 pressed: "moondust:generic_dark_pixel/button/close_red/pressed"
-            },
-
-            button: {
-                on_press: "moondust:button/exit_app"
             }
-        },
+        }/*,
         {
             widget: "moondust:spinner_buttons_y",
             name: "test_spinner",
@@ -271,6 +278,6 @@
                     "spinner:value": 6
                 }
             }
-        }
+        }*/
     ]
 }

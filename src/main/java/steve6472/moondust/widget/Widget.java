@@ -6,6 +6,7 @@ import steve6472.core.registry.Key;
 import steve6472.moondust.ComponentRedirect;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.core.Mergeable;
+import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 import steve6472.moondust.widget.component.flag.Clickable;
@@ -18,7 +19,6 @@ import steve6472.moondust.core.blueprint.BlueprintFactory;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 /**
@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  */
 public class Widget implements WidgetComponentGetter
 {
+    public static boolean LOG_WIDGET_CREATION = false;
     private static final Logger LOGGER = Log.getLogger(Widget.class);
 
     private final Map<Class<?>, Object> components = new HashMap<>();
@@ -44,55 +45,45 @@ public class Widget implements WidgetComponentGetter
         // Create InternalStates, a super-default components
         addComponent(internalStates = new InternalStates());
 
-        for (Object component : blueprint.createComponents())
+        Object temp = blueprint.blueprints().get(WidgetBlueprints.WIDGET.key());
+        if (temp instanceof Blueprint bp)
+            temp = bp.createComponents().getFirst();
+        if (temp instanceof WidgetReference ref)
         {
-            addComponent(component);
-        }
-
-        Object mergeOptions_ = components.remove(MergeOptions.class);
-        Object remove = components.remove(WidgetReference.class);
-        if (remove instanceof WidgetReference ref)
-        {
-            // Needs to be ternary so it is final
-            MergeOptions mergeOptions = (mergeOptions_ instanceof MergeOptions) ? (MergeOptions) mergeOptions_ : MergeOptions.DEFAULT;
-
             BlueprintFactory widgetItself = MoonDustRegistries.WIDGET_FACTORY.get(ref.reference());
             Objects.requireNonNull(widgetItself);
 
-            widgetItself.blueprints().forEach((key, prnt) ->
+            widgetItself.blueprints().forEach((key, bp) ->
             {
-                boolean shouldMerge = mergeOptions.shouldMerge(key);
-                for (Object component : prnt.createComponents())
+                if (LOG_WIDGET_CREATION)
+                    LOGGER.fine("Creating from Widget: " + key);
+                for (Object component : bp.createComponents())
                 {
-                    if (shouldMerge)
-                    {
-                        if (component instanceof Mergeable<?>)
-                        {
-                            addComponent(component);
-                        } else if (!components.containsKey(component.getClass()))
-                        {
-                            addComponent(component);
-                        }
-                    } else
-                    {
-                        replaceComponent(component);
-                    }
+                    addComponent(component);
                 }
             });
         }
 
-        remove = components.remove(Children.class);
-        if (remove instanceof Children cb)
+        // Create the actual components
+        blueprint.blueprints().forEach((key, prnt) ->
         {
-            for (BlueprintFactory child : cb.children())
+            if (WidgetBlueprints.WIDGET.key().equals(key))
             {
-                Widget childWidget = Widget.withParent(child, this);
-                addChild(childWidget);
+                if (LOG_WIDGET_CREATION)
+                    LOGGER.finer("Creating from Blueprint: " + key + " (ignored!)");
+            } else
+            {
+                if (LOG_WIDGET_CREATION)
+                    LOGGER.finer("Creating from Blueprint: " + key);
+                for (Object component : prnt.createComponents())
+                {
+                    addComponent(component);
+                }
             }
-        }
+        });
 
-        remove = components.remove(Overrides.class);
-        if (remove instanceof Overrides overrides)
+        temp = components.remove(Overrides.class);
+        if (temp instanceof Overrides overrides)
         {
             //noinspection rawtypes
             for (BlueprintOverride override : overrides.overrides())
@@ -112,6 +103,17 @@ public class Widget implements WidgetComponentGetter
 
         // If custom data was not created via blueprints, add a default empty one
         customData = (CustomData) components.computeIfAbsent(CustomData.class, _ -> new CustomData());
+
+        if (LOG_WIDGET_CREATION)
+            LOGGER.info("Widget: " + getPath());
+
+        getComponent(Children.class).ifPresent(cb -> {
+            for (BlueprintFactory child : cb.children())
+            {
+                Widget childWidget = Widget.withParent(child, this);
+                addChild(childWidget);
+            }
+        });
 
         handleEvents(OnInit.class);
     }
@@ -258,6 +260,11 @@ public class Widget implements WidgetComponentGetter
         bounds.height = height;
     }
 
+    public String getName()
+    {
+        return getComponent(Name.class).orElse(new Name("-unnamed-")).value();
+    }
+
     /*
      * Getters
      */
@@ -281,8 +288,7 @@ public class Widget implements WidgetComponentGetter
         if (parent == null)
             return "-root-";
 
-        String name = getComponent(Name.class).orElse(new Name("-unnamed-")).value();
-        return parent.getPath() + "." + name;
+        return parent.getPath() + "." + getName();
     }
 
     public Optional<Widget> getChild(String name)
@@ -332,7 +338,7 @@ public class Widget implements WidgetComponentGetter
             existing.ifPresentOrElse(comp ->
             {
                 //noinspection unchecked
-                this.components.put(component.getClass(), ((Mergeable<T>) mergable).merge(component, (T) comp));
+                this.components.put(component.getClass(), ((Mergeable<T>) mergable).merge((T) comp, component));
             }, () -> this.components.put(component.getClass(), component));
 
         } else
@@ -380,6 +386,6 @@ public class Widget implements WidgetComponentGetter
         Map<String, Object> mapped = new HashMap<>();
         components.forEach((key, value) -> mapped.put(key.getSimpleName(), value));
 
-        return "Widget{" + "parent=" + (parent == null ? "none" : parent.getComponent(Name.class).orElse(new Name("-unnamed-")).value()) + ", components=" + mapped + ", children=" + children + '}';
+        return "Widget{" + "parent=" + (parent == null ? "none" : parent.getName()) + ", components=" + mapped + ", children=" + children + '}';
     }
 }

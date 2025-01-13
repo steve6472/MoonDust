@@ -50,6 +50,7 @@ public class WidgetBlueprints
     public static final BlueprintEntry<FocusedSpriteBlueprint> FOCUSED_SPRITE = register(FocusedSpriteBlueprint.KEY, FocusedSpriteBlueprint.CODEC);
     public static final BlueprintEntry<TextLineBlueprint> TEXT_LINE = register(TextLineBlueprint.KEY, TextLineBlueprint.CODEC);
     public static final BlueprintEntry<ZIndexBlueprint> Z_INDEX = register(ZIndexBlueprint.KEY, ZIndexBlueprint.CODEC);
+    public static final BlueprintEntry<StylesBlueprint> STYLES = register(StylesBlueprint.KEY, StylesBlueprint.CODEC);
 
     // Clickbox
     public static final BlueprintEntry<ClickboxSizeBlueprint> CLICKBOX_SIZE = register(ClickboxSizeBlueprint.KEY, ClickboxSizeBlueprint.CODEC);

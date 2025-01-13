@@ -2,10 +2,16 @@
     sprites: {
         normal: "moondust:generic_dark_pixel/button/generic/round/normal",
         disabled: "moondust:generic_dark_pixel/button/generic/round/disabled",
-        hovered: "moondust:generic_dark_pixel/button/generic/round/hover",
+        hover: "moondust:generic_dark_pixel/button/generic/round/hover",
         pressed: "moondust:generic_dark_pixel/button/generic/round/pressed"
     },
     current_sprite: "normal",
+
+    styles: {
+        normal: "moondust:button/normal",
+        disabled: "moondust:button/disabled",
+        hover: "moondust:button/hover"
+    },
 
     focusable: true,
     focused_sprite: "moondust:generic_dark_pixel/generic/focus/sharper",
@@ -13,28 +19,35 @@
     clickable: true,
     bounds: [8, 8],
     events: [
-        { call: "moondust:init/button",         event: { type: "on_init" } },
-        { call: "moondust:icon/press",          event: { type: "on_mouse_press" } },
-        { call: "moondust:icon/release",        event: { type: "on_mouse_release" } },
-        { call: "moondust:icon/hover/on",       event: { type: "on_mouse_enter" } },
-        { call: "moondust:icon/hover/off",      event: { type: "on_mouse_leave" } },
-        { call: "moondust:icon/change_enabled", event: { type: "on_enable_change" } },
-        { call: "moondust:label/hover/on",      event: { type: "on_mouse_enter" } },
-        { call: "moondust:label/hover/off",     event: { type: "on_mouse_leave" } },
-        { call: "moondust:label/change_enabled",event: { type: "on_enable_change" } }
+        { call: "moondust:icon/press",           event: { type: "on_mouse_press" } },
+        { call: "moondust:icon/release",         event: { type: "on_mouse_release" } },
+        { call: "moondust:icon/hover/on",        event: { type: "on_mouse_enter" } },
+        { call: "moondust:icon/hover/off",       event: { type: "on_mouse_leave" } },
+        { call: "moondust:icon/change_enabled",  event: { type: "on_enable_change" } },
+        { call: "moondust:label/init",           event: { type: "on_init" } },
+        { call: "moondust:label/hover/on",       event: { type: "on_mouse_enter" } },
+        { call: "moondust:label/hover/off",      event: { type: "on_mouse_leave" } },
+        { call: "moondust:label/change_enabled", event: { type: "on_enable_change" } }
     ],
 
     children: [
         {
             // Gets removed in init/button if label is empty
-            widget: "moondust:button_label",
+            widget: "moondust:empty",
             name: "label",
             position: {
                 type: "anchored",
                 anchor: "center",
                 offset: [0, 0]
             },
-            bounds: [0, 0]
+            bounds: [0, 0],
+            text_line: {
+                text: {
+                    text: "",
+                    style: "moondust:button/normal",
+                    anchor: "center"
+                }
+            }
         }
     ]
 }
