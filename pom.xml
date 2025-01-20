@@ -12,6 +12,8 @@
         <maven.compiler.source>23</maven.compiler.source>
         <maven.compiler.target>23</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <luau.version>dev</luau.version>
+        <luau.platform>windows-x64</luau.platform>
     </properties>
 
     <dependencies>
@@ -19,6 +21,16 @@
             <groupId>steve6472</groupId>
             <artifactId>Flare</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.hollowcube</groupId>
+            <artifactId>luau</artifactId>
+            <version>${luau.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.hollowcube</groupId>
+            <artifactId>luau-natives-${luau.platform}</artifactId>
+            <version>${luau.version}</version>
         </dependency>
     </dependencies>
 

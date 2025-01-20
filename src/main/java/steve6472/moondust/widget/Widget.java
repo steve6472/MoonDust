@@ -152,18 +152,7 @@ public class Widget implements WidgetComponentGetter
 
     public <T extends UIEvent> void handleEvents(Class<T> eventType)
     {
-        getEvents(eventType).forEach(e ->
-        {
-            @SuppressWarnings("unchecked") UIEventCall<T> uiEventCall = (UIEventCall<T>) MoonDustRegistries.EVENT_CALLS.get(e.call());
-
-            if (uiEventCall != null)
-            {
-                uiEventCall.call(this, eventType.cast(e.event()));
-            } else
-            {
-                LOGGER.warning("No event call found for " + e.call());
-            }
-        });
+        handleEvents(eventType, _ -> true);
     }
 
     public <T extends UIEvent> void handleEvents(Class<T> eventType, Predicate<T> test)

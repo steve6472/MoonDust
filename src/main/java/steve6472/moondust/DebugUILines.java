@@ -42,8 +42,9 @@ public class DebugUILines extends UILineRenderImpl
         {
             if (spriteSize)
             {
-                widget.getComponent(SpriteSize.class).ifPresent(spriteSize ->
+                widget.getComponents(SpriteSize.class, CurrentSprite.class).ifPresent(comp ->
                 {
+                    SpriteSize spriteSize = comp.comp1();
                     Vector2i position = widget.getPosition();
                     widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
 
