@@ -1,5 +1,5 @@
 {
-    bounds: [64, 48],
+    bounds: [73, 49],
 
     children: [
         {
@@ -7,34 +7,20 @@
             name: "checkbox_bounds",
             position: {
                 type: "absolute",
-                pos: [0, 0]
-            },
-            clickable: true,
-            data: {
-                strings: {
-                    "checkbox:label": "bounds"
-                }
+                pos: [1, 1]
             },
 
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:checkbox/bounds",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        },
-                        {
-                            call: "moondust:checkbox/bounds_init",
-                            event: { type: "on_init" }
-                        }
-                    ]
+            checkbox: {
+                on_press: "moondust:checkbox/bounds",
+                label: "bounds"
+            },
+
+            events: [
+                {
+                    call: "moondust:checkbox/bounds_init",
+                    event: { type: "on_init" }
                 }
-            }
+            ]
         },
         {
             widget: "moondust:checkbox",
@@ -44,32 +30,18 @@
                 parent: "checkbox_bounds",
                 offset: [0, 8]
             },
-            clickable: true,
-            data: {
-                strings: {
-                    "checkbox:label": "sprite size"
-                }
+
+            checkbox: {
+                on_press: "moondust:checkbox/sprite_size",
+                label: "sprite size"
             },
 
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:checkbox/sprite_size",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        },
-                        {
-                            call: "moondust:checkbox/sprite_size_init",
-                            event: { type: "on_init" }
-                        }
-                    ]
+            events: [
+                {
+                    call: "moondust:checkbox/sprite_size_init",
+                    event: { type: "on_init" }
                 }
-            }
+            ]
         },
         {
             widget: "moondust:checkbox",
@@ -79,32 +51,18 @@
                 parent: "checkbox_sprite_size",
                 offset: [0, 8]
             },
-            clickable: true,
-            data: {
-                strings: {
-                    "checkbox:label": "clickbox"
-                }
+
+            checkbox: {
+                on_press: "moondust:checkbox/clickbox",
+                label: "clickbox"
             },
 
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:checkbox/clickbox",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        },
-                        {
-                            call: "moondust:checkbox/clickbox_init",
-                            event: { type: "on_init" }
-                        }
-                    ]
+            events: [
+                {
+                    call: "moondust:checkbox/clickbox_init",
+                    event: { type: "on_init" }
                 }
-            }
+            ]
         },
         {
             widget: "moondust:checkbox",
@@ -114,32 +72,18 @@
                 parent: "checkbox_clickbox",
                 offset: [0, 8]
             },
-            clickable: true,
-            data: {
-                strings: {
-                    "checkbox:label": "character"
-                }
+
+            checkbox: {
+                on_press: "moondust:checkbox/character",
+                label: "character"
             },
 
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:checkbox/character",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        },
-                        {
-                            call: "moondust:checkbox/character_init",
-                            event: { type: "on_init" }
-                        }
-                    ]
+            events: [
+                {
+                    call: "moondust:checkbox/character_init",
+                    event: { type: "on_init" }
                 }
-            }
+            ]
         },
         {
             widget: "moondust:checkbox",
@@ -149,32 +93,18 @@
                 parent: "checkbox_character",
                 offset: [0, 8]
             },
-            clickable: true,
-            data: {
-                strings: {
-                    "checkbox:label": "text line"
-                }
+
+            checkbox: {
+                on_press: "moondust:checkbox/text_line",
+                label: "text line"
             },
 
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:checkbox/text_line",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        },
-                        {
-                            call: "moondust:checkbox/text_line_init",
-                            event: { type: "on_init" }
-                        }
-                    ]
+            events: [
+                {
+                    call: "moondust:checkbox/text_line_init",
+                    event: { type: "on_init" }
                 }
-            }
+            ]
         },
         {
             widget: "moondust:checkbox",
@@ -184,32 +114,18 @@
                 parent: "checkbox_text_line",
                 offset: [0, 8]
             },
-            clickable: true,
-            data: {
-                strings: {
-                    "checkbox:label": "message"
-                }
+
+            checkbox: {
+                on_press: "moondust:checkbox/message",
+                label: "message"
             },
 
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:checkbox/message",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        },
-                        {
-                            call: "moondust:checkbox/message_init",
-                            event: { type: "on_init" }
-                        }
-                    ]
+            events: [
+                {
+                    call: "moondust:checkbox/message_init",
+                    event: { type: "on_init" }
                 }
-            }
+            ]
         }
     ]
 }

@@ -1,9 +1,13 @@
 package steve6472.moondust.widget.component;
 
+import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import org.jetbrains.annotations.ApiStatus;
 import steve6472.core.registry.Key;
 import steve6472.moondust.core.Mergeable;
+import steve6472.moondust.widget.Widget;
+import steve6472.moondust.widget.component.event.OnDataChange;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,36 +22,52 @@ public class CustomData implements Mergeable<CustomData>
     public final Object2FloatArrayMap<Key> floats = new Object2FloatArrayMap<>();
     public final Object2IntArrayMap<Key> ints = new Object2IntArrayMap<>();
     public final Map<Key, String> strings = new HashMap<>();
+    public final Object2BooleanArrayMap<Key> flags = new Object2BooleanArrayMap<>();
+
+    @ApiStatus.Internal
+    public Widget widget;
 
     public CustomData()
     {
+        floats.defaultReturnValue(0f);
         ints.defaultReturnValue(0);
+        flags.defaultReturnValue(false);
     }
 
     public void putFloat(Key key, float value)
     {
-        floats.put(key, value);
+        if (floats.put(key, value) != value)
+        {
+            if (widget != null)
+                widget.handleEvents(OnDataChange.class, event -> event.floats().contains(key));
+        }
     }
 
     public void putInt(Key key, int value)
     {
-        ints.put(key, value);
+        if (ints.put(key, value) != value)
+        {
+            if (widget != null)
+                widget.handleEvents(OnDataChange.class, event -> event.ints().contains(key));
+        }
     }
 
     public void putString(Key key, String value)
     {
-        strings.put(key, value);
+        if (!value.equals(strings.put(key, value)))
+        {
+            if (widget != null)
+                widget.handleEvents(OnDataChange.class, event -> event.strings().contains(key));
+        }
     }
 
-    /// Internally stores an int <br>
-    /// if `value` = `true`, stores 1 <br>
-    /// if `value` = `false`, removes the key (effectively storing a 0)
     public void putFlag(Key key, boolean value)
     {
-        if (!value)
-            ints.removeInt(key);
-        else
-            ints.put(key, 1);
+        if (flags.put(key, value) != value)
+        {
+            if (widget != null)
+                widget.handleEvents(OnDataChange.class, event -> event.flags().contains(key));
+        }
     }
 
     public float getFloat(Key key)
@@ -67,13 +87,7 @@ public class CustomData implements Mergeable<CustomData>
 
     public boolean getFlag(Key key)
     {
-        return ints.getInt(key) == 1;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "CustomData{" + "floats=" + floats + ", ints=" + ints + ", strings=" + strings + '}';
+        return flags.getBoolean(key);
     }
 
     @Override
@@ -86,6 +100,14 @@ public class CustomData implements Mergeable<CustomData>
         data.ints.putAll(right.ints);
         data.strings.putAll(left.strings);
         data.strings.putAll(right.strings);
+        data.flags.putAll(left.flags);
+        data.flags.putAll(right.flags);
         return data;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "CustomData{" + "floats=" + floats + ", ints=" + ints + ", strings=" + strings + ", flags=" + flags + '}';
     }
 }

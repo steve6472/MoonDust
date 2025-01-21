@@ -32,7 +32,7 @@
 
     children: [
         {
-            // Gets removed in init/button if label is empty
+            // Gets removed in label/init if label is empty
             widget: "moondust:empty",
             name: "label",
             position: {

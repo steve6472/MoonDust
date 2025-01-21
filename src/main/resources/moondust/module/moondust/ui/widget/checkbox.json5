@@ -7,38 +7,66 @@
     },
     current_sprite: "unchecked",
 
+    styles: {
+        unchecked: "moondust:button/normal",
+        checked: "moondust:button/hover",
+        disabled: "moondust:button/disabled"
+    },
+
     focusable: true,
     focused_sprite: "moondust:generic_dark_pixel/generic/focus/square",
 
     clickable: true,
-    bounds: [64, 7],
+    bounds: [7, 7],
     sprite_size: [7, 7],
+
     events: [
+        { call: "moondust:label/init",           event: { type: "on_init" } },
+        { call: "moondust:label/change_enabled", event: { type: "on_enable_change" } },
+        { call: "moondust:checkbox/init",        event: { type: "on_init" } },
+        { call: "moondust:checkbox/on_toggle",   event: { type: "on_enable_change" } },
         {
-            call: "moondust:checkbox/init",
-            event: { type: "on_init" }
+            call: "moondust:checkbox/toggle",
+            event: { type: "on_mouse_release" },
+            condition: { states: { direct_hover: true } }
         },
         {
-            call: "moondust:checkbox/release",
-            event: {type: "on_mouse_release"},
-            condition: {
-                states: {
-                    direct_hover: true
-                }
+            call: "moondust:checkbox/on_toggle",
+            event: {
+                type: "on_data_change",
+                flags: ["moondust:checkbox/checked"]
             }
         }
     ],
 
     children: [
         {
-            widget: "moondust:radio_button_label",
+            // Gets removed in label/init if label is empty
+            widget: "moondust:empty",
             name: "label",
             position: {
                 type: "anchored",
                 anchor: "left",
-                offset: [8, 0]
+                offset: [7, 0]
             },
-            bounds: [56, 7]
+            clickable: true,
+            bounds: [64, 7],
+            text_line: {
+                text: {
+                    text: "",
+                    style: "moondust:button/normal",
+                    anchor: "top_left"
+                },
+                offset: [1, 0]
+            },
+
+            events: [
+                {
+                    call: "moondust:checkbox/toggle_parent",
+                    event: { type: "on_mouse_release" },
+                    condition: { states: { direct_hover: true } }
+                }
+            ]
         }
     ]
 }

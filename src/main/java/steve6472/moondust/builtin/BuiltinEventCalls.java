@@ -31,11 +31,11 @@ public class BuiltinEventCalls
         /*
          * Icons
          */
-        create(key("icon/hover/on"),  (Widget widget, OnMouseEnter _) -> setCurrentSprite(widget, widget.isEnabled() && !widget.internalStates().hovered ? "hover" : null));
-        create(key("icon/hover/off"), (Widget widget, OnMouseLeave _) -> setCurrentSprite(widget, widget.isEnabled() && widget.internalStates().hovered ? "normal" : null));
-        create(key("icon/press"),     (Widget widget, OnMousePress _) -> setCurrentSprite(widget, widget.isEnabled() ? "pressed" : null));
-        create(key("icon/release"), (Widget widget, OnMouseRelease _) -> setCurrentSprite(widget, widget.isEnabled() ? (widget.internalStates().hovered ? "hover" : "normal") : null));
-        create(key("icon/change_enabled"), (Widget widget, OnEnableStateChange _) -> setCurrentSprite(widget, widget.isEnabled() ? (widget.internalStates().hovered ? "hover" : "normal") : "disabled"));
+        create(key("icon/hover/on"),  (Widget widget, OnMouseEnter _) -> setCurrentSprite(widget, widget.isEnabled() && !widget.internalStates().hovered ? ID.SPRITE_HOVER : null));
+        create(key("icon/hover/off"), (Widget widget, OnMouseLeave _) -> setCurrentSprite(widget, widget.isEnabled() && widget.internalStates().hovered ? ID.SPRITE_NORMAL : null));
+        create(key("icon/press"),     (Widget widget, OnMousePress _) -> setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_PRESSED : null));
+        create(key("icon/release"), (Widget widget, OnMouseRelease _) -> setCurrentSprite(widget, widget.isEnabled() ? (widget.internalStates().hovered ? ID.SPRITE_HOVER : ID.SPRITE_NORMAL) : null));
+        create(key("icon/change_enabled"), (Widget widget, OnEnableStateChange _) -> setCurrentSprite(widget, widget.isEnabled() ? (widget.internalStates().hovered ? ID.SPRITE_HOVER : ID.SPRITE_NORMAL) : ID.SPRITE_DISABLED));
 
         /*
          * Label
@@ -58,7 +58,44 @@ public class BuiltinEventCalls
                     child.addComponent(new MDTextLine(new UITextLine(label, line.size(), line.style(), line.anchor()), mdLine.offset()));
                 });
             });
-            replaceStyle(widget, pickStyle(widget, widget.internalStates().hovered || widget.internalStates().directHover ? Tristate.TRUE : Tristate.FALSE));
+            replaceStyle(widget, pickStyle(widget, (widget.internalStates().hovered || widget.internalStates().directHover) ? Tristate.TRUE : Tristate.FALSE));
+        });
+
+        /*
+         * Checkbox
+         */
+        create(key("checkbox/toggle"), (Widget widget, OnMouseRelease _) -> {
+            if (!widget.isEnabled()) return;
+            boolean checked = widget.customData().getFlag(Keys.CHECKBOX_CHECKED);
+            // Calls checkbox/on_toggle
+            widget.customData().putFlag(Keys.CHECKBOX_CHECKED, !checked);
+        });
+
+        create(key("checkbox/toggle_parent"), (Widget widget, OnMouseRelease _) -> {
+            widget.parent().ifPresent(parent -> {
+                if (!parent.isEnabled()) return;
+                boolean checked = parent.customData().getFlag(Keys.CHECKBOX_CHECKED);
+                // Calls checkbox/on_toggle
+                parent.customData().putFlag(Keys.CHECKBOX_CHECKED, !checked);
+            });
+        });
+
+        // Handles disabling as well
+        create(key("checkbox/on_toggle"), (Widget widget, OnDataChange _) -> {
+            boolean checked = widget.customData().getFlag(Keys.CHECKBOX_CHECKED);
+            if (checked)
+                setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_CHECKED : ID.SPRITE_CHECKED_DISABLED);
+            else
+                setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_UNCHECKED : ID.SPRITE_UNCHECKED_DISBLED);
+        });
+
+        // Handles disabling as well
+        create(key("checkbox/init"), (Widget widget, OnInit _) -> {
+            boolean checked = widget.customData().getFlag(Keys.CHECKBOX_CHECKED);
+            if (checked)
+                setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_CHECKED : ID.SPRITE_CHECKED_DISABLED);
+            else
+                setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_UNCHECKED : ID.SPRITE_UNCHECKED_DISBLED);
         });
     }
 
@@ -81,6 +118,16 @@ public class BuiltinEventCalls
         String STYLE_NORMAL = "normal";
         String STYLE_DISABLED = "disabled";
         String STYLE_HOVER = "hover";
+
+        String SPRITE_NORMAL = "normal";
+        String SPRITE_DISABLED = "disabled";
+        String SPRITE_HOVER = "hover";
+        String SPRITE_PRESSED = "pressed";
+
+        String SPRITE_UNCHECKED = "unchecked";
+        String SPRITE_CHECKED = "checked";
+        String SPRITE_UNCHECKED_DISBLED = "unchecked_disabled";
+        String SPRITE_CHECKED_DISABLED = "checked_disabled";
     }
 
     public interface Keys
@@ -90,20 +137,33 @@ public class BuiltinEventCalls
          */
 
         // Data
-        Key GENERIC_LABEL = Key.withNamespace(MoonDustConstants.NAMESPACE, "generic/label");
-        Key GENERIC_LABEL_SHADOW = Key.withNamespace(MoonDustConstants.NAMESPACE, "generic/label_shadow");
+        Key GENERIC_LABEL = key("generic/label");
+        Key GENERIC_LABEL_SHADOW = key("generic/label_shadow");
 
         /*
          * Button
          */
 
         // Default styles
-        Key BUTTON_SHADOW_NORMAL = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/shadow/normal");
-        Key BUTTON_SHADOW_DISABLED = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/shadow/disabled");
-        Key BUTTON_SHADOW_HOVER = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/shadow/hover");
-        Key BUTTON_NORMAL = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/normal");
-        Key BUTTON_DISABLED = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/disabled");
-        Key BUTTON_HOVER = Key.withNamespace(MoonDustConstants.NAMESPACE, "button/hover");
+        Key BUTTON_SHADOW_NORMAL = key("button/shadow/normal");
+        Key BUTTON_SHADOW_DISABLED = key("button/shadow/disabled");
+        Key BUTTON_SHADOW_HOVER = key("button/shadow/hover");
+        Key BUTTON_NORMAL = key("button/normal");
+        Key BUTTON_DISABLED = key("button/disabled");
+        Key BUTTON_HOVER = key("button/hover");
+
+        /*
+         * Checkbox
+         */
+        Key CHECKBOX_CHECKED = key("checkbox/checked");
+
+        // Default styles
+        Key CHECKBOX_SHADOW_NORMAL = key("button/shadow/normal");
+        Key CHECKBOX_SHADOW_DISABLED = key("button/shadow/disabled");
+        Key CHECKBOX_SHADOW_HOVER = key("button/shadow/hover");
+        Key CHECKBOX_NORMAL = key("button/normal");
+        Key CHECKBOX_DISABLED = key("button/disabled");
+        Key CHECKBOX_HOVER = key("button/hover");
     }
 
 

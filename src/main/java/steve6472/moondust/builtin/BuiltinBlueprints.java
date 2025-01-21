@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.builtin.blueprint.ButtonBlueprint;
+import steve6472.moondust.builtin.blueprint.CheckBoxBlueprint;
 import steve6472.moondust.core.MoonDustComponentRegister;
 import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.core.blueprint.BlueprintEntry;
@@ -16,6 +17,7 @@ import steve6472.moondust.core.blueprint.BlueprintEntry;
 public class BuiltinBlueprints
 {
     public static final BlueprintEntry<ButtonBlueprint> BUTTON = register(ButtonBlueprint.KEY, ButtonBlueprint.CODEC);
+    public static final BlueprintEntry<CheckBoxBlueprint> CHECKBOX = register(CheckBoxBlueprint.KEY, CheckBoxBlueprint.CODEC);
 
     /*
      * Register methods

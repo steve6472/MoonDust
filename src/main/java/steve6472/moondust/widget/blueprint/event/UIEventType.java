@@ -23,6 +23,7 @@ public final class UIEventType<T extends UIEventBlueprint> extends Type<T>
     public static final UIEventType<OnInitBlueprint> ON_INIT = register("on_init", OnInitBlueprint.CODEC);
     public static final UIEventType<OnRenderBlueprint> ON_RENDER = register("on_render", OnRenderBlueprint.CODEC);
     public static final UIEventType<OnEnableChangeBlueprint> ON_ENABLE_CHANGE = register("on_enable_change", OnEnableChangeBlueprint.CODEC);
+    public static final UIEventType<OnDataChangeBlueprint> ON_DATA_CHANGE = register("on_data_change", OnDataChangeBlueprint.CODEC);
 
     public UIEventType(Key key, MapCodec<T> codec)
     {

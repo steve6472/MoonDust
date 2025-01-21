@@ -103,6 +103,7 @@ public class Widget implements WidgetComponentGetter
 
         // If custom data was not created via blueprints, add a default empty one
         customData = (CustomData) components.computeIfAbsent(CustomData.class, _ -> new CustomData());
+        customData.widget = this;
 
         if (LOG_WIDGET_CREATION)
             LOGGER.info("Widget: " + getPath());
