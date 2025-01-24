@@ -15,6 +15,7 @@ import steve6472.moondust.widget.component.Styles;
 import steve6472.moondust.widget.component.event.*;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 /**
@@ -97,6 +98,75 @@ public class BuiltinEventCalls
             else
                 setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_UNCHECKED : ID.SPRITE_UNCHECKED_DISBLED);
         });
+
+        /*
+         * Spinner
+         */
+
+        final String DEFAULT_NUMBER_FORMAT = "%.2f";
+
+        Consumer<Widget> updateLabel = widget -> {
+            widget.getChild("label").ifPresent(childLabel -> {
+                childLabel.getComponent(MDTextLine.class).ifPresent(label -> {
+                    CustomData data = widget.customData();
+                    String unformattedLabel = data.getString(Keys.SPINNER_UNFORMATTED_LABEL);
+                    if (unformattedLabel == null) return;
+
+                    String valueNumberFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_VALUE)).orElse(DEFAULT_NUMBER_FORMAT);
+                    String minFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_MIN)).orElse(DEFAULT_NUMBER_FORMAT);
+                    String maxFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_MAX)).orElse(DEFAULT_NUMBER_FORMAT);
+                    String incrementFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_INCREMENT)).orElse(DEFAULT_NUMBER_FORMAT);
+
+                    unformattedLabel = unformattedLabel.replace("%value%", valueNumberFormat.formatted(data.getFloat(Keys.SPINNER_VALUE)));
+                    unformattedLabel = unformattedLabel.replace("%min%", minFormat.formatted(data.getFloat(Keys.SPINNER_MIN)));
+                    unformattedLabel = unformattedLabel.replace("%max%", maxFormat.formatted(data.getFloat(Keys.SPINNER_MAX)));
+                    unformattedLabel = unformattedLabel.replace("%increment%", incrementFormat.formatted(data.getFloat(Keys.SPINNER_INCREMENT)));
+
+                    childLabel.replaceComponent(label.replaceText(unformattedLabel));
+                });
+            });
+        };
+
+        create(key("spinner/update_label"), (Widget widget, OnDataChange _) -> updateLabel.accept(widget));
+        create(key("spinner/init"), (Widget widget, OnInit _) -> updateLabel.accept(widget));
+
+        create(key("spinner/increment"), (Widget widget, OnMouseRelease _) -> {
+            widget.parent().ifPresent(parent -> {
+                CustomData data = parent.customData();
+                float increment = data.getFloat(Keys.SPINNER_INCREMENT);
+                float value = data.getFloat(Keys.SPINNER_VALUE);
+
+                // Calls spinner/verify_bounds
+                data.putFloat(Keys.SPINNER_VALUE, value + increment);
+            });
+        });
+
+        create(key("spinner/decrement"), (Widget widget, OnMouseRelease _) -> {
+            widget.parent().ifPresent(parent -> {
+                CustomData data = parent.customData();
+                float increment = data.getFloat(Keys.SPINNER_INCREMENT);
+                float value = data.getFloat(Keys.SPINNER_VALUE);
+
+                // Calls spinner/verify_bounds
+                data.putFloat(Keys.SPINNER_VALUE, value - increment);
+            });
+        });
+
+        create(key("spinner/verify_bounds"), (Widget widget, OnDataChange _) -> {
+            CustomData data = widget.customData();
+            float value = data.getFloat(Keys.SPINNER_VALUE);
+            float min = data.getFloat(Keys.SPINNER_MIN);
+            float max = data.getFloat(Keys.SPINNER_MAX);
+
+            // invalid state, do nothing, prevent recursion
+            if (max <= min)
+                return;
+
+            if (value > max)
+                data.putFloat(Keys.SPINNER_VALUE, max);
+            if (value < min)
+                data.putFloat(Keys.SPINNER_VALUE, min);
+        });
     }
 
     private static <T extends UIEvent> void create(Key key, UIEventCall<T> eventCall)
@@ -138,7 +208,6 @@ public class BuiltinEventCalls
 
         // Data
         Key GENERIC_LABEL = key("generic/label");
-        Key GENERIC_LABEL_SHADOW = key("generic/label_shadow");
 
         /*
          * Button
@@ -164,6 +233,22 @@ public class BuiltinEventCalls
         Key CHECKBOX_NORMAL = key("button/normal");
         Key CHECKBOX_DISABLED = key("button/disabled");
         Key CHECKBOX_HOVER = key("button/hover");
+
+        /*
+         * Spinner
+         */
+        Key SPINNER_VALUE = key("spinner/value");
+        Key SPINNER_MIN = key("spinner/min");
+        Key SPINNER_MAX = key("spinner/max");
+        Key SPINNER_INCREMENT = key("spinner/increment");
+
+        Key SPINNER_NUMBER_FORMAT_VALUE = key("spinner/number_format/value");
+        Key SPINNER_NUMBER_FORMAT_MIN = key("spinner/number_format/min");
+        Key SPINNER_NUMBER_FORMAT_MAX = key("spinner/number_format/max");
+        Key SPINNER_NUMBER_FORMAT_INCREMENT = key("spinner/number_format/increment");
+
+        Key SPINNER_UNFORMATTED_LABEL = key("spinner/unformatted_label");
+        //        Key SPINNER_LABEL = key("spinner/label");
     }
 
 

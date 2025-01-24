@@ -257,7 +257,7 @@
                 hover: "moondust:generic_dark_pixel/button/close_red/hover",
                 pressed: "moondust:generic_dark_pixel/button/close_red/pressed"
             }
-        }/*,
+        },
         {
             widget: "moondust:spinner_buttons_y",
             name: "test_spinner",
@@ -269,15 +269,19 @@
             bounds: [5, 9],
             data: {
                 strings: {
-                    "spinner:label": "val: %value% (%min%  %max%)",
-                    "spinner:number_format": "%.0f"
+                    "moondust:spinner/unformatted_label": "val: %value% (%min%  %max%)",
+                    "moondust:spinner/number_format/value": "%.0f",
+                    "moondust:spinner/number_format/min": "%.0f",
+                    "moondust:spinner/number_format/max": "%.0f",
+                    "moondust:spinner/number_format/increment": "%.0f"
                 },
                 floats: {
-                    "spinner:min": 0,
-                    "spinner:max": 8,
-                    "spinner:value": 6
+                    "moondust:spinner/min": 0,
+                    "moondust:spinner/max": 8,
+                    "moondust:spinner/value": 6,
+                    "moondust:spinner/increment": 1
                 }
             }
-        }*/
+        }
     ]
 }

@@ -5,9 +5,27 @@
             event: { type: "on_init" }
         },
         {
-            // TODO: should be doing that only on press
-            call: "moondust:spinner/tick",
-            event: { type: "on_render" }
+            call: "moondust:spinner/verify_bounds",
+            event: {
+                type: "on_data_change",
+                floats: [
+                    "moondust:spinner/value",
+                    "moondust:spinner/min",
+                    "moondust:spinner/max"
+                ]
+            }
+        },
+        {
+            call: "moondust:spinner/update_label",
+            event: {
+                type: "on_data_change",
+                floats: [
+                    "moondust:spinner/value",
+                    "moondust:spinner/min",
+                    "moondust:spinner/max",
+                    "moondust:spinner/increment"
+                ]
+            }
         }
     ],
 
@@ -18,32 +36,19 @@
             sprites: {
                 normal: "moondust:generic_dark_pixel/arrow/up_normal",
                 disabled: "moondust:generic_dark_pixel/arrow/up_disabled",
-                hovered: "moondust:generic_dark_pixel/arrow/up_hover",
+                hover: "moondust:generic_dark_pixel/arrow/up_hover",
                 pressed: "moondust:generic_dark_pixel/arrow/up_press"
             },
             bounds: [5, 5],
             clickable: true,
-            focusable: true,
             focused_sprite: "moondust:generic_dark_pixel/arrow/up_focus",
             position: {
                 type: "anchored",
                 anchor: "top_left"
             },
 
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:spinner/up",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        }
-                    ]
-                }
+            button: {
+                on_press: "moondust:spinner/increment"
             }
         },
         {
@@ -52,12 +57,11 @@
             sprites: {
                 normal: "moondust:generic_dark_pixel/arrow/down_normal",
                 disabled: "moondust:generic_dark_pixel/arrow/down_disabled",
-                hovered: "moondust:generic_dark_pixel/arrow/down_hover",
+                hover: "moondust:generic_dark_pixel/arrow/down_hover",
                 pressed: "moondust:generic_dark_pixel/arrow/down_press"
             },
             bounds: [5, 5],
             clickable: true,
-            focusable: true,
             focused_sprite: "moondust:generic_dark_pixel/arrow/down_focus",
             position: {
                 type: "relative",
@@ -65,30 +69,27 @@
                 offset: [0, 4]
             },
 
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:spinner/down",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        }
-                    ]
-                }
+            button: {
+                on_press: "moondust:spinner/decrement"
             }
         },
         {
-            widget: "moondust:spinner_label",
+            // Gets removed in label/init if label is empty
+            widget: "moondust:empty",
             name: "label",
-            bounds: [100, 9],
             position: {
                 type: "anchored",
                 anchor: "left",
-                offset: [6, 0]
+                offset: [5, 0]
+            },
+            bounds: [64, 7],
+            text_line: {
+                text: {
+                    text: "",
+                    style: "moondust:button/normal",
+                    anchor: "top_left"
+                },
+                offset: [1, 0]
             }
         }
     ]

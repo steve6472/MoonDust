@@ -1,9 +1,0 @@
-{
-    text_line: {
-        text: {
-            text: "",
-            style: "moondust:tiny_pixie2",
-            anchor: "left"
-        }
-    }
-}
