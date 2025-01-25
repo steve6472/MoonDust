@@ -27,6 +27,8 @@ public class BuiltinEventCalls
 {
     private static final Logger LOGGER = Log.getLogger(BuiltinEventCalls.class);
 
+    public static final String DEFAULT_NUMBER_FORMAT = "%.2f";
+
     public static void init()
     {
         /*
@@ -37,6 +39,7 @@ public class BuiltinEventCalls
         create(key("icon/press"),     (Widget widget, OnMousePress _) -> setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_PRESSED : null));
         create(key("icon/release"), (Widget widget, OnMouseRelease _) -> setCurrentSprite(widget, widget.isEnabled() ? (widget.internalStates().hovered ? ID.SPRITE_HOVER : ID.SPRITE_NORMAL) : null));
         create(key("icon/change_enabled"), (Widget widget, OnEnableStateChange _) -> setCurrentSprite(widget, widget.isEnabled() ? (widget.internalStates().hovered ? ID.SPRITE_HOVER : ID.SPRITE_NORMAL) : ID.SPRITE_DISABLED));
+        create(key("icon/change_enabled_no_hover"), (Widget widget, OnEnableStateChange _) -> setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_NORMAL : ID.SPRITE_DISABLED));
 
         /*
          * Label
@@ -44,6 +47,7 @@ public class BuiltinEventCalls
         create(key("label/hover/on"),  (Widget widget, OnMouseEnter _) -> replaceStyle(widget, pickStyle(widget)));
         create(key("label/hover/off"), (Widget widget, OnMouseLeave _) -> replaceStyle(widget, pickStyle(widget)));
         create(key("label/change_enabled"), (Widget widget, OnEnableStateChange _) -> replaceStyle(widget, pickStyle(widget)));
+        create(key("label/change_enabled_no_hover"), (Widget widget, OnEnableStateChange _) -> replaceStyle(widget, pickStyle(widget, Tristate.FALSE)));
         create(key("label/init"), (Widget widget, OnInit _) -> {
             widget.getChild("label").ifPresent(child -> {
                 Optional<MDTextLine> component = child.getComponent(MDTextLine.class);
@@ -103,13 +107,11 @@ public class BuiltinEventCalls
          * Spinner
          */
 
-        final String DEFAULT_NUMBER_FORMAT = "%.2f";
-
         Consumer<Widget> updateLabel = widget -> {
             widget.getChild("label").ifPresent(childLabel -> {
                 childLabel.getComponent(MDTextLine.class).ifPresent(label -> {
                     CustomData data = widget.customData();
-                    String unformattedLabel = data.getString(Keys.SPINNER_UNFORMATTED_LABEL);
+                    String unformattedLabel = data.getString(Keys.GENERIC_LABEL);
                     if (unformattedLabel == null) return;
 
                     String valueNumberFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_VALUE)).orElse(DEFAULT_NUMBER_FORMAT);
@@ -128,7 +130,11 @@ public class BuiltinEventCalls
         };
 
         create(key("spinner/update_label"), (Widget widget, OnDataChange _) -> updateLabel.accept(widget));
-        create(key("spinner/init"), (Widget widget, OnInit _) -> updateLabel.accept(widget));
+        create(key("spinner/init"), (Widget widget, OnInit _) ->
+        {
+            updateLabel.accept(widget);
+            replaceStyle(widget, pickStyle(widget, Tristate.FALSE));
+        });
 
         create(key("spinner/increment"), (Widget widget, OnMouseRelease _) -> {
             widget.parent().ifPresent(parent -> {
@@ -166,6 +172,11 @@ public class BuiltinEventCalls
                 data.putFloat(Keys.SPINNER_VALUE, max);
             if (value < min)
                 data.putFloat(Keys.SPINNER_VALUE, min);
+        });
+
+        create(key("spinner/change_enabled"), (Widget widget, OnEnableStateChange _) -> {
+            widget.getChild("up").ifPresent(child -> child.setEnabled(widget.isEnabled()));
+            widget.getChild("down").ifPresent(child -> child.setEnabled(widget.isEnabled()));
         });
     }
 
@@ -247,8 +258,10 @@ public class BuiltinEventCalls
         Key SPINNER_NUMBER_FORMAT_MAX = key("spinner/number_format/max");
         Key SPINNER_NUMBER_FORMAT_INCREMENT = key("spinner/number_format/increment");
 
-        Key SPINNER_UNFORMATTED_LABEL = key("spinner/unformatted_label");
-        //        Key SPINNER_LABEL = key("spinner/label");
+        Key SPINNER_SHADOW_NORMAL = key("button/shadow/normal");
+        Key SPINNER_SHADOW_DISABLED = key("button/shadow/disabled");
+        Key SPINNER_NORMAL = key("button/normal");
+        Key SPINNER_DISABLED = key("button/disabled");
     }
 
 

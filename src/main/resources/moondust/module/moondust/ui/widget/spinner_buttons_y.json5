@@ -1,5 +1,12 @@
 {
+    styles: {
+        unchecked: "moondust:button/normal",
+        disabled: "moondust:button/disabled"
+    },
+
     events: [
+        { call: "moondust:label/change_enabled_no_hover", event: { type: "on_enable_change" } },
+        { call: "moondust:spinner/change_enabled", event: { type: "on_enable_change" } },
         {
             call: "moondust:spinner/init",
             event: { type: "on_init" }
@@ -40,6 +47,7 @@
                 pressed: "moondust:generic_dark_pixel/arrow/up_press"
             },
             bounds: [5, 5],
+            clickbox_size: [5, 4],
             clickable: true,
             focused_sprite: "moondust:generic_dark_pixel/arrow/up_focus",
             position: {
@@ -61,6 +69,8 @@
                 pressed: "moondust:generic_dark_pixel/arrow/down_press"
             },
             bounds: [5, 5],
+            clickbox_size: [5, 4],
+            clickbox_offset: [0, 1],
             clickable: true,
             focused_sprite: "moondust:generic_dark_pixel/arrow/down_focus",
             position: {

@@ -267,19 +267,15 @@
                 offset: [0, 34]
             },
             bounds: [5, 9],
-            data: {
-                strings: {
-                    "moondust:spinner/unformatted_label": "val: %value% (%min%  %max%)",
-                    "moondust:spinner/number_format/value": "%.0f",
-                    "moondust:spinner/number_format/min": "%.0f",
-                    "moondust:spinner/number_format/max": "%.0f",
-                    "moondust:spinner/number_format/increment": "%.0f"
-                },
-                floats: {
-                    "moondust:spinner/min": 0,
-                    "moondust:spinner/max": 8,
-                    "moondust:spinner/value": 6,
-                    "moondust:spinner/increment": 1
+
+            spinner: {
+                label: "val: %value% (%min% + %max%)",
+                label_shadow: false,
+                number_formats: "%.0f",
+                values: {
+                    min: 0,
+                    max: 8,
+                    value: 6
                 }
             }
         }
