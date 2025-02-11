@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
@@ -28,6 +29,7 @@ public class MoonDust
 {
     private static final Logger LOGGER = Log.getLogger(MoonDust.class);
     private static final MoonDust INSTANCE = new MoonDust();
+    private static final int FOCUS_ITERATION_LIMIT = 1024;
 
     public static final Key ERROR_FOCUSED = Key.withNamespace("moondust", "widget/error/focused");
 
@@ -126,7 +128,7 @@ public class MoonDust
             }
         } else if (MoonDustKeybinds.UNFOCUS_ALL.isActive())
         {
-            panels.forEach(Panel::clearFocus);
+            clearFocus();
         } else if (MoonDustKeybinds.CONFIRM.isActive())
         {
             if (focusedPanel == null)
@@ -143,6 +145,51 @@ public class MoonDust
                 widget.internalStates().directHover = false;
             });
         }
+    }
+
+    public void clearFocus()
+    {
+        panels.forEach(Panel::clearFocus);
+    }
+
+    public void focus(Widget widget)
+    {
+        if (!widget.isFocusable())
+        {
+            LOGGER.warning("Tried to grab focus on unfocusable widget " + widget.getPath());
+            return;
+        }
+
+        clearFocus();
+        Optional<Widget> parent = widget.parent();
+
+        final int[] iterationsLimit = {0};
+        while (parent.isPresent() && !(parent.get() instanceof Panel))
+        {
+            if (iterationsLimit[0] > FOCUS_ITERATION_LIMIT)
+            {
+                LOGGER.severe("Could not focus a widget %s, went into infinite while loop".formatted(widget.getPath()));
+                return;
+            }
+            parent = parent.get().parent();
+            iterationsLimit[0]++;
+        }
+
+        iterationsLimit[0] = 0;
+        parent.ifPresent(wgt -> {
+            Panel parentPanel = (Panel) wgt;
+
+            while (parentPanel.getFocused().orElse(null) != widget)
+            {
+                if (iterationsLimit[0] > FOCUS_ITERATION_LIMIT)
+                {
+                    LOGGER.severe("Could not focus a widget %s, went into infinite while loop".formatted(widget.getPath()));
+                    return;
+                }
+                parentPanel.forwardFocus();
+                iterationsLimit[0]++;
+            }
+        });
     }
 
     /*

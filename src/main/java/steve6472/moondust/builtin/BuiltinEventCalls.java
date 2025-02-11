@@ -31,6 +31,16 @@ public class BuiltinEventCalls
 
     public static void init()
     {
+        create(key("grab_focus/release"), (Widget widget, OnMouseRelease _) -> {
+            if (!widget.isFocusable())
+            {
+                LOGGER.warning("Tried to grab focus on unfocusable widget " + widget.getPath());
+                return;
+            }
+
+            MoonDust.getInstance().focus(widget);
+        });
+
         /*
          * Icons
          */
