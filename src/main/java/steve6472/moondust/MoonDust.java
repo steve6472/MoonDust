@@ -189,7 +189,16 @@ public class MoonDust
                 parentPanel.forwardFocus();
                 iterationsLimit[0]++;
             }
+            focusedPanel = parentPanel;
         });
+    }
+
+    public Optional<Widget> getFocused()
+    {
+        if (focusedPanel == null)
+            return Optional.empty();
+
+        return focusedPanel.getFocused();
     }
 
     /*

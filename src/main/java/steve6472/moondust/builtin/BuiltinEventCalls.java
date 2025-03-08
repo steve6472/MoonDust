@@ -1,6 +1,7 @@
 package steve6472.moondust.builtin;
 
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.flare.registry.FlareRegistries;
@@ -187,6 +188,38 @@ public class BuiltinEventCalls
         create(key("spinner/change_enabled"), (Widget widget, OnEnableStateChange _) -> {
             widget.getChild("up").ifPresent(child -> child.setEnabled(widget.isEnabled()));
             widget.getChild("down").ifPresent(child -> child.setEnabled(widget.isEnabled()));
+        });
+
+        /*
+         * Text field
+         */
+        create(key("text_field/char_input"), (Widget widget, OnCharInput charInput) -> {
+            widget.getChild("label").ifPresent(child -> {
+                child.getComponent(MDTextLine.class).ifPresent(label -> {
+                    String text = label.line().text();
+                    text = text + Character.toString(charInput.codepoint());
+                    child.replaceComponent(label.replaceText(text));
+                });
+            });
+        });
+
+        create(key("text_field/key_input"), (Widget widget, OnKeyInput keyInput) -> {
+            widget.getChild("label").ifPresent(child -> {
+                child.getComponent(MDTextLine.class).ifPresent(label -> {
+                    String text = label.line().text();
+
+                    if (keyInput.action() == GLFW.GLFW_RELEASE)
+                        return;
+
+                    if (keyInput.key() == GLFW.GLFW_KEY_BACKSPACE)
+                    {
+                        if (!text.isEmpty())
+                            text = text.substring(0, text.length() - 1);
+                    }
+
+                    child.replaceComponent(label.replaceText(text));
+                });
+            });
         });
     }
 

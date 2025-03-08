@@ -4,7 +4,6 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
-import steve6472.core.registry.Key;
 import steve6472.flare.render.impl.UIFontRenderImpl;
 import steve6472.flare.ui.font.Font;
 import steve6472.flare.ui.font.UnknownCharacter;
@@ -185,6 +184,7 @@ public class MoonDustUIFontRender extends UIFontRenderImpl
             {
                 UIMessageSegment segment = messageSegments.get(indicies[1]);
                 float offsetY = segment.height - glyph.planeBounds().height() * size;
+                // TODO: this line seems to break font
                 offsetY -= segment.minDescent - glyph.planeBounds().bottom() * size;
                 renderChar(font, glyph, new Vector2f(offset).add(0, offsetY), size, character.style().index(), transform);
             }

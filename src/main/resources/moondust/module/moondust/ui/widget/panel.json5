@@ -259,6 +259,32 @@
             }
         },
         {
+            widget: "moondust:text_field",
+            name: "text_field",
+            bounds: [48, 13],
+            clickable: true,
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 15],
+                anchor: "top_right"
+            }
+        },
+        {
+            widget: "moondust:text_field",
+            name: "text_field_password",
+            bounds: [48, 13],
+            clickable: true,
+
+            // Widget components on panel
+            position: {
+                type: "relative",
+                offset: [0, 15],
+                parent: "text_field"
+            }
+        },
+        {
             widget: "moondust:spinner_buttons_y",
             name: "test_spinner",
             position: {

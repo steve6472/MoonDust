@@ -5,7 +5,8 @@
         "Basic components: ",
         " - Button",
         " - Radio Button",
-        " - Checkbox"
+        " - Checkbox",
+        " - Spinner"
     ],
     authors: "steve6472"
 }

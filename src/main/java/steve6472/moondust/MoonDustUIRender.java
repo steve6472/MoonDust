@@ -186,21 +186,7 @@ public class MoonDustUIRender extends UIRenderImpl
             return;
 
         widget.handleEvents(OnRender.class);
-
-        widget.getEvents(OnRandomTick.class).forEach(e ->
-        {
-            //noinspection unchecked
-            UIEventCall<OnRandomTick> uiEventCall = (UIEventCall<OnRandomTick>) MoonDustRegistries.EVENT_CALLS.get(e.call());
-            if (uiEventCall != null)
-            {
-                OnRandomTick event = (OnRandomTick) e.event();
-                if (RandomUtil.decide(event.probability()))
-                    uiEventCall.call(widget, event);
-            } else
-            {
-                LOGGER.warning("No event call found for " + e.call());
-            }
-        });
+        widget.handleEvents(OnRandomTick.class, event -> RandomUtil.decide(event.probability()));
 
         if (widget.isFocusable() && widget.internalStates().focused)
         {

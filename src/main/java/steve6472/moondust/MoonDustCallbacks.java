@@ -2,6 +2,8 @@ package steve6472.moondust;
 
 import steve6472.core.log.Log;
 import steve6472.flare.WindowCallbacks;
+import steve6472.moondust.widget.component.event.OnCharInput;
+import steve6472.moondust.widget.component.event.OnKeyInput;
 
 import java.util.logging.Logger;
 
@@ -20,8 +22,18 @@ public class MoonDustCallbacks
             LOGGER.info("Scroll " + xOffset + "/" + yOffset);
         });
 
-        callbacks.addCharCallback(MoonDustConstants.key("main"), (_, codepoint) -> {
+        // TODO: will have to disable/enable focusing with tab if in char_input component....
 
+        callbacks.addCharCallback(MoonDustConstants.key("char_input"), (_, codepoint) -> {
+            MoonDust.getInstance().getFocused().ifPresent(focused -> {
+                focused.handleEvents(OnCharInput.class, _ -> true, new OnCharInput(codepoint));
+            });
+        });
+
+        callbacks.addKeyCallback(MoonDustConstants.key("key_input"), (_, key, scancode, action, mods) -> {
+            MoonDust.getInstance().getFocused().ifPresent(focused -> {
+                focused.handleEvents(OnKeyInput.class, _ -> true, new OnKeyInput(key, scancode, action, mods));
+            });
         });
     }
 

@@ -90,6 +90,30 @@ public class CustomData implements Mergeable<CustomData>
         return flags.getBoolean(key);
     }
 
+    public float removeFloat(Key key)
+    {
+        //TODO OnDataRemove event
+        return floats.removeFloat(key);
+    }
+
+    public int removeInt(Key key)
+    {
+        //TODO OnDataRemove event
+        return ints.removeInt(key);
+    }
+
+    public String removeString(Key key)
+    {
+        //TODO OnDataRemove event
+        return strings.remove(key);
+    }
+
+    public boolean removeFlag(Key key)
+    {
+        //TODO OnDataRemove event
+        return flags.removeBoolean(key);
+    }
+
     @Override
     public CustomData merge(CustomData left, CustomData right)
     {

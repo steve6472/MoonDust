@@ -1,5 +1,6 @@
 package steve6472.moondust.widget;
 
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
@@ -156,7 +157,13 @@ public class Widget implements WidgetComponentGetter
         handleEvents(eventType, _ -> true);
     }
 
+
     public <T extends UIEvent> void handleEvents(Class<T> eventType, Predicate<T> test)
+    {
+        handleEvents(eventType, test, null);
+    }
+
+    public <T extends UIEvent> void handleEvents(Class<T> eventType, Predicate<T> test, @Nullable T override)
     {
         getEvents(eventType).forEach(e ->
         {
@@ -164,7 +171,7 @@ public class Widget implements WidgetComponentGetter
 
             if (uiEventCall != null)
             {
-                T event = eventType.cast(e.event());
+                T event = override == null ? eventType.cast(e.event()) : override;
                 if (test.test(event))
                 {
                     uiEventCall.call(this, event);
