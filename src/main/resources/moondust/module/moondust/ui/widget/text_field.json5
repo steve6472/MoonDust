@@ -17,30 +17,30 @@
     bounds: [8, 8],
     events: [
         { call: "moondust:icon/change_enabled",   event: { type: "on_enable_change" } },
-        { call: "moondust:label/change_enabled",  event: { type: "on_enable_change" } },
+        { call: "moondust:text/change_enabled",   event: { type: "on_enable_change" } },
         { call: "moondust:grab_focus/release",    event: { type: "on_mouse_release" } },
         { call: "moondust:text_field/char_input", event: { type: "on_char_input" } },
         { call: "moondust:text_field/key_input",  event: { type: "on_key_input" } }
     ],
 
-    children: [
-        {
-            // Gets removed in label/init if label is empty
-            widget: "moondust:empty",
-            name: "label",
-            position: {
-                type: "anchored",
-                anchor: "left",
-                offset: [2, 1]
-            },
-            bounds: [44, 8],
-            text_line: {
-                text: {
+    text: {
+        text: {
+            parts: [
+                {
                     text: "Text Field",
-                    style: "moondust:button/normal",
-                    anchor: "left"
+                    style: "moondust:button/normal"
                 }
-            }
+            ],
+            anchor: "top_left",
+            align: "center",
+            text_size: 6,
+            vertical_anchor: "text_height",
+            force_single_line: true
+        },
+        position: {
+            type: "anchored",
+            anchor: "top_left",
+            offset: [2, 4]
         }
-    ]
+    }
 }

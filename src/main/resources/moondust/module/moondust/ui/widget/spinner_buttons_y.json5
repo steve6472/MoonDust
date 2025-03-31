@@ -5,7 +5,7 @@
     },
 
     events: [
-        { call: "moondust:label/change_enabled_no_hover", event: { type: "on_enable_change" } },
+        { call: "moondust:text/change_enabled_no_hover", event: { type: "on_enable_change" } },
         { call: "moondust:spinner/change_enabled", event: { type: "on_enable_change" } },
         {
             call: "moondust:spinner/init",
@@ -35,6 +35,25 @@
             }
         }
     ],
+
+    text: {
+        text: {
+            parts: [
+                {
+                    text: "MoonDust",
+                    style: "moondust:button/normal"
+                }
+            ],
+            anchor: "top_left",
+            text_size: 6,
+            vertical_anchor: "text_height",
+            force_single_line: true
+        },
+        position: {
+            type: "absolute",
+            pos: [6, 2]
+        }
+    },
 
     children: [
         {
@@ -81,25 +100,6 @@
 
             button: {
                 on_press: "moondust:spinner/decrement"
-            }
-        },
-        {
-            // Gets removed in label/init if label is empty
-            widget: "moondust:empty",
-            name: "label",
-            position: {
-                type: "anchored",
-                anchor: "left",
-                offset: [5, 0]
-            },
-            bounds: [64, 7],
-            text_line: {
-                text: {
-                    text: "",
-                    style: "moondust:button/normal",
-                    anchor: "top_left"
-                },
-                offset: [1, 0]
             }
         }
     ]

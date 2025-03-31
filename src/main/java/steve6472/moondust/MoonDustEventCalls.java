@@ -3,7 +3,7 @@ package steve6472.moondust;
 import org.lwjgl.glfw.GLFW;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
-import steve6472.flare.ui.font.render.UITextLine;
+import steve6472.moondust.builtin.BuiltinEventCalls;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.*;
@@ -95,12 +95,15 @@ public interface MoonDustEventCalls
             });
 
             widget.getChild("label").ifPresent(child -> {
-                child.getComponent(MDTextLine.class).ifPresent(mdLine -> {
-                    UITextLine line = mdLine.line();
+                child.getComponent(MDText.class).ifPresent(mdLine -> {
                     CustomData customData = widget.customData();
                     String label = customData.getString(Key.withNamespace("radio_button", "label"));
-                    if (label == null) return;
-                    child.addComponent(new MDTextLine(new UITextLine(label, line.size(), line.style(), line.anchor()), mdLine.offset()));
+                    if (label == null)
+                    {
+                        widget.removeChild("label");
+                        return;
+                    }
+                    mdLine.replaceText(label, 0);
                 });
             });
         });

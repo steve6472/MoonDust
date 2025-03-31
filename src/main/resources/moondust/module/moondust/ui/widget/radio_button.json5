@@ -35,14 +35,28 @@
 
     children: [
         {
-            widget: "moondust:radio_button_label",
+            widget: "moondust:empty",
             name: "label",
             position: {
                 type: "anchored",
                 anchor: "left",
                 offset: [8, -2]
             },
-            bounds: [0, 0]
+            bounds: [0, 0],
+            text: {
+                text: {
+                    parts: [
+                        {
+                            text: "Radio",
+                            style: "moondust:tiny_pixie2"
+                        }
+                    ],
+                    anchor: "top_left",
+                    text_size: 6,
+                    vertical_anchor: "text_height",
+                    force_single_line: true
+                }
+            }
         }
     ]
 }

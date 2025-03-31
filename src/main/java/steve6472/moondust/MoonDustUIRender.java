@@ -12,11 +12,9 @@ import steve6472.flare.FlareConstants;
 import steve6472.flare.Window;
 import steve6472.flare.input.UserInput;
 import steve6472.flare.render.impl.UIRenderImpl;
-import steve6472.flare.ui.font.render.UITextLine;
 import steve6472.flare.ui.textures.SpriteEntry;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
-import steve6472.moondust.widget.blueprint.event.condition.Tristate;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 
@@ -72,10 +70,10 @@ public class MoonDustUIRender extends UIRenderImpl
                 if (depth != 0)
                     return;
 
-                widget.getChild("debug_label").ifPresent(label -> {
-                    label.getComponent(MDTextLine.class)
-                        .ifPresent(mdTextLine -> label.addComponent(new MDTextLine(new UITextLine("Cursor: " + mousePos, mdTextLine.line().size(), mdTextLine.line().style(), mdTextLine.line().anchor()), mdTextLine.offset())));
-                });
+//                widget.getChild("debug_label").ifPresent(label -> {
+//                    label.getComponent(MDText.class)
+//                        .ifPresent(mdTextLine -> label.addComponent(new MDText(new UITextLine("Cursor: " + mousePos, mdTextLine.line().size(), mdTextLine.line().style(), mdTextLine.line().anchor()), mdTextLine.offset())));
+//                });
             });
         }
 
@@ -196,15 +194,14 @@ public class MoonDustUIRender extends UIRenderImpl
                 widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
                 widget.getComponent(FocusedSprite.class).ifPresentOrElse(focusedSprite ->
                 {
-                    float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(-0.1f);
-                    index += 0.01f;
+                    float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(0f);
                     SpriteEntry textureEntry = getTextureEntry(focusedSprite.sprite());
                     if (textureEntry == null)
                         sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, MoonDust.ERROR_FOCUSED);
                     else
                         sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, focusedSprite.sprite());
                 }, () -> {
-                    float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(-0.1f);
+                    float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(0f);
                     sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, MoonDust.ERROR_FOCUSED);
                 });
             });

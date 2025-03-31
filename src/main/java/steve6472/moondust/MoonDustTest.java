@@ -11,6 +11,7 @@ import steve6472.flare.render.UILineRender;
 import steve6472.flare.render.UIRenderSystem;
 import steve6472.moondust.builtin.BuiltinEventCalls;
 import steve6472.moondust.widget.Panel;
+import steve6472.test.DebugUILines;
 
 /**
  * Created by steve6472
@@ -57,6 +58,7 @@ public class MoonDustTest extends FlareApp
     {
         addRenderSystem(new UIRenderSystem(masterRenderer(), new MoonDustUIRender(this), 256f));
         addRenderSystem(new UIFontRender(masterRenderer(), new MoonDustUIFontRender()));
+        addRenderSystem(new UILineRender(masterRenderer(), new DebugWidgetUILines()));
         addRenderSystem(new UILineRender(masterRenderer(), new DebugUILines()));
 
         new MoonDustCallbacks().init(window().callbacks());
@@ -81,7 +83,6 @@ public class MoonDustTest extends FlareApp
     @Override
     public void saveSettings()
     {
-
     }
 
     @Override

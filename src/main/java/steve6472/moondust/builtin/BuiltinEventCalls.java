@@ -5,14 +5,13 @@ import org.lwjgl.glfw.GLFW;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.flare.registry.FlareRegistries;
-import steve6472.flare.ui.font.render.UITextLine;
+import steve6472.flare.ui.font.render.Text;
+import steve6472.flare.ui.font.render.TextPart;
+import steve6472.flare.ui.font.style.FontStyleEntry;
 import steve6472.moondust.*;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.blueprint.event.condition.Tristate;
-import steve6472.moondust.widget.component.CurrentSprite;
-import steve6472.moondust.widget.component.CustomData;
-import steve6472.moondust.widget.component.MDTextLine;
-import steve6472.moondust.widget.component.Styles;
+import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 
 import java.util.Optional;
@@ -61,9 +60,8 @@ public class BuiltinEventCalls
         create(key("label/change_enabled_no_hover"), (Widget widget, OnEnableStateChange _) -> replaceStyle(widget, pickStyle(widget, Tristate.FALSE)));
         create(key("label/init"), (Widget widget, OnInit _) -> {
             widget.getChild("label").ifPresent(child -> {
-                Optional<MDTextLine> component = child.getComponent(MDTextLine.class);
+                Optional<MDText> component = child.getComponent(MDText.class);
                 component.ifPresent(mdLine -> {
-                    UITextLine line = mdLine.line();
                     CustomData customData = widget.customData();
                     String label = customData.getString(Keys.GENERIC_LABEL);
                     if (label == null)
@@ -71,10 +69,69 @@ public class BuiltinEventCalls
                         widget.removeChild("label");
                         return;
                     }
-                    child.addComponent(new MDTextLine(new UITextLine(label, line.size(), line.style(), line.anchor()), mdLine.offset()));
+                    mdLine.replaceText(label, 0);
+                    Bounds bounds = child.getComponent(Bounds.class).orElseThrow();
+                    child.addComponent(new MDText(mdLine.text().withMaxWidth(bounds.width), mdLine.position()));
                 });
             });
             replaceStyle(widget, pickStyle(widget, (widget.internalStates().hovered || widget.internalStates().directHover) ? Tristate.TRUE : Tristate.FALSE));
+        });
+        create(key("label/copy_parent_height"), (Widget widget, OnInit _) -> {
+            widget.getChild("label").ifPresent(child -> {
+                child.getComponent(MDText.class).ifPresent(mdText -> {
+                    widget.getComponent(Bounds.class).ifPresent(bounds -> {
+                        child.addComponent(new MDText(mdText.text().withMaxHeight(bounds.height), mdText.position()));
+                    });
+                });
+            });
+        });
+
+        /*
+         * Text
+         */
+        create(key("text/hover/on"),  (Widget widget, OnMouseEnter _) -> replaceStyleText(widget, pickStyle(widget)));
+        create(key("text/hover/off"), (Widget widget, OnMouseLeave _) -> replaceStyleText(widget, pickStyle(widget)));
+        create(key("text/change_enabled"), (Widget widget, OnEnableStateChange _) -> replaceStyleText(widget, pickStyle(widget)));
+        create(key("text/change_enabled_no_hover"), (Widget widget, OnEnableStateChange _) -> replaceStyleText(widget, pickStyle(widget, Tristate.FALSE)));
+        create(key("text/init"), (Widget widget, OnInit _) -> {
+            Optional<MDText> component = widget.getComponent(MDText.class);
+            component.ifPresent(mdLine -> {
+                CustomData customData = widget.customData();
+                String label = customData.getString(Keys.GENERIC_LABEL);
+                if (label == null)
+                {
+                    widget.removeComponent(MDText.class);
+                    return;
+                }
+                mdLine.replaceText(label, 0);
+                widget.addComponent(new MDText(mdLine.text(), mdLine.position()));
+            });
+            replaceStyle(widget, pickStyle(widget, (widget.internalStates().hovered || widget.internalStates().directHover) ? Tristate.TRUE : Tristate.FALSE));
+        });
+        create(key("text/copy_height"), (Widget widget, OnInit _) -> {
+            widget.getComponent(MDText.class).ifPresent(mdText -> {
+                widget.getComponent(Bounds.class).ifPresent(bounds -> {
+                    widget.addComponent(new MDText(mdText.text().withMaxHeight(bounds.height), mdText.position()));
+                });
+            });
+        });
+        create(key("text/copy_width"), (Widget widget, OnInit _) -> {
+            widget.getComponent(MDText.class).ifPresent(mdText -> {
+                widget.getComponent(Bounds.class).ifPresent(bounds -> {
+                    widget.addComponent(new MDText(mdText.text().withMaxWidth(bounds.width), mdText.position()));
+                });
+            });
+        });
+
+        /*
+         * Button
+         */
+        create(key("button/init"), (Widget widget, OnInit _) -> {
+            widget.getChild("label").ifPresent(child -> {
+                widget.getComponent(Bounds.class).ifPresent(bounds -> {
+                    child.setBounds(bounds.width - 4, bounds.height - 4);
+                });
+            });
         });
 
         /*
@@ -119,24 +176,22 @@ public class BuiltinEventCalls
          */
 
         Consumer<Widget> updateLabel = widget -> {
-            widget.getChild("label").ifPresent(childLabel -> {
-                childLabel.getComponent(MDTextLine.class).ifPresent(label -> {
-                    CustomData data = widget.customData();
-                    String unformattedLabel = data.getString(Keys.GENERIC_LABEL);
-                    if (unformattedLabel == null) return;
+            widget.getComponent(MDText.class).ifPresent(label -> {
+                CustomData data = widget.customData();
+                String unformattedLabel = data.getString(Keys.GENERIC_LABEL);
+                if (unformattedLabel == null) return;
 
-                    String valueNumberFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_VALUE)).orElse(DEFAULT_NUMBER_FORMAT);
-                    String minFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_MIN)).orElse(DEFAULT_NUMBER_FORMAT);
-                    String maxFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_MAX)).orElse(DEFAULT_NUMBER_FORMAT);
-                    String incrementFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_INCREMENT)).orElse(DEFAULT_NUMBER_FORMAT);
+                String valueNumberFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_VALUE)).orElse(DEFAULT_NUMBER_FORMAT);
+                String minFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_MIN)).orElse(DEFAULT_NUMBER_FORMAT);
+                String maxFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_MAX)).orElse(DEFAULT_NUMBER_FORMAT);
+                String incrementFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_INCREMENT)).orElse(DEFAULT_NUMBER_FORMAT);
 
-                    unformattedLabel = unformattedLabel.replace("%value%", valueNumberFormat.formatted(data.getFloat(Keys.SPINNER_VALUE)));
-                    unformattedLabel = unformattedLabel.replace("%min%", minFormat.formatted(data.getFloat(Keys.SPINNER_MIN)));
-                    unformattedLabel = unformattedLabel.replace("%max%", maxFormat.formatted(data.getFloat(Keys.SPINNER_MAX)));
-                    unformattedLabel = unformattedLabel.replace("%increment%", incrementFormat.formatted(data.getFloat(Keys.SPINNER_INCREMENT)));
+                unformattedLabel = unformattedLabel.replace("%value%", valueNumberFormat.formatted(data.getFloat(Keys.SPINNER_VALUE)));
+                unformattedLabel = unformattedLabel.replace("%min%", minFormat.formatted(data.getFloat(Keys.SPINNER_MIN)));
+                unformattedLabel = unformattedLabel.replace("%max%", maxFormat.formatted(data.getFloat(Keys.SPINNER_MAX)));
+                unformattedLabel = unformattedLabel.replace("%increment%", incrementFormat.formatted(data.getFloat(Keys.SPINNER_INCREMENT)));
 
-                    childLabel.replaceComponent(label.replaceText(unformattedLabel));
-                });
+                label.replaceText(unformattedLabel, 0);
             });
         };
 
@@ -194,31 +249,27 @@ public class BuiltinEventCalls
          * Text field
          */
         create(key("text_field/char_input"), (Widget widget, OnCharInput charInput) -> {
-            widget.getChild("label").ifPresent(child -> {
-                child.getComponent(MDTextLine.class).ifPresent(label -> {
-                    String text = label.line().text();
-                    text = text + Character.toString(charInput.codepoint());
-                    child.replaceComponent(label.replaceText(text));
-                });
+            widget.getComponent(MDText.class).ifPresent(label -> {
+                String text = label.text().parts().getFirst().text();
+                text = text + Character.toString(charInput.codepoint());
+                label.replaceText(text, 0);
             });
         });
 
         create(key("text_field/key_input"), (Widget widget, OnKeyInput keyInput) -> {
-            widget.getChild("label").ifPresent(child -> {
-                child.getComponent(MDTextLine.class).ifPresent(label -> {
-                    String text = label.line().text();
+            widget.getComponent(MDText.class).ifPresent(label -> {
+                String text = label.text().parts().getFirst().text();
 
-                    if (keyInput.action() == GLFW.GLFW_RELEASE)
-                        return;
+                if (keyInput.action() == GLFW.GLFW_RELEASE)
+                    return;
 
-                    if (keyInput.key() == GLFW.GLFW_KEY_BACKSPACE)
-                    {
-                        if (!text.isEmpty())
-                            text = text.substring(0, text.length() - 1);
-                    }
+                if (keyInput.key() == GLFW.GLFW_KEY_BACKSPACE)
+                {
+                    if (!text.isEmpty())
+                        text = text.substring(0, text.length() - 1);
+                }
 
-                    child.replaceComponent(label.replaceText(text));
-                });
+                label.replaceText(text, 0);
             });
         });
     }
@@ -340,11 +391,24 @@ public class BuiltinEventCalls
             return;
 
         widget.getChild("label").ifPresent(child -> {
-            Optional<MDTextLine> component = child.getComponent(MDTextLine.class);
+            Optional<MDText> component = child.getComponent(MDText.class);
             component.ifPresent(mdLine -> {
-                UITextLine line = mdLine.line();
-                child.addComponent(new MDTextLine(new UITextLine(line.text(), line.size(), FlareRegistries.FONT_STYLE.get(styleKey), line.anchor()), mdLine.offset()));
+                TextPart textPart = mdLine.text().parts().get(0);
+                FontStyleEntry styleEntry = FlareRegistries.FONT_STYLE.get(styleKey);
+                mdLine.replaceText(new TextPart(textPart.text(), textPart.size(), styleEntry), 0);
             });
+        });
+    }
+
+    private static void replaceStyleText(Widget widget, @Nullable Key styleKey)
+    {
+        if (styleKey == null)
+            return;
+
+        widget.getComponent(MDText.class).ifPresent(mdLine -> {
+            TextPart textPart = mdLine.text().parts().get(0);
+            FontStyleEntry styleEntry = FlareRegistries.FONT_STYLE.get(styleKey);
+            mdLine.replaceText(new TextPart(textPart.text(), textPart.size(), styleEntry), 0);
         });
     }
 

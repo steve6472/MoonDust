@@ -5,6 +5,7 @@ import steve6472.moondust.builtin.BuiltinEventCalls;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.Name;
 import steve6472.moondust.widget.component.event.*;
+import steve6472.test.DebugUILines;
 
 /**
  * Created by steve6472
@@ -31,23 +32,23 @@ public class TestEventCalls
         create(key("button/test_press"), (Widget widget, OnMouseRelease _) -> widget.getComponent(Name.class).ifPresentOrElse(name -> System.out.println("Button '" + name.value() + "' pressed!"), () -> System.out.println("Unnamed Button pressed!")));
 
 
-        create(key("checkbox/bounds_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugUILines.bounds));
-        create(key("checkbox/bounds"), (Widget widget, OnDataChange _) -> DebugUILines.bounds = widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED));
+        create(key("checkbox/bounds_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugWidgetUILines.bounds));
+        create(key("checkbox/bounds"), (Widget widget, OnDataChange _) -> DebugWidgetUILines.bounds = widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED));
 
-        create(key("checkbox/sprite_size_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugUILines.spriteSize));
-        create(key("checkbox/sprite_size"), (Widget widget, OnDataChange _) -> DebugUILines.spriteSize = widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED));
+        create(key("checkbox/sprite_size_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugWidgetUILines.spriteSize));
+        create(key("checkbox/sprite_size"), (Widget widget, OnDataChange _) -> DebugWidgetUILines.spriteSize = widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED));
 
-        create(key("checkbox/clickbox_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugUILines.clickbox));
-        create(key("checkbox/clickbox"), (Widget widget, OnDataChange _) -> DebugUILines.clickbox = widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED));
+        create(key("checkbox/clickbox_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugWidgetUILines.clickbox));
+        create(key("checkbox/clickbox"), (Widget widget, OnDataChange _) -> DebugWidgetUILines.clickbox = widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED));
 
-        create(key("checkbox/character_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugUILines.character));
-        create(key("checkbox/character"), (Widget widget, OnDataChange _) -> DebugUILines.character = widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED));
+        create(key("checkbox/character_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugUILines.CHARACTER.get()));
+        create(key("checkbox/character"), (Widget widget, OnDataChange _) -> DebugUILines.CHARACTER.setting().set(widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED)));
 
-        create(key("checkbox/text_line_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugUILines.textLine));
-        create(key("checkbox/text_line"), (Widget widget, OnDataChange _) -> DebugUILines.textLine = widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED));
+        create(key("checkbox/text_line_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugUILines.SEGMENT.get()));
+        create(key("checkbox/text_line"), (Widget widget, OnDataChange _) -> DebugUILines.SEGMENT.setting().set(widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED)));
 
-        create(key("checkbox/message_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugUILines.message));
-        create(key("checkbox/message"), (Widget widget, OnDataChange _) -> DebugUILines.message = widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED));
+        create(key("checkbox/message_init"), (Widget widget, OnInit _) -> checkboxInit(widget, DebugUILines.MESSAGE_ANCHORS.get()));
+        create(key("checkbox/message"), (Widget widget, OnDataChange _) -> DebugUILines.MESSAGE_ANCHORS.setting().set(widget.customData().getFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED)));
     }
 
     private static <T extends UIEvent> UIEventCall<T> create(Key key, UIEventCall<T> eventCall)

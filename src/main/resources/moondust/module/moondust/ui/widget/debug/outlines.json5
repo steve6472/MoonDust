@@ -75,7 +75,7 @@
 
             checkbox: {
                 on_press: "moondust:checkbox/character",
-                label: "character"
+                label: "Character"
             },
 
             events: [
@@ -96,7 +96,7 @@
 
             checkbox: {
                 on_press: "moondust:checkbox/text_line",
-                label: "text line"
+                label: "Segment"
             },
 
             events: [
@@ -117,7 +117,7 @@
 
             checkbox: {
                 on_press: "moondust:checkbox/message",
-                label: "message"
+                label: "Anchors"
             },
 
             events: [

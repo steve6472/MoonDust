@@ -7,33 +7,20 @@ import steve6472.flare.render.debug.DebugRender;
 import steve6472.flare.render.impl.UILineRenderImpl;
 import steve6472.moondust.widget.component.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by steve6472
  * Date: 12/19/2024
  * Project: MoonDust <br>
  */
-public class DebugUILines extends UILineRenderImpl
+public class DebugWidgetUILines extends UILineRenderImpl
 {
     private static final Vector4f BOUNDS = DebugRender.WHITE;
     private static final Vector4f SPRITE_SIZE = DebugRender.DARK_RED;
     private static final Vector4f CLICKBOX = DebugRender.DARK_GREEN;
-    private static final Vector4f CHARACTER = DebugRender.GOLD;
-    private static final Vector4f TEXT = DebugRender.BROWN;
-    private static final Vector4f MESSAGE = DebugRender.CORAL;
 
     public static boolean bounds = false;
     public static boolean spriteSize = false;
     public static boolean clickbox = false;
-    public static boolean character = false;
-    public static boolean textLine = false;
-    public static boolean message = false;
-
-    public static final List<Vector2i> CHARACTERS = new ArrayList<>(1024);
-    public static final List<Vector2i> TEXT_LINES = new ArrayList<>(512);
-    public static final List<Vector2i> MESSAGES = new ArrayList<>(256);
 
     @Override
     public void render()
@@ -72,42 +59,6 @@ public class DebugUILines extends UILineRenderImpl
                 });
             }
         });
-
-        if (character)
-        {
-            for (int i = 0; i < CHARACTERS.size() / 2; i++)
-            {
-                Vector2i start = CHARACTERS.get(i * 2);
-                Vector2i end = CHARACTERS.get(i * 2 + 1);
-                // start and end are already scaled
-                line(start, end, CHARACTER);
-            }
-            CHARACTERS.clear();
-        }
-
-        if (textLine)
-        {
-            for (int i = 0; i < TEXT_LINES.size() / 2; i++)
-            {
-                Vector2i start = TEXT_LINES.get(i * 2);
-                Vector2i end = TEXT_LINES.get(i * 2 + 1);
-                // start and end are already scaled
-                line(start, end, TEXT);
-            }
-            TEXT_LINES.clear();
-        }
-
-        if (message)
-        {
-            for (int i = 0; i < MESSAGES.size() / 2; i++)
-            {
-                Vector2i start = MESSAGES.get(i * 2);
-                Vector2i end = MESSAGES.get(i * 2 + 1);
-                // start and end are already scaled
-                line(start, end, MESSAGE);
-            }
-            MESSAGES.clear();
-        }
     }
 
     private void rectangleScaled(float x, float y, float width, float height, Vector4f color)

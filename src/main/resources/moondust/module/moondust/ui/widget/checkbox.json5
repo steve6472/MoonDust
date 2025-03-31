@@ -17,12 +17,12 @@
     focused_sprite: "moondust:generic_dark_pixel/generic/focus/square",
 
     clickable: true,
-    bounds: [7, 7],
+    bounds: [64, 7],
     sprite_size: [7, 7],
 
     events: [
-        { call: "moondust:label/init",           event: { type: "on_init" } },
-        { call: "moondust:label/change_enabled", event: { type: "on_enable_change" } },
+        { call: "moondust:text/init",           event: { type: "on_init" } },
+        { call: "moondust:text/change_enabled", event: { type: "on_enable_change" } },
         { call: "moondust:checkbox/init",        event: { type: "on_init" } },
         { call: "moondust:checkbox/on_toggle",   event: { type: "on_enable_change" } },
         {
@@ -39,34 +39,22 @@
         }
     ],
 
-    children: [
-        {
-            // Gets removed in label/init if label is empty
-            widget: "moondust:empty",
-            name: "label",
-            position: {
-                type: "anchored",
-                anchor: "left",
-                offset: [7, 0]
-            },
-            clickable: true,
-            bounds: [64, 7],
-            text_line: {
-                text: {
-                    text: "",
-                    style: "moondust:button/normal",
-                    anchor: "top_left"
-                },
-                offset: [1, 0]
-            },
-
-            events: [
+    text: {
+        text: {
+            parts: [
                 {
-                    call: "moondust:checkbox/toggle_parent",
-                    event: { type: "on_mouse_release" },
-                    condition: { states: { direct_hover: true } }
+                    text: "",
+                    style: "moondust:button/normal"
                 }
-            ]
+            ],
+            anchor: "top_left",
+            text_size: 6,
+            vertical_anchor: "text_height",
+            force_single_line: true
+        },
+        position: {
+            type: "absolute",
+            pos: [8, 1]
         }
-    ]
+    }
 }

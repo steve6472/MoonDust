@@ -10,13 +10,24 @@
     },
 
     bounds: [0, 0],
-    text_line: {
+
+    text: {
         text: {
-            text: "MoonDust",
-            style: "moondust:tiny_pixie2",
-            anchor: "top_left"
+            parts: [
+                {
+                    text: "MoonDust",
+                    style: "moondust:tiny_pixie2"
+                }
+            ],
+            anchor: "top_left",
+            text_size: 6,
+            vertical_anchor: "text_height",
+            force_single_line: true
         },
-        offset: [8, 1]
+        position: {
+            type: "absolute",
+            pos: [8, 1]
+        }
     },
 
     children: [
@@ -35,7 +46,7 @@
             position: {
                 type: "absolute",
                 pos: [0, 0]
-            },
+            }/*,
             text_line: {
                 text: {
                     text: "DEBUG",
@@ -43,7 +54,7 @@
                     anchor: "top_left"
                 },
                 offset: [64, 1]
-            }
+            }*/
         },
         {
             // The widget type, required
@@ -295,7 +306,7 @@
             bounds: [5, 9],
 
             spinner: {
-                label: "val: %value% (%min% + %max%)",
+                label: "val: %value% (%min% - %max%)",
                 label_shadow: false,
                 number_formats: "%.0f",
                 values: {

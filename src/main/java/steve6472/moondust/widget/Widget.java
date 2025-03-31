@@ -174,7 +174,14 @@ public class Widget implements WidgetComponentGetter
                 T event = override == null ? eventType.cast(e.event()) : override;
                 if (test.test(event))
                 {
-                    uiEventCall.call(this, event);
+                    try
+                    {
+                        uiEventCall.call(this, event);
+                    } catch (ClassCastException ex)
+                    {
+                        LOGGER.severe("CCE during " + e.call());
+                        ex.printStackTrace();
+                    }
                 }
             } else
             {
