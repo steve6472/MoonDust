@@ -134,43 +134,6 @@ public class BuiltinEventCalls
         });
 
         /*
-         * Checkbox
-         */
-        create(key("checkbox/toggle"), (Widget widget, OnMouseRelease _) -> {
-            if (!widget.isEnabled()) return;
-            boolean checked = widget.customData().getFlag(Keys.CHECKBOX_CHECKED);
-            // Calls checkbox/on_toggle
-            widget.customData().putFlag(Keys.CHECKBOX_CHECKED, !checked);
-        });
-
-        create(key("checkbox/toggle_parent"), (Widget widget, OnMouseRelease _) -> {
-            widget.parent().ifPresent(parent -> {
-                if (!parent.isEnabled()) return;
-                boolean checked = parent.customData().getFlag(Keys.CHECKBOX_CHECKED);
-                // Calls checkbox/on_toggle
-                parent.customData().putFlag(Keys.CHECKBOX_CHECKED, !checked);
-            });
-        });
-
-        // Handles disabling as well
-        create(key("checkbox/on_toggle"), (Widget widget, OnDataChange _) -> {
-            boolean checked = widget.customData().getFlag(Keys.CHECKBOX_CHECKED);
-            if (checked)
-                setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_CHECKED : ID.SPRITE_CHECKED_DISABLED);
-            else
-                setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_UNCHECKED : ID.SPRITE_UNCHECKED_DISBLED);
-        });
-
-        // Handles disabling as well
-        create(key("checkbox/init"), (Widget widget, OnInit _) -> {
-            boolean checked = widget.customData().getFlag(Keys.CHECKBOX_CHECKED);
-            if (checked)
-                setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_CHECKED : ID.SPRITE_CHECKED_DISABLED);
-            else
-                setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_UNCHECKED : ID.SPRITE_UNCHECKED_DISBLED);
-        });
-
-        /*
          * Text field
          */
         create(key("text_field/char_input"), (Widget widget, OnCharInput charInput) -> {
