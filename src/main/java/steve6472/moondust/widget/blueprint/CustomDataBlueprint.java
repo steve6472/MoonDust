@@ -23,7 +23,7 @@ public record CustomDataBlueprint(Map<Key, String> strings, Map<Key, Float> floa
 
     public static final Codec<CustomDataBlueprint> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ExtraCodecs.mapListCodec(Key.CODEC, Codec.STRING).optionalFieldOf("strings", new HashMap<>()).forGetter(CustomDataBlueprint::strings),
-        ExtraCodecs.mapListCodec(Key.CODEC, Codec.FLOAT).optionalFieldOf("floats", new HashMap<>()).forGetter(CustomDataBlueprint::floats),
+        ExtraCodecs.mapListCodec(Key.CODEC, Codec.FLOAT).optionalFieldOf("nums", new HashMap<>()).forGetter(CustomDataBlueprint::floats),
         ExtraCodecs.mapListCodec(Key.CODEC, Codec.INT).optionalFieldOf("ints", new HashMap<>()).forGetter(CustomDataBlueprint::ints),
         ExtraCodecs.mapListCodec(Key.CODEC, Codec.BOOL).optionalFieldOf("flags", new HashMap<>()).forGetter(CustomDataBlueprint::flags)
     ).apply(instance, CustomDataBlueprint::new));
@@ -33,7 +33,7 @@ public record CustomDataBlueprint(Map<Key, String> strings, Map<Key, Float> floa
     {
         CustomData data = new CustomData();
         strings.forEach(data::putString);
-        floats.forEach(data::putFloat);
+        floats.forEach(data::putDouble);
         ints.forEach(data::putInt);
         flags.forEach(data::putFlag);
         return List.of(data);

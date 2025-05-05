@@ -1,6 +1,5 @@
 package steve6472.moondust.widget.component;
 
-import org.joml.Vector2i;
 import steve6472.flare.ui.font.render.Text;
 import steve6472.flare.ui.font.render.TextPart;
 import steve6472.moondust.widget.component.position.Position;

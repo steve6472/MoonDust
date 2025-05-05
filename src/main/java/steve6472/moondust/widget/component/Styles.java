@@ -1,5 +1,7 @@
 package steve6472.moondust.widget.component;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import steve6472.core.registry.Key;
 import steve6472.moondust.core.Mergeable;
 
@@ -13,6 +15,8 @@ import java.util.Map;
  */
 public record Styles(Map<String, Key> styles) implements Mergeable<Styles>
 {
+    public static final Codec<Styles> CODEC = Codec.unboundedMap(Codec.STRING, Key.CODEC).xmap(Styles::new, Styles::styles);
+
     @Override
     public Styles merge(Styles left, Styles right)
     {

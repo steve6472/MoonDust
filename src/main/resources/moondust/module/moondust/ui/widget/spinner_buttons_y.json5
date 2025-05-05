@@ -4,37 +4,9 @@
         disabled: "moondust:button/disabled"
     },
 
-    events: [
-        { call: "moondust:text/change_enabled_no_hover", event: { type: "on_enable_change" } },
-        { call: "moondust:spinner/change_enabled", event: { type: "on_enable_change" } },
-        {
-            call: "moondust:spinner/init",
-            event: { type: "on_init" }
-        },
-        {
-            call: "moondust:spinner/verify_bounds",
-            event: {
-                type: "on_data_change",
-                floats: [
-                    "moondust:spinner/value",
-                    "moondust:spinner/min",
-                    "moondust:spinner/max"
-                ]
-            }
-        },
-        {
-            call: "moondust:spinner/update_label",
-            event: {
-                type: "on_data_change",
-                floats: [
-                    "moondust:spinner/value",
-                    "moondust:spinner/min",
-                    "moondust:spinner/max",
-                    "moondust:spinner/increment"
-                ]
-            }
-        }
-    ],
+    scripts: {
+        "script": "moondust:widget/spinner"
+    },
 
     text: {
         text: {
@@ -75,7 +47,7 @@
             },
 
             button: {
-                on_press: "moondust:spinner/increment"
+                press_script: "moondust:widget/spinner_change"
             }
         },
         {
@@ -99,7 +71,7 @@
             },
 
             button: {
-                on_press: "moondust:spinner/decrement"
+                press_script: "moondust:widget/spinner_change"
             }
         }
     ]

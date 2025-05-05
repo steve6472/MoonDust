@@ -5,7 +5,6 @@ import org.lwjgl.glfw.GLFW;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.flare.registry.FlareRegistries;
-import steve6472.flare.ui.font.render.Text;
 import steve6472.flare.ui.font.render.TextPart;
 import steve6472.flare.ui.font.style.FontStyleEntry;
 import steve6472.moondust.*;
@@ -172,80 +171,6 @@ public class BuiltinEventCalls
         });
 
         /*
-         * Spinner
-         */
-
-        Consumer<Widget> updateLabel = widget -> {
-            widget.getComponent(MDText.class).ifPresent(label -> {
-                CustomData data = widget.customData();
-                String unformattedLabel = data.getString(Keys.GENERIC_LABEL);
-                if (unformattedLabel == null) return;
-
-                String valueNumberFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_VALUE)).orElse(DEFAULT_NUMBER_FORMAT);
-                String minFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_MIN)).orElse(DEFAULT_NUMBER_FORMAT);
-                String maxFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_MAX)).orElse(DEFAULT_NUMBER_FORMAT);
-                String incrementFormat = Optional.ofNullable(data.getString(Keys.SPINNER_NUMBER_FORMAT_INCREMENT)).orElse(DEFAULT_NUMBER_FORMAT);
-
-                unformattedLabel = unformattedLabel.replace("%value%", valueNumberFormat.formatted(data.getFloat(Keys.SPINNER_VALUE)));
-                unformattedLabel = unformattedLabel.replace("%min%", minFormat.formatted(data.getFloat(Keys.SPINNER_MIN)));
-                unformattedLabel = unformattedLabel.replace("%max%", maxFormat.formatted(data.getFloat(Keys.SPINNER_MAX)));
-                unformattedLabel = unformattedLabel.replace("%increment%", incrementFormat.formatted(data.getFloat(Keys.SPINNER_INCREMENT)));
-
-                label.replaceText(unformattedLabel, 0);
-            });
-        };
-
-        create(key("spinner/update_label"), (Widget widget, OnDataChange _) -> updateLabel.accept(widget));
-        create(key("spinner/init"), (Widget widget, OnInit _) ->
-        {
-            updateLabel.accept(widget);
-            replaceStyle(widget, pickStyle(widget, Tristate.FALSE));
-        });
-
-        create(key("spinner/increment"), (Widget widget, OnMouseRelease _) -> {
-            widget.parent().ifPresent(parent -> {
-                CustomData data = parent.customData();
-                float increment = data.getFloat(Keys.SPINNER_INCREMENT);
-                float value = data.getFloat(Keys.SPINNER_VALUE);
-
-                // Calls spinner/verify_bounds
-                data.putFloat(Keys.SPINNER_VALUE, value + increment);
-            });
-        });
-
-        create(key("spinner/decrement"), (Widget widget, OnMouseRelease _) -> {
-            widget.parent().ifPresent(parent -> {
-                CustomData data = parent.customData();
-                float increment = data.getFloat(Keys.SPINNER_INCREMENT);
-                float value = data.getFloat(Keys.SPINNER_VALUE);
-
-                // Calls spinner/verify_bounds
-                data.putFloat(Keys.SPINNER_VALUE, value - increment);
-            });
-        });
-
-        create(key("spinner/verify_bounds"), (Widget widget, OnDataChange _) -> {
-            CustomData data = widget.customData();
-            float value = data.getFloat(Keys.SPINNER_VALUE);
-            float min = data.getFloat(Keys.SPINNER_MIN);
-            float max = data.getFloat(Keys.SPINNER_MAX);
-
-            // invalid state, do nothing, prevent recursion
-            if (max <= min)
-                return;
-
-            if (value > max)
-                data.putFloat(Keys.SPINNER_VALUE, max);
-            if (value < min)
-                data.putFloat(Keys.SPINNER_VALUE, min);
-        });
-
-        create(key("spinner/change_enabled"), (Widget widget, OnEnableStateChange _) -> {
-            widget.getChild("up").ifPresent(child -> child.setEnabled(widget.isEnabled()));
-            widget.getChild("down").ifPresent(child -> child.setEnabled(widget.isEnabled()));
-        });
-
-        /*
          * Text field
          */
         create(key("text_field/char_input"), (Widget widget, OnCharInput charInput) -> {
@@ -367,7 +292,11 @@ public class BuiltinEventCalls
 
     private static Key pickStyle(Widget widget, Tristate hoverOverride)
     {
-        boolean hover = hoverOverride == Tristate.IGNORE ? !widget.internalStates().hovered : (hoverOverride == Tristate.TRUE);
+        boolean hover;
+        if (hoverOverride == Tristate.IGNORE)
+            hover = !widget.internalStates().hovered;
+        else
+            hover = hoverOverride == Tristate.TRUE;
 
         Optional<Styles> stylesOpt = widget.getComponent(Styles.class);
 

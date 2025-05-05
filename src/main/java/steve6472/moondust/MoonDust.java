@@ -2,7 +2,7 @@ package steve6472.moondust;
 
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
-import steve6472.flare.FlareExport;
+import steve6472.core.util.JarExport;
 import steve6472.moondust.core.MoonDustKeybinds;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
@@ -210,7 +210,7 @@ public class MoonDust
     /// Should be called before Flare.start()
     public void init() throws IOException, URISyntaxException
     {
-        FlareExport.exportFolder("moondust/module", MoonDustConstants.MOONDUST_MODULE);
+        JarExport.exportFolder("moondust/module", MoonDustConstants.MOONDUST_MODULE);
     }
 
     public static MoonDust getInstance()

@@ -1,13 +1,17 @@
 package steve6472.moondust.widget.component;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2FloatArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import org.jetbrains.annotations.ApiStatus;
 import steve6472.core.registry.Key;
+import steve6472.core.util.ExtraCodecs;
 import steve6472.moondust.core.Mergeable;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.event.OnDataChange;
+import steve6472.moondust.widget.component.event.OnDataChanged;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,45 +23,71 @@ import java.util.Map;
  */
 public class CustomData implements Mergeable<CustomData>
 {
-    public final Object2FloatArrayMap<Key> floats = new Object2FloatArrayMap<>();
+    public final Object2DoubleArrayMap<Key> doubles = new Object2DoubleArrayMap<>();
     public final Object2IntArrayMap<Key> ints = new Object2IntArrayMap<>();
     public final Map<Key, String> strings = new HashMap<>();
     public final Object2BooleanArrayMap<Key> flags = new Object2BooleanArrayMap<>();
+
+    public static final Codec<CustomData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        ExtraCodecs.mapListCodec(Key.CODEC, Codec.STRING).optionalFieldOf("strings", new HashMap<>()).forGetter(c -> c.strings),
+        ExtraCodecs.mapListCodec(Key.CODEC, Codec.DOUBLE).optionalFieldOf("nums", new HashMap<>()).forGetter(c -> c.doubles),
+        ExtraCodecs.mapListCodec(Key.CODEC, Codec.INT).optionalFieldOf("ints", new HashMap<>()).forGetter(c -> c.ints),
+        ExtraCodecs.mapListCodec(Key.CODEC, Codec.BOOL).optionalFieldOf("flags", new HashMap<>()).forGetter(c -> c.flags)
+    ).apply(instance, (strs, dbls, nts, flgs) -> {
+        CustomData data = new CustomData();
+        data.strings.putAll(strs);
+        data.doubles.putAll(dbls);
+        data.ints.putAll(nts);
+        data.flags.putAll(flgs);
+        return data;
+    }));
 
     @ApiStatus.Internal
     public Widget widget;
 
     public CustomData()
     {
-        floats.defaultReturnValue(0f);
+        doubles.defaultReturnValue(0.0);
         ints.defaultReturnValue(0);
         flags.defaultReturnValue(false);
     }
 
-    public void putFloat(Key key, float value)
+    public void putDouble(Key key, double value)
     {
-        if (floats.put(key, value) != value)
+        double previous = doubles.put(key, value);
+        if (previous != value)
         {
             if (widget != null)
+            {
                 widget.handleEvents(OnDataChange.class, event -> event.floats().contains(key));
+                widget.handleEvents(OnDataChanged.class, _ -> true, new OnDataChanged.Num(key, previous, value, false));
+            }
         }
     }
 
     public void putInt(Key key, int value)
     {
-        if (ints.put(key, value) != value)
+        int previous = ints.put(key, value);
+        if (previous != value)
         {
             if (widget != null)
+            {
                 widget.handleEvents(OnDataChange.class, event -> event.ints().contains(key));
+                widget.handleEvents(OnDataChanged.class, _ -> true, new OnDataChanged.Int(key, previous, value, false));
+            }
         }
     }
 
     public void putString(Key key, String value)
     {
-        if (!value.equals(strings.put(key, value)))
+        String previous = strings.put(key, value);
+        if (!value.equals(previous))
         {
             if (widget != null)
+            {
                 widget.handleEvents(OnDataChange.class, event -> event.strings().contains(key));
+                widget.handleEvents(OnDataChanged.class, _ -> true, new OnDataChanged.String(key, previous, value, false));
+            }
         }
     }
 
@@ -66,13 +96,16 @@ public class CustomData implements Mergeable<CustomData>
         if (flags.put(key, value) != value)
         {
             if (widget != null)
+            {
                 widget.handleEvents(OnDataChange.class, event -> event.flags().contains(key));
+                widget.handleEvents(OnDataChanged.class, _ -> true, new OnDataChanged.Flag(key, !value, value, false));
+            }
         }
     }
 
-    public float getFloat(Key key)
+    public double getDouble(Key key)
     {
-        return floats.getFloat(key);
+        return doubles.getDouble(key);
     }
 
     public int getInt(Key key)
@@ -90,36 +123,44 @@ public class CustomData implements Mergeable<CustomData>
         return flags.getBoolean(key);
     }
 
-    public float removeFloat(Key key)
+    public double removeDouble(Key key)
     {
-        //TODO OnDataRemove event
-        return floats.removeFloat(key);
+        double previous = doubles.removeDouble(key);
+        if (widget != null)
+            widget.handleEvents(OnDataChanged.class, _ -> true, new OnDataChanged.Num(key, previous, 0, true));
+        return previous;
     }
 
     public int removeInt(Key key)
     {
-        //TODO OnDataRemove event
-        return ints.removeInt(key);
+        int previous = ints.removeInt(key);
+        if (widget != null)
+            widget.handleEvents(OnDataChanged.class, _ -> true, new OnDataChanged.Int(key, previous, 0, true));
+        return previous;
     }
 
     public String removeString(Key key)
     {
-        //TODO OnDataRemove event
-        return strings.remove(key);
+        String previous = strings.remove(key);
+        if (widget != null)
+            widget.handleEvents(OnDataChanged.class, _ -> true, new OnDataChanged.String(key, previous, null, true));
+        return previous;
     }
 
     public boolean removeFlag(Key key)
     {
-        //TODO OnDataRemove event
-        return flags.removeBoolean(key);
+        boolean previous = flags.removeBoolean(key);
+        if (widget != null)
+            widget.handleEvents(OnDataChanged.class, _ -> true, new OnDataChanged.Flag(key, previous, false, true));
+        return previous;
     }
 
     @Override
     public CustomData merge(CustomData left, CustomData right)
     {
         CustomData data = new CustomData();
-        data.floats.putAll(left.floats);
-        data.floats.putAll(right.floats);
+        data.doubles.putAll(left.doubles);
+        data.doubles.putAll(right.doubles);
         data.ints.putAll(left.ints);
         data.ints.putAll(right.ints);
         data.strings.putAll(left.strings);
@@ -132,6 +173,6 @@ public class CustomData implements Mergeable<CustomData>
     @Override
     public String toString()
     {
-        return "CustomData{" + "floats=" + floats + ", ints=" + ints + ", strings=" + strings + ", flags=" + flags + '}';
+        return "CustomData{" + "nums=" + doubles + ", ints=" + ints + ", strings=" + strings + ", flags=" + flags + '}';
     }
 }

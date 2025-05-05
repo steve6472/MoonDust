@@ -1,5 +1,6 @@
 package steve6472.moondust;
 
+import steve6472.core.SteveCore;
 import steve6472.core.registry.Key;
 import steve6472.flare.FlareConstants;
 
@@ -17,7 +18,7 @@ public class MoonDustConstants
     /// Root folder for generated resources
     public static final File GENERATED_MOONDUST = new File(FlareConstants.GENERATED_FOLDER, NAMESPACE);
 
-    public static final File MOONDUST_MODULE = new File(FlareConstants.MODULES, NAMESPACE);
+    public static final File MOONDUST_MODULE = new File(SteveCore.MODULES, NAMESPACE);
 
     public static Key key(String id)
     {

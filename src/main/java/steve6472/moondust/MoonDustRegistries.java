@@ -7,7 +7,10 @@ import steve6472.flare.input.Keybind;
 import steve6472.flare.registry.RegistryCreators;
 import steve6472.moondust.builtin.BuiltinBlueprints;
 import steve6472.moondust.core.MoonDustKeybinds;
+import steve6472.moondust.luau.LuaScriptLoader;
+import steve6472.moondust.luau.ProfiledScript;
 import steve6472.moondust.widget.BlueprintOverrides;
+import steve6472.moondust.widget.MoonDustComponents;
 import steve6472.moondust.widget.blueprint.layout.LayoutType;
 import steve6472.moondust.widget.blueprint.event.UIEventType;
 import steve6472.moondust.widget.blueprint.position.PositionType;
@@ -28,6 +31,11 @@ import java.util.Map;
  */
 public class MoonDustRegistries extends RegistryCreators
 {
+    static
+    {
+        MoonDustComponents.init();
+    }
+
     /* Types */
     public static final Registry<PositionType<?>> POSITION_TYPE = createRegistry(key("position_type"), () -> PositionType.ABSOLUTE);
     public static final Registry<LayoutType<?>> LAYOUT_TYPE = createRegistry(key("layout_type"), () -> LayoutType.ABSOLUTE);
@@ -43,6 +51,7 @@ public class MoonDustRegistries extends RegistryCreators
     });
 
     public static final ObjectRegistry<BlueprintFactory> WIDGET_FACTORY = createObjectRegistry(key("widget_factory"), WidgetLoader::load);
+    public static final ObjectRegistry<ProfiledScript> LUA_SCRIPTS = createObjectRegistry(key("lua_scripts"), LuaScriptLoader::load);
 
     public static final Map<Key, UIEventCall<?>> EVENT_CALLS = new HashMap<>();
 

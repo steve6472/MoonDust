@@ -1,6 +1,9 @@
 package steve6472.moondust.widget.component;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import steve6472.core.registry.Key;
+import steve6472.core.util.ExtraCodecs;
 import steve6472.moondust.core.Mergeable;
 
 import java.util.HashMap;
@@ -13,6 +16,8 @@ import java.util.Map;
  */
 public record Sprites(Map<String, Key> sprites) implements Mergeable<Sprites>
 {
+    public static final Codec<Sprites> CODEC = Codec.unboundedMap(Codec.STRING, Key.CODEC).xmap(Sprites::new, Sprites::sprites);
+
     @Override
     public Sprites merge(Sprites left, Sprites right)
     {

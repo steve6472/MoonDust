@@ -2,16 +2,17 @@ package steve6472.moondust.widget;
 
 import org.joml.Vector2i;
 import steve6472.core.log.Log;
+import steve6472.core.module.Module;
+import steve6472.core.module.ResourceCrawl;
 import steve6472.core.registry.Key;
 import steve6472.flare.core.Flare;
-import steve6472.flare.module.Module;
-import steve6472.flare.util.ResourceCrawl;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.core.blueprint.BlueprintEntry;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.core.blueprint.DefaultBlueprint;
 import steve6472.moondust.widget.blueprint.*;
+import steve6472.moondust.widget.blueprint.event.EventsBlueprint;
 import steve6472.moondust.widget.blueprint.flag.ClickableBlueprint;
 import steve6472.moondust.widget.blueprint.flag.FocusableBlueprint;
 import steve6472.moondust.widget.blueprint.layout.LayoutBlueprint;
@@ -139,6 +140,8 @@ public class WidgetLoader
                 });
             }
         });
+
+        find(blueprints, EventsBlueprint.class).ifPresent(_ -> LOGGER.warning("Widget %s contains events component, these will be removed in the future!".formatted(key)));
     }
 
     // Position is checked separately due to being typed and different layouts requiring different position types

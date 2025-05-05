@@ -17,7 +17,7 @@ import java.util.List;
 public record OnDataChangeBlueprint(List<Key> floats, List<Key> ints, List<Key> strings, List<Key> flags) implements UIEventBlueprint
 {
     public static final Codec<OnDataChangeBlueprint> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Key.CODEC.listOf().optionalFieldOf("floats", List.of()).forGetter(OnDataChangeBlueprint::floats),
+        Key.CODEC.listOf().optionalFieldOf("nums", List.of()).forGetter(OnDataChangeBlueprint::floats),
         Key.CODEC.listOf().optionalFieldOf("ints", List.of()).forGetter(OnDataChangeBlueprint::ints),
         Key.CODEC.listOf().optionalFieldOf("strings", List.of()).forGetter(OnDataChangeBlueprint::strings),
         Key.CODEC.listOf().optionalFieldOf("flags", List.of()).forGetter(OnDataChangeBlueprint::flags)

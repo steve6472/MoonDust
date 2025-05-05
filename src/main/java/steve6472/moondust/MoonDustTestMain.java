@@ -20,11 +20,20 @@ public class MoonDustTestMain
     public static void main(String[] args) throws IOException, URISyntaxException
     {
         System.setProperty("joml.format", "false");
-        try (var dirStream = Files.walk(Paths.get("modules/moondust"))) {
-            dirStream
-                .map(Path::toFile)
-                .sorted(Comparator.reverseOrder())
-                .forEach(File::delete);
+        if (new File("modules/moondust").exists())
+        {
+            try (var dirStream = Files.walk(Paths.get("modules/moondust"))) {
+                dirStream
+                    .map(Path::toFile)
+                    .sorted(Comparator.reverseOrder())
+                    .forEach(file ->
+                    {
+                        if (!file.delete())
+                        {
+                            System.err.println("Failed to delete " + file.getAbsolutePath());
+                        }
+                    });
+            }
         }
         MoonDust.getInstance().init();
         Flare.start(new MoonDustTest());

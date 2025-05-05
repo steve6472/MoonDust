@@ -1,5 +1,7 @@
 package steve6472.moondust.widget;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 import steve6472.core.log.Log;
@@ -8,6 +10,8 @@ import steve6472.moondust.ComponentRedirect;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.core.Mergeable;
 import steve6472.moondust.core.blueprint.Blueprint;
+import steve6472.moondust.luau.ProfiledScript;
+import steve6472.moondust.luau.global.LuaWidget;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 import steve6472.moondust.widget.component.flag.Clickable;
@@ -16,6 +20,9 @@ import steve6472.moondust.widget.component.flag.Focusable;
 import steve6472.moondust.widget.component.flag.Visible;
 import steve6472.moondust.widget.component.position.Position;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
+import steve6472.radiant.LuaTableOps;
+import steve6472.radiant.LuauTable;
+import steve6472.radiant.LuauUserObject;
 
 import java.util.*;
 import java.util.function.Function;
@@ -176,6 +183,7 @@ public class Widget implements WidgetComponentGetter
                 {
                     try
                     {
+
                         uiEventCall.call(this, event);
                     } catch (ClassCastException ex)
                     {
@@ -188,6 +196,43 @@ public class Widget implements WidgetComponentGetter
                 LOGGER.warning("No event call found for " + e.call());
             }
         });
+
+        getComponent(Scripts.class).ifPresent(scripts -> {
+
+            scripts.scripts().forEach((name, key) -> {
+                ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPTS.get(key);
+                if (profiledScript == null || !profiledScript.enabled())
+                    return;
+                UIEventEnum eventEnum = UIEventEnum.getEnumByType(eventType);
+
+                try
+                {
+                    profiledScript.run(eventEnum.id, LuaWidget.createObject(this), eventToUserObject(override));
+                } catch (RuntimeException ex)
+                {
+                    LOGGER.severe("Exception thrown for %s : %s in widget %s".formatted(name, key, getPath()));
+                    ex.printStackTrace();
+                }
+            });
+        });
+    }
+
+    private Object eventToUserObject(Object e)
+    {
+        if (e == null)
+            return new LuauUserObject("null");
+        else if (e instanceof OnDataChanged<?> changed)
+        {
+            Codec<?> codec = changed.codec();
+            //noinspection unchecked, rawtypes
+            DataResult<Object> objectDataResult = ((Codec) codec).encodeStart(LuaTableOps.INSTANCE, e);
+            LuauTable table = (LuauTable) objectDataResult.getOrThrow();
+            if (changed.removed)
+                table.table().remove("new");
+            return table;
+        }
+        else
+            throw new RuntimeException("Event to user object not done for " + e);
     }
 
     /*

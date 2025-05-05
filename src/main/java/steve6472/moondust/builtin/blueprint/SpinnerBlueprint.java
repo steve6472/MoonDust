@@ -12,7 +12,6 @@ import steve6472.moondust.widget.component.Styles;
 import steve6472.moondust.widget.component.event.OnDataChange;
 import steve6472.moondust.widget.component.event.UIEventCallEntry;
 import steve6472.moondust.widget.component.event.UIEvents;
-import steve6472.moondust.widget.component.flag.Clickable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,10 +47,10 @@ public record SpinnerBlueprint(Key pressCall, String label, boolean labelShadow,
         }
 
         CustomData data = new CustomData();
-        data.putFloat(BuiltinEventCalls.Keys.SPINNER_MIN, values.min);
-        data.putFloat(BuiltinEventCalls.Keys.SPINNER_MAX, values.max);
-        data.putFloat(BuiltinEventCalls.Keys.SPINNER_VALUE, values.value);
-        data.putFloat(BuiltinEventCalls.Keys.SPINNER_INCREMENT, values.increment);
+        data.putDouble(BuiltinEventCalls.Keys.SPINNER_MIN, values.min);
+        data.putDouble(BuiltinEventCalls.Keys.SPINNER_MAX, values.max);
+        data.putDouble(BuiltinEventCalls.Keys.SPINNER_VALUE, values.value);
+        data.putDouble(BuiltinEventCalls.Keys.SPINNER_INCREMENT, values.increment);
 
         data.putString(BuiltinEventCalls.Keys.GENERIC_LABEL, label);
         data.putString(BuiltinEventCalls.Keys.SPINNER_NUMBER_FORMAT_MIN, numberFormats.min);
