@@ -51,47 +51,11 @@ public class BuiltinEventCalls
         create(key("icon/change_enabled_no_hover"), (Widget widget, OnEnableStateChange _) -> setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_NORMAL : ID.SPRITE_DISABLED));
 
         /*
-         * Label
-         */
-        create(key("label/hover/on"),  (Widget widget, OnMouseEnter _) -> replaceStyle(widget, pickStyle(widget)));
-        create(key("label/hover/off"), (Widget widget, OnMouseLeave _) -> replaceStyle(widget, pickStyle(widget)));
-        create(key("label/change_enabled"), (Widget widget, OnEnableStateChange _) -> replaceStyle(widget, pickStyle(widget)));
-        create(key("label/change_enabled_no_hover"), (Widget widget, OnEnableStateChange _) -> replaceStyle(widget, pickStyle(widget, Tristate.FALSE)));
-        create(key("label/init"), (Widget widget, OnInit _) -> {
-            widget.getChild("label").ifPresent(child -> {
-                Optional<MDText> component = child.getComponent(MDText.class);
-                component.ifPresent(mdLine -> {
-                    CustomData customData = widget.customData();
-                    String label = customData.getString(Keys.GENERIC_LABEL);
-                    if (label == null)
-                    {
-                        widget.removeChild("label");
-                        return;
-                    }
-                    mdLine.replaceText(label, 0);
-                    Bounds bounds = child.getComponent(Bounds.class).orElseThrow();
-                    child.addComponent(new MDText(mdLine.text().withMaxWidth(bounds.width), mdLine.position()));
-                });
-            });
-            replaceStyle(widget, pickStyle(widget, (widget.internalStates().hovered || widget.internalStates().directHover) ? Tristate.TRUE : Tristate.FALSE));
-        });
-        create(key("label/copy_parent_height"), (Widget widget, OnInit _) -> {
-            widget.getChild("label").ifPresent(child -> {
-                child.getComponent(MDText.class).ifPresent(mdText -> {
-                    widget.getComponent(Bounds.class).ifPresent(bounds -> {
-                        child.addComponent(new MDText(mdText.text().withMaxHeight(bounds.height), mdText.position()));
-                    });
-                });
-            });
-        });
-
-        /*
          * Text
          */
         create(key("text/hover/on"),  (Widget widget, OnMouseEnter _) -> replaceStyleText(widget, pickStyle(widget)));
         create(key("text/hover/off"), (Widget widget, OnMouseLeave _) -> replaceStyleText(widget, pickStyle(widget)));
         create(key("text/change_enabled"), (Widget widget, OnEnableStateChange _) -> replaceStyleText(widget, pickStyle(widget)));
-        create(key("text/change_enabled_no_hover"), (Widget widget, OnEnableStateChange _) -> replaceStyleText(widget, pickStyle(widget, Tristate.FALSE)));
         create(key("text/init"), (Widget widget, OnInit _) -> {
             Optional<MDText> component = widget.getComponent(MDText.class);
             component.ifPresent(mdLine -> {
@@ -107,28 +71,10 @@ public class BuiltinEventCalls
             });
             replaceStyle(widget, pickStyle(widget, (widget.internalStates().hovered || widget.internalStates().directHover) ? Tristate.TRUE : Tristate.FALSE));
         });
-        create(key("text/copy_height"), (Widget widget, OnInit _) -> {
-            widget.getComponent(MDText.class).ifPresent(mdText -> {
-                widget.getComponent(Bounds.class).ifPresent(bounds -> {
-                    widget.addComponent(new MDText(mdText.text().withMaxHeight(bounds.height), mdText.position()));
-                });
-            });
-        });
         create(key("text/copy_width"), (Widget widget, OnInit _) -> {
             widget.getComponent(MDText.class).ifPresent(mdText -> {
                 widget.getComponent(Bounds.class).ifPresent(bounds -> {
                     widget.addComponent(new MDText(mdText.text().withMaxWidth(bounds.width), mdText.position()));
-                });
-            });
-        });
-
-        /*
-         * Button
-         */
-        create(key("button/init"), (Widget widget, OnInit _) -> {
-            widget.getChild("label").ifPresent(child -> {
-                widget.getComponent(Bounds.class).ifPresent(bounds -> {
-                    child.setBounds(bounds.width - 4, bounds.height - 4);
                 });
             });
         });

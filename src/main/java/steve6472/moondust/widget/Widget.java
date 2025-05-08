@@ -201,7 +201,14 @@ public class Widget implements WidgetComponentGetter
 
             scripts.scripts().forEach((name, key) -> {
                 ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPTS.get(key);
-                if (profiledScript == null || !profiledScript.enabled())
+                if (profiledScript == null)
+                {
+                    // TODO: print once
+                    LOGGER.warning("Could not find script " + key);
+                    return;
+                }
+
+                if (!profiledScript.enabled())
                     return;
                 UIEventEnum eventEnum = UIEventEnum.getEnumByType(eventType);
 

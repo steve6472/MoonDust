@@ -110,24 +110,14 @@
             data: {
                 strings: {
                     "radio_button:label": "6"
+                },
+                nums: {
+                    "moondust:debug/set_pixel_scale": 6
                 }
             },
 
-            // TODO: replace with custom component
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:radio/scale_6",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        }
-                    ]
-                }
+            scripts: {
+                "set_scale_press": "moondust:debug/set_pixel_scale"
             }
         },
         {
@@ -145,23 +135,14 @@
             data: {
                 strings: {
                     "radio_button:label": "4"
+                },
+                nums: {
+                    "moondust:debug/set_pixel_scale": 4
                 }
             },
 
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:radio/scale_4",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        }
-                    ]
-                }
+            scripts: {
+                "set_scale_press": "moondust:debug/set_pixel_scale"
             }
         },
         {
@@ -179,23 +160,14 @@
             data: {
                 strings: {
                     "radio_button:label": "2"
+                },
+                nums: {
+                    "moondust:debug/set_pixel_scale": 2
                 }
             },
 
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:radio/scale_2",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        }
-                    ]
-                }
+            scripts: {
+                "set_scale_press": "moondust:debug/set_pixel_scale"
             }
         },
         {
@@ -213,23 +185,14 @@
             data: {
                 strings: {
                     "radio_button:label": "1"
+                },
+                nums: {
+                    "moondust:debug/set_pixel_scale": 1
                 }
             },
 
-            overrides: {
-                events: {
-                    add: [
-                        {
-                            call: "moondust:radio/scale_1",
-                            event: { type: "on_mouse_release" },
-                            condition: {
-                                states: {
-                                    direct_hover: true
-                                }
-                            }
-                        }
-                    ]
-                }
+            scripts: {
+                "set_scale_press": "moondust:debug/set_pixel_scale"
             }
         },
         {

@@ -11,16 +11,15 @@
             },
 
             checkbox: {
-                on_press: "moondust:checkbox/bounds",
+                press_script: "moondust:debug/lines_widget",
                 label: "bounds"
             },
 
-            events: [
-                {
-                    call: "moondust:checkbox/bounds_init",
-                    event: { type: "on_init" }
+            data: {
+                strings: {
+                    "moondust:debug/widget_ui_lines": "bounds"
                 }
-            ]
+            }
         },
         {
             widget: "moondust:checkbox",
@@ -32,16 +31,15 @@
             },
 
             checkbox: {
-                on_press: "moondust:checkbox/sprite_size",
+                press_script: "moondust:debug/lines_widget",
                 label: "sprite size"
             },
 
-            events: [
-                {
-                    call: "moondust:checkbox/sprite_size_init",
-                    event: { type: "on_init" }
+            data: {
+                strings: {
+                    "moondust:debug/widget_ui_lines": "spriteSize"
                 }
-            ]
+            }
         },
         {
             widget: "moondust:checkbox",
@@ -53,16 +51,15 @@
             },
 
             checkbox: {
-                on_press: "moondust:checkbox/clickbox",
+                press_script: "moondust:debug/lines_widget",
                 label: "clickbox"
             },
 
-            events: [
-                {
-                    call: "moondust:checkbox/clickbox_init",
-                    event: { type: "on_init" }
+            data: {
+                strings: {
+                    "moondust:debug/widget_ui_lines": "clickbox"
                 }
-            ]
+            }
         },
         {
             widget: "moondust:checkbox",
@@ -74,16 +71,15 @@
             },
 
             checkbox: {
-                on_press: "moondust:checkbox/character",
+                press_script: "moondust:debug/lines_text",
                 label: "Character"
             },
 
-            events: [
-                {
-                    call: "moondust:checkbox/character_init",
-                    event: { type: "on_init" }
+            data: {
+                strings: {
+                    "moondust:debug/text_lines": "flare:character"
                 }
-            ]
+            }
         },
         {
             widget: "moondust:checkbox",
@@ -95,16 +91,15 @@
             },
 
             checkbox: {
-                on_press: "moondust:checkbox/text_line",
+                press_script: "moondust:debug/lines_text",
                 label: "Segment"
             },
 
-            events: [
-                {
-                    call: "moondust:checkbox/text_line_init",
-                    event: { type: "on_init" }
+            data: {
+                strings: {
+                    "moondust:debug/text_lines": "flare:segment"
                 }
-            ]
+            }
         },
         {
             widget: "moondust:checkbox",
@@ -116,16 +111,15 @@
             },
 
             checkbox: {
-                on_press: "moondust:checkbox/message",
+                press_script: "moondust:debug/lines_text",
                 label: "Anchors"
             },
 
-            events: [
-                {
-                    call: "moondust:checkbox/message_init",
-                    event: { type: "on_init" }
+            data: {
+                strings: {
+                    "moondust:debug/text_lines": "flare:message_anchors"
                 }
-            ]
+            }
         }
     ]
 }

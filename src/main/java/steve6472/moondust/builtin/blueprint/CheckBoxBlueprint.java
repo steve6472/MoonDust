@@ -11,6 +11,7 @@ import steve6472.moondust.widget.blueprint.event.condition.States;
 import steve6472.moondust.widget.blueprint.event.condition.Tristate;
 import steve6472.moondust.widget.component.CurrentSprite;
 import steve6472.moondust.widget.component.CustomData;
+import steve6472.moondust.widget.component.Scripts;
 import steve6472.moondust.widget.component.Styles;
 import steve6472.moondust.widget.component.event.OnDataChange;
 import steve6472.moondust.widget.component.event.OnMouseRelease;
@@ -29,12 +30,13 @@ import java.util.Map;
  * Date: 1/6/2025
  * Project: MoonDust <br>
  */
-public record CheckBoxBlueprint(Key pressCall, String label, boolean labelShadow, boolean checked) implements Blueprint
+public record CheckBoxBlueprint(Key pressCall, Key pressScript, String label, boolean labelShadow, boolean checked) implements Blueprint
 {
     public static final Key NO_CALL = Key.withNamespace(MoonDustConstants.NAMESPACE, "checkbox/__no_call");
     public static final Key KEY = Key.withNamespace(MoonDustConstants.NAMESPACE, "checkbox");
     public static final Codec<CheckBoxBlueprint> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Key.CODEC.optionalFieldOf("on_press", NO_CALL).forGetter(CheckBoxBlueprint::pressCall),
+        Key.CODEC.optionalFieldOf("press_script", NO_CALL).forGetter(CheckBoxBlueprint::pressScript),
         Codec.STRING.optionalFieldOf("label", "").forGetter(CheckBoxBlueprint::label),
         Codec.BOOL.optionalFieldOf("label_shadow", false).forGetter(CheckBoxBlueprint::labelShadow),
         Codec.BOOL.optionalFieldOf("checked", false).forGetter(CheckBoxBlueprint::checked)
@@ -49,6 +51,11 @@ public record CheckBoxBlueprint(Key pressCall, String label, boolean labelShadow
         {
             events.add(new UIEventCallEntry(pressCall, new OnDataChange(List.of(), List.of(), List.of(), List.of(BuiltinEventCalls.Keys.CHECKBOX_CHECKED)), EventCondition.DEFAULT));
             components.add(new UIEvents(events));
+        }
+
+        if (!pressScript.equals(NO_CALL))
+        {
+            components.add(new Scripts(Map.of("checkbox_press_script", pressScript)));
         }
 
         CustomData data = new CustomData();

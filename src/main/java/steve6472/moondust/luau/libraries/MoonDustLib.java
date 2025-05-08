@@ -4,6 +4,7 @@ import steve6472.core.registry.Key;
 import steve6472.flare.registry.FlareRegistries;
 import steve6472.flare.ui.font.render.TextPart;
 import steve6472.flare.ui.font.style.FontStyleEntry;
+import steve6472.moondust.MoonDust;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.MDText;
 import steve6472.radiant.LuauLib;
@@ -24,6 +25,28 @@ public class MoonDustLib extends LuauLib
     @Override
     public void createFunctions()
     {
+        addFunction("getPixelScale", state -> {
+            state.pushNumber(MoonDust.getInstance().getPixelScale());
+            return 1;
+        });
+
+        addFunction("setPixelScale", state -> {
+            double scale = state.checkNumberArg(1);
+            MoonDust.getInstance().setPixelScale((float) scale);
+            return 0;
+        });
+
+        addFunction("clearFocus", _ -> {
+            MoonDust.getInstance().clearFocus();
+            return 0;
+        });
+
+        addFunction("focus", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            MoonDust.getInstance().focus(widget);
+            return 0;
+        });
+
         // replaceStyle(widget, replacement)
         addFunction("replaceStyleText", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");

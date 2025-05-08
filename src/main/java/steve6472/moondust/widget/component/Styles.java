@@ -1,7 +1,6 @@
 package steve6472.moondust.widget.component;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import steve6472.core.registry.Key;
 import steve6472.moondust.core.Mergeable;
 

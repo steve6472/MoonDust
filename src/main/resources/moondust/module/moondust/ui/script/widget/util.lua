@@ -45,3 +45,7 @@ local function orElse(value, elseValue)
         return value
     end
 end
+
+local function buttonTest(widget)
+    return widget:isEnabled() and widget:isVisible() and widget:isClickable() and widget:internalStates().directHover
+end

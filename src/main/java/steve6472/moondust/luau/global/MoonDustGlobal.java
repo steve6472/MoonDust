@@ -6,6 +6,7 @@ import net.hollowcube.luau.LuaType;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.moondust.luau.libraries.ColorUtilLib;
+import steve6472.moondust.luau.libraries.MoonDustDebugLib;
 import steve6472.moondust.luau.libraries.MoonDustLib;
 import steve6472.moondust.widget.UIEventEnum;
 import steve6472.radiant.*;
@@ -61,12 +62,13 @@ public class MoonDustGlobal
         global.registerLib(CoreLib.INSTANCE);
         global.registerLib(ColorUtilLib.INSTANCE);
         global.registerLib(MoonDustLib.INSTANCE);
+        global.registerLib(MoonDustDebugLib.INSTANCE);
 
         global.addMetaTable(LuaWidget.META);
         global.addMetaTable(LuaInput.META);
         global.addMetaTable(LuaKey.META);
         global.addMetaTable(LuaCustomData.META);
-//        global.addMetaTable(new LuauMetaTable("___TheThingCrashesWithoutAddingADummyTableLol"));
+        global.addMetaTable(new LuauMetaTable("___TheThingCrashesWithoutAddingADummyTableLol"));
 
         global.addMetaTable(eventsMeta);
         global.addMetaTable(event);

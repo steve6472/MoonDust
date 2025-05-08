@@ -23,6 +23,7 @@ import java.util.Map;
  */
 public class CustomData implements Mergeable<CustomData>
 {
+    /// TODO: renamte to just "data"
     public final Object2DoubleArrayMap<Key> doubles = new Object2DoubleArrayMap<>();
     public final Object2IntArrayMap<Key> ints = new Object2IntArrayMap<>();
     public final Map<Key, String> strings = new HashMap<>();
@@ -42,6 +43,7 @@ public class CustomData implements Mergeable<CustomData>
         return data;
     }));
 
+    /// Used to run data change events
     @ApiStatus.Internal
     public Widget widget;
 
