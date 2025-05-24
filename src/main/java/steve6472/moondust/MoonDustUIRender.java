@@ -19,6 +19,7 @@ import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 

@@ -1,15 +1,15 @@
 package steve6472.moondust;
 
+import org.joml.Vector2i;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.core.util.JarExport;
 import steve6472.moondust.core.MoonDustKeybinds;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
-import steve6472.moondust.widget.component.event.OnMouseEnter;
-import steve6472.moondust.widget.component.event.OnMouseLeave;
-import steve6472.moondust.widget.component.event.OnMousePress;
-import steve6472.moondust.widget.component.event.OnMouseRelease;
+import steve6472.moondust.widget.component.ClickboxOffset;
+import steve6472.moondust.widget.component.ClickboxSize;
+import steve6472.moondust.widget.component.event.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -89,6 +89,47 @@ public class MoonDust
     /*
      * Functional
      */
+
+    public <T extends UIEvent> void runGlobalEvent(T event)
+    {
+        //noinspection unchecked
+        Class<T> aClass = (Class<T>) event.getClass();
+        iterate(widget -> widget.handleEvents(aClass, _ -> true, event));
+    }
+
+    public Optional<Widget> getTopWidgetAt(int x, int y)
+    {
+        Widget[] ret = {null};
+
+        MoonDust moonDust = MoonDust.getInstance();
+        float pixelScale = moonDust.getPixelScale();
+
+        int mx = x / (int) pixelScale;
+        int my = y / (int) pixelScale;
+
+        iterate((depth, widget) ->
+        {
+            if (!widget.isVisible() || !widget.isClickable())
+                return;
+
+            widget.getComponent(ClickboxSize.class).ifPresent(clickboxSize ->
+            {
+                Vector2i clickboxPosition = widget.getPosition();
+                widget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
+                boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width, clickboxPosition.y + clickboxSize.height, mx, my);
+
+                if (hovered)
+                    ret[0] = widget;
+            });
+        });
+
+        return Optional.ofNullable(ret[0]);
+    }
+
+    private static boolean isInRectangle(int rminx, int rminy, int rmaxx, int rmaxy, int px, int py)
+    {
+        return px >= rminx && px < rmaxx && py >= rminy && py < rmaxy;
+    }
 
     public void tickFocus()
     {

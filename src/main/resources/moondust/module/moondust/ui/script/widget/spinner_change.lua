@@ -1,6 +1,8 @@
 --#include moondust:widget/keys/spinner
+--#include moondust:widget/util
 
 local function change(widget, event)
+    if not buttonTest(widget) then return end
     local parent = widget:getParent()
     local parentData = parent:customData()
     local increment = parentData:getNumber(spinner.increment)

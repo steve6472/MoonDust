@@ -1,10 +1,7 @@
 package steve6472.moondust;
 
-import org.lwjgl.glfw.GLFW;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
-import steve6472.moondust.builtin.BuiltinEventCalls;
-import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
@@ -109,42 +106,6 @@ public interface MoonDustEventCalls
         });
     }
 
-    interface Mouse
-    {
-        private static Widget part(Widget parent, String sprite)
-        {
-            BlueprintFactory factory = MoonDustRegistries.WIDGET_FACTORY.get(Key.withNamespace(MoonDustConstants.NAMESPACE, "mouse_part"));
-            Widget widget = Widget.withParent(factory, parent);
-            widget.addComponent(new CurrentSprite(sprite));
-            widget.addComponent(new Name("part_" + sprite));
-            return widget;
-        }
-
-        private static void process(Widget widget, boolean state, String part)
-        {
-            widget.getChild("part_" + part).ifPresentOrElse(_ -> {
-                if (!state)
-                    widget.removeChild("part_" + part);
-            }, () -> {
-                if (state)
-                    widget.addChild(part(widget, part));
-            });
-        }
-
-        UIEventCall<OnRender> RENDER = create(key("mouse/tick"), (widget, _) -> {
-            long window = MoonDustTest.instance.window().window();
-
-            boolean leftPress = GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
-            boolean rightPress = GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS;
-            boolean middlePress = GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_MIDDLE) == GLFW.GLFW_PRESS;
-            // TODO: add scroll input to Flare
-
-            process(widget, leftPress, "left");
-            process(widget, rightPress, "right");
-            process(widget, middlePress, "middle");
-        });
-    }
-
     private static <T extends UIEvent> UIEventCall<T> create(Key key, UIEventCall<T> eventCall)
     {
         MoonDustRegistries.EVENT_CALLS.put(key, eventCall);
@@ -159,7 +120,6 @@ public interface MoonDustEventCalls
     static void init()
     {
         init(RadioButton.MOUSE_RELEASE);
-        init(Mouse.RENDER);
     }
 
     private static void init(Object ignored)

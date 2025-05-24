@@ -61,7 +61,7 @@ public class MoonDustTest extends FlareApp
         addRenderSystem(new UILineRender(masterRenderer(), new DebugWidgetUILines()));
         addRenderSystem(new UILineRender(masterRenderer(), new DebugUILines()));
 
-        new MoonDustCallbacks().init(window().callbacks());
+        new MoonDustCallbacks().init(window().callbacks(), input());
     }
 
     @Override

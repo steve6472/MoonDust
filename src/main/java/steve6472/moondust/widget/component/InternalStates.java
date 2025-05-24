@@ -38,6 +38,8 @@ public class InternalStates
         for (Field field : fields)
         {
             field.setAccessible(true);
+            if (field.getName().equals("CODEC"))
+                continue;
             try
             {
                 sb.append(field.getName()).append(": ").append(field.get(this)).append(", ");

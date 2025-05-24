@@ -117,15 +117,15 @@ public abstract class OnDataChanged<T> implements UIEvent, Serializable<T>
         public String(Key changedKey, java.lang.String previousValue, java.lang.String newValue, Type ignored)
         {
             super(changedKey, false);
-            this.previousValue = previousValue;
-            this.newValue = newValue;
+            this.previousValue = previousValue == null ? "" : previousValue;
+            this.newValue = newValue == null ? "" : newValue;
         }
 
         public String(Key changedKey, java.lang.String previousValue, java.lang.String newValue, boolean removed)
         {
             super(changedKey, removed);
-            this.previousValue = previousValue;
-            this.newValue = newValue;
+            this.previousValue = previousValue == null ? "" : previousValue;
+            this.newValue = newValue == null ? "" : newValue;
         }
 
         @Override

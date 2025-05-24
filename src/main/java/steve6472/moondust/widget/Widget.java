@@ -14,6 +14,8 @@ import steve6472.moondust.luau.ProfiledScript;
 import steve6472.moondust.luau.global.LuaWidget;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
+import steve6472.moondust.widget.component.event.global.OnGlobalMouseButton;
+import steve6472.moondust.widget.component.event.global.OnGlobalScroll;
 import steve6472.moondust.widget.component.flag.Clickable;
 import steve6472.moondust.widget.component.flag.Enabled;
 import steve6472.moondust.widget.component.flag.Focusable;
@@ -170,32 +172,37 @@ public class Widget implements WidgetComponentGetter
         handleEvents(eventType, test, null);
     }
 
+    private static final Set<Class<?>> IGNORED_JAVA = Set.of(OnGlobalScroll.class);
+
     public <T extends UIEvent> void handleEvents(Class<T> eventType, Predicate<T> test, @Nullable T override)
     {
-        getEvents(eventType).forEach(e ->
+        if (!IGNORED_JAVA.contains(eventType))
         {
-            @SuppressWarnings("unchecked") UIEventCall<T> uiEventCall = (UIEventCall<T>) MoonDustRegistries.EVENT_CALLS.get(e.call());
-
-            if (uiEventCall != null)
+            getEvents(eventType).forEach(e ->
             {
-                T event = override == null ? eventType.cast(e.event()) : override;
-                if (test.test(event))
+                @SuppressWarnings("unchecked") UIEventCall<T> uiEventCall = (UIEventCall<T>) MoonDustRegistries.EVENT_CALLS.get(e.call());
+
+                if (uiEventCall != null)
                 {
-                    try
+                    T event = override == null ? eventType.cast(e.event()) : override;
+                    if (test.test(event))
                     {
+                        try
+                        {
 
-                        uiEventCall.call(this, event);
-                    } catch (ClassCastException ex)
-                    {
-                        LOGGER.severe("CCE during " + e.call());
-                        ex.printStackTrace();
+                            uiEventCall.call(this, event);
+                        } catch (ClassCastException ex)
+                        {
+                            LOGGER.severe("CCE during " + e.call());
+                            ex.printStackTrace();
+                        }
                     }
+                } else
+                {
+                    LOGGER.warning("No event call found for " + e.call());
                 }
-            } else
-            {
-                LOGGER.warning("No event call found for " + e.call());
-            }
-        });
+            });
+        }
 
         getComponent(Scripts.class).ifPresent(scripts -> {
 
@@ -228,6 +235,7 @@ public class Widget implements WidgetComponentGetter
     {
         if (e == null)
             return new LuauUserObject("null");
+
         else if (e instanceof OnDataChanged<?> changed)
         {
             Codec<?> codec = changed.codec();
@@ -237,6 +245,16 @@ public class Widget implements WidgetComponentGetter
             if (changed.removed)
                 table.table().remove("new");
             return table;
+        }
+        else if (e instanceof OnGlobalScroll)
+        {
+            //noinspection unchecked, rawtypes
+            return ((Codec) OnGlobalScroll.CODEC).encodeStart(LuaTableOps.INSTANCE, e).getOrThrow();
+        }
+        else if (e instanceof OnGlobalMouseButton)
+        {
+            //noinspection unchecked, rawtypes
+            return ((Codec) OnGlobalMouseButton.CODEC).encodeStart(LuaTableOps.INSTANCE, e).getOrThrow();
         }
         else
             throw new RuntimeException("Event to user object not done for " + e);

@@ -4,10 +4,82 @@
     },
     bounds: [13, 19],
     current_sprite: "mouse",
-    events: [
+
+    scripts: {
+        "main": "moondust:mouse"
+    },
+
+    children: [
         {
-            call: "moondust:mouse/tick",
-            event: { type: "on_render" }
+            widget: "empty",
+            name: "lmb",
+            sprites: { "left": "sprites/mouse/left" },
+            bounds: [13, 19],
+            position: {
+                type: "absolute",
+                pos: [0, 0]
+            },
+            z_index: -0.05,
+            current_sprite: "left",
+            visible: false
+        },
+        {
+            widget: "empty",
+            name: "rmb",
+            sprites: { "right": "sprites/mouse/right" },
+            bounds: [13, 19],
+            position: {
+                type: "absolute",
+                pos: [0, 0]
+            },
+            z_index: -0.05,
+            current_sprite: "right",
+            visible: false
+        },
+        {
+            widget: "empty",
+            name: "mmb",
+            sprites: {
+                "left": "sprites/mouse/left",
+                "right": "sprites/mouse/right",
+                "scroll_up": "sprites/mouse/scroll_up",
+                "scroll_down": "sprites/mouse/scroll_down",
+                "middle": "sprites/mouse/middle"
+            },
+            bounds: [13, 19],
+            position: {
+                type: "absolute",
+                pos: [0, 0]
+            },
+            z_index: -0.05,
+            current_sprite: "middle",
+            visible: false
+        },
+        {
+            widget: "empty",
+            name: "scroll_up",
+            sprites: { "scroll_up": "sprites/mouse/scroll_up" },
+            bounds: [13, 19],
+            position: {
+                type: "absolute",
+                pos: [0, 0]
+            },
+            z_index: -0.05,
+            current_sprite: "scroll_up",
+            visible: false
+        },
+        {
+            widget: "empty",
+            name: "scroll_down",
+            sprites: { "scroll_down": "sprites/mouse/scroll_down" },
+            bounds: [13, 19],
+            position: {
+                type: "absolute",
+                pos: [0, 0]
+            },
+            z_index: -0.05,
+            current_sprite: "scroll_down",
+            visible: false
         }
     ]
 }

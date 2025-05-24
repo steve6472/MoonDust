@@ -3,6 +3,8 @@ package steve6472.moondust.widget;
 import com.mojang.serialization.Codec;
 import steve6472.core.registry.StringValue;
 import steve6472.moondust.widget.component.event.*;
+import steve6472.moondust.widget.component.event.global.OnGlobalMouseButton;
+import steve6472.moondust.widget.component.event.global.OnGlobalScroll;
 
 /**
  * Created by steve6472
@@ -22,7 +24,12 @@ public enum UIEventEnum implements StringValue
     ON_MOUSE_PRESS("onMousePress", OnMousePress.class),
     ON_MOUSE_RELEASE("onMouseRelease", OnMouseRelease.class),
     ON_RENDER("onRender", OnRender.class),
-    ON_RANDOM_TICK("onRandomTick", OnRandomTick.class)
+    ON_RANDOM_TICK("onRandomTick", OnRandomTick.class),
+
+    // LUA Only
+    // Globals
+    ON_GLOBAL_SCROLL("onGlobalScroll", OnGlobalScroll.class),
+    ON_GLOBA_MOUSE_BUTTON("onGlobalMouseButton", OnGlobalMouseButton.class)
     ;
 
     private static final UIEventEnum[] VALS = UIEventEnum.values();
