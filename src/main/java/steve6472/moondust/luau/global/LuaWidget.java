@@ -37,7 +37,7 @@ public class LuaWidget
         META.addFunction("getComponent", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
             String type = state.checkStringArg(2);
-            Key typeKey = Key.parse(type);
+            Key typeKey = Key.parse(MoonDustConstants.NAMESPACE, type);
 
             ComponentEntry componentEntry = MoonDustComponents.byKey(typeKey);
             Optional<?> component = widget.getComponent(componentEntry.clazz());
@@ -55,7 +55,7 @@ public class LuaWidget
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
             String type = state.checkStringArg(2);
             state.checkType(3, LuaType.TABLE);
-            Key typeKey = Key.parse(type);
+            Key typeKey = Key.parse(MoonDustConstants.NAMESPACE, type);
 
             LuauTable table = new LuauTable();
             table.readTable(state, 3);

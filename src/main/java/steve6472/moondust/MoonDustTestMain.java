@@ -20,9 +20,16 @@ public class MoonDustTestMain
     public static void main(String[] args) throws IOException, URISyntaxException
     {
         System.setProperty("joml.format", "false");
-        if (new File("modules/moondust").exists())
+        deleteDevModule("moondust");
+        MoonDust.getInstance().init();
+        Flare.start(new MoonDustTest());
+    }
+
+    public static void deleteDevModule(String module) throws IOException
+    {
+        if (new File("modules/" + module).exists())
         {
-            try (var dirStream = Files.walk(Paths.get("modules/moondust"))) {
+            try (var dirStream = Files.walk(Paths.get("modules/" + module))) {
                 dirStream
                     .map(Path::toFile)
                     .sorted(Comparator.reverseOrder())
@@ -35,7 +42,5 @@ public class MoonDustTestMain
                     });
             }
         }
-        MoonDust.getInstance().init();
-        Flare.start(new MoonDustTest());
     }
 }

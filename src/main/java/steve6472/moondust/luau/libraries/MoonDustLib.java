@@ -1,15 +1,19 @@
 package steve6472.moondust.luau.libraries;
 
+import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.flare.registry.FlareRegistries;
 import steve6472.flare.ui.font.render.TextPart;
 import steve6472.flare.ui.font.style.FontStyleEntry;
 import steve6472.moondust.MoonDust;
+import steve6472.moondust.luau.global.LuaWidget;
+import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.MDText;
 import steve6472.radiant.LuauLib;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
  * Created by steve6472
@@ -18,6 +22,7 @@ import java.util.Optional;
  */
 public class MoonDustLib extends LuauLib
 {
+    private static final Logger LOGGER = Log.getLogger(MoonDustLib.class);
     public static final MoonDustLib INSTANCE = new MoonDustLib();
 
     private MoonDustLib() {}
@@ -46,6 +51,53 @@ public class MoonDustLib extends LuauLib
             MoonDust.getInstance().focus(widget);
             return 0;
         });
+
+        addFunction("addPanel", state -> {
+            String key = state.checkStringArg(1);
+            Key parsedKey = Key.parse(key);
+            Panel panel = Panel.create(parsedKey);
+            MoonDust.getInstance().addPanel(panel);
+            return 0;
+        });
+
+        addFunction("removePanel", state -> {
+            String key = state.checkStringArg(1);
+            Key parsedKey = Key.parse(key);
+
+            Optional<Panel> first = MoonDust
+                .getInstance()
+                .getPanels()
+                .stream()
+                .filter(panel -> panel.getKey().equals(parsedKey))
+                .findFirst();
+            first.ifPresentOrElse(panel -> MoonDust.getInstance().removePanel(panel), () -> LOGGER.warning("panel %s not found".formatted(parsedKey)));
+            return 0;
+        });
+
+        addFunction("getPanel", state -> {
+            String key = state.checkStringArg(1);
+            Key parsedKey = Key.parse(key);
+
+            Optional<Panel> first = MoonDust
+                .getInstance()
+                .getPanels()
+                .stream()
+                .filter(panel -> panel.getKey().equals(parsedKey))
+                .findFirst();
+
+            if (first.isPresent())
+            {
+                LuaWidget.createObject(first.get()).pushUserObject(state);
+            } else
+            {
+                state.pushNil();
+            }
+            return 1;
+        });
+
+        /*
+         * Stuff I'm too lazy to replace with proper lua yet
+         */
 
         // replaceStyle(widget, replacement)
         addFunction("replaceStyleText", state -> {

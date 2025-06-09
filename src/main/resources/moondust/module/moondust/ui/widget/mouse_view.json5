@@ -1,6 +1,6 @@
 {
     sprites: {
-        "mouse": "sprites/mouse/inactive"
+        "mouse": "moondust:sprites/mouse/inactive"
     },
     bounds: [13, 19],
     current_sprite: "mouse",
@@ -11,9 +11,9 @@
 
     children: [
         {
-            widget: "empty",
+            widget: "moondust:empty",
             name: "lmb",
-            sprites: { "left": "sprites/mouse/left" },
+            sprites: { "left": "moondust:sprites/mouse/left" },
             bounds: [13, 19],
             position: {
                 type: "absolute",
@@ -24,9 +24,9 @@
             visible: false
         },
         {
-            widget: "empty",
+            widget: "moondust:empty",
             name: "rmb",
-            sprites: { "right": "sprites/mouse/right" },
+            sprites: { "right": "moondust:sprites/mouse/right" },
             bounds: [13, 19],
             position: {
                 type: "absolute",
@@ -37,14 +37,14 @@
             visible: false
         },
         {
-            widget: "empty",
+            widget: "moondust:empty",
             name: "mmb",
             sprites: {
-                "left": "sprites/mouse/left",
-                "right": "sprites/mouse/right",
-                "scroll_up": "sprites/mouse/scroll_up",
-                "scroll_down": "sprites/mouse/scroll_down",
-                "middle": "sprites/mouse/middle"
+                "left": "moondust:sprites/mouse/left",
+                "right": "moondust:sprites/mouse/right",
+                "scroll_up": "moondust:sprites/mouse/scroll_up",
+                "scroll_down": "moondust:sprites/mouse/scroll_down",
+                "middle": "moondust:sprites/mouse/middle"
             },
             bounds: [13, 19],
             position: {
@@ -56,9 +56,9 @@
             visible: false
         },
         {
-            widget: "empty",
+            widget: "moondust:empty",
             name: "scroll_up",
-            sprites: { "scroll_up": "sprites/mouse/scroll_up" },
+            sprites: { "scroll_up": "moondust:sprites/mouse/scroll_up" },
             bounds: [13, 19],
             position: {
                 type: "absolute",
@@ -69,9 +69,9 @@
             visible: false
         },
         {
-            widget: "empty",
+            widget: "moondust:empty",
             name: "scroll_down",
-            sprites: { "scroll_down": "sprites/mouse/scroll_down" },
+            sprites: { "scroll_down": "moondust:sprites/mouse/scroll_down" },
             bounds: [13, 19],
             position: {
                 type: "absolute",

@@ -1,0 +1,13 @@
+{
+    fields: {
+        test: {
+            // Allow recursion, fuck, don't use "table" probably
+            type: "table",
+            fields: {
+                other_test: {
+                    type: "int"
+                }
+            }
+        }
+    }
+}

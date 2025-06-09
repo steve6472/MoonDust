@@ -20,12 +20,8 @@ import steve6472.test.DebugUILines;
  */
 public class MoonDustTest extends FlareApp
 {
-    public static MoonDustTest instance;
-
-
     public MoonDustTest()
     {
-        instance = this;
     }
 
     @Override
@@ -45,7 +41,7 @@ public class MoonDustTest extends FlareApp
         initRegistry(MoonDustRegistries.POSITION_TYPE);
         MoonDustEventCalls.init();
         BuiltinEventCalls.init();
-        TestEventCalls.init();
+        TestEventCalls.init(this);
     }
 
     @Override
@@ -67,7 +63,7 @@ public class MoonDustTest extends FlareApp
     @Override
     public void postInit()
     {
-        Panel testPanel = Panel.create(Key.withNamespace("moondust", "panel"));
+        Panel testPanel = Panel.create(Key.withNamespace("moondust_test", "panel"));
         testPanel.clearFocus();
         MoonDust.getInstance().addPanel(testPanel);
 

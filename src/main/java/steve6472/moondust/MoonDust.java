@@ -27,6 +27,30 @@ import java.util.logging.Logger;
  */
 public class MoonDust
 {
+    /* # TODOS:
+     * Blueprints:
+     * - each blueprint is defined by file name
+     * - 2 types
+     *   - single inline value, blueprint contains the "value" field (limited_int)
+     *   - multiple fields, contains the "fields" field (slider)
+     * - the value in either "value" or "fields" is the same type, typed object
+     * - "fields" is an unbout map of string and value
+     * - Have to load BEFORE widgets.. ofc
+     *
+     * Blueprints verifier:
+     * - each custom blueprint has to be verified when read from json, remember to verify the min/max limits too
+     *
+     * Move clickable, enabled, visible, ??? to state variable in Widget instead each being a component, have blueprint to create this tho, special just like custom data
+     *
+     * CustomData Struct
+     * - Just a Map of <String, Object>
+     * - Idea is that this is settable from Lua (from custom blueprint for example)
+     * - Basically just a custom component
+     *
+     * All components that are NOT used to render or are used so interaction is possible should be replaced with CustomData structs and luaified
+     *
+     * Scripts need arguments
+     */
     private static final Logger LOGGER = Log.getLogger(MoonDust.class);
     private static final MoonDust INSTANCE = new MoonDust();
     private static final int FOCUS_ITERATION_LIMIT = 1024;

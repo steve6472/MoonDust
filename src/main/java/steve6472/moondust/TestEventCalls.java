@@ -1,6 +1,8 @@
 package steve6472.moondust;
 
 import steve6472.core.registry.Key;
+import steve6472.flare.core.Flare;
+import steve6472.flare.core.FlareApp;
 import steve6472.moondust.builtin.BuiltinEventCalls;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.Name;
@@ -14,9 +16,9 @@ import steve6472.test.DebugUILines;
  */
 public class TestEventCalls
 {
-    public static void init()
+    public static void init(FlareApp app)
     {
-        create(key("button/exit_app"), (Widget _, OnMouseRelease _) -> MoonDustTest.instance.window().closeWindow());
+        create(key("button/exit_app"), (Widget _, OnMouseRelease _) -> app.window().closeWindow());
 
         create(key("button/random_toggle_enabled"), (Widget widget, OnRandomTick _) ->
         {

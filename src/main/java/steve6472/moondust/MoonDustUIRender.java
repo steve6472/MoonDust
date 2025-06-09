@@ -10,6 +10,7 @@ import steve6472.core.registry.Key;
 import steve6472.core.util.RandomUtil;
 import steve6472.flare.FlareConstants;
 import steve6472.flare.Window;
+import steve6472.flare.core.FlareApp;
 import steve6472.flare.input.UserInput;
 import steve6472.flare.render.impl.UIRenderImpl;
 import steve6472.flare.ui.textures.SpriteEntry;
@@ -40,7 +41,7 @@ public class MoonDustUIRender extends UIRenderImpl
     Widget pressedWidget = null;
     boolean canInteract = true;
 
-    public MoonDustUIRender(MoonDustTest main)
+    public MoonDustUIRender(FlareApp main)
     {
         this.window = main.window();
         this.input = main.input();

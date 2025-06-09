@@ -1,0 +1,8 @@
+{
+    name: "MoonDust Test",
+    description: [
+        "Test the stuff"
+    ],
+    authors: "steve6472",
+    version: 1
+}

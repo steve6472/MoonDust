@@ -45,6 +45,7 @@ public class Widget implements WidgetComponentGetter
     private final Map<String, Widget> children = new LinkedHashMap<>();
     private final Widget parent;
 
+    /// Internal states of the widget, set only from MoonDust, visible for Lua for special conditions (button)
     private final InternalStates internalStates;
     private final CustomData customData;
 
@@ -61,7 +62,7 @@ public class Widget implements WidgetComponentGetter
         if (temp instanceof WidgetReference ref)
         {
             BlueprintFactory widgetItself = MoonDustRegistries.WIDGET_FACTORY.get(ref.reference());
-            Objects.requireNonNull(widgetItself);
+            Objects.requireNonNull(widgetItself, "Could not find " + ref.reference());
 
             widgetItself.blueprints().forEach((key, bp) ->
             {

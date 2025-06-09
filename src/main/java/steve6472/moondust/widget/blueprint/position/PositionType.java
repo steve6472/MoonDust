@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import steve6472.core.registry.Key;
 import steve6472.core.registry.Type;
+import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.MoonDustRegistries;
 
 /**
@@ -24,7 +25,7 @@ public final class PositionType<T extends PositionBlueprint> extends Type<T>
 
     private static <T extends PositionBlueprint> PositionType<T> register(String id, Codec<T> codec)
     {
-        var obj = new PositionType<>(Key.defaultNamespace(id), MapCodec.assumeMapUnsafe(codec));
+        var obj = new PositionType<>(MoonDustConstants.key(id), MapCodec.assumeMapUnsafe(codec));
         MoonDustRegistries.POSITION_TYPE.register(obj);
         return obj;
     }

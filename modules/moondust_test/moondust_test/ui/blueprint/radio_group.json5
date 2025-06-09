@@ -1,0 +1,8 @@
+{
+    value: {
+        type: "string",
+        // default is an empty pattern that permits anything, basically .* I think but more optimized 'cause it won't have to go through the regex
+        pattern: "[a-zA-Z][a-zA-Z_0-9]*",
+        max_length: 32
+    }
+}
