@@ -104,7 +104,7 @@
                 label: "Test Limit"
             },
 
-//            "moondust_test:limit_int": 4,
+            "moondust_test:limit_int": 4,
             "moondust_test:min_max": {
                 min: 0,
                 max: 3000

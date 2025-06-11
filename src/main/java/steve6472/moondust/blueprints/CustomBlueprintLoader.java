@@ -10,14 +10,9 @@ import steve6472.flare.core.Flare;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.core.blueprint.BlueprintEntry;
-import steve6472.moondust.core.blueprint.BlueprintFactory;
-import steve6472.moondust.widget.WidgetLoader;
 import steve6472.radiant.LuaTableOps;
-import steve6472.radiant.LuauTable;
 
 import java.io.File;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -31,8 +26,6 @@ public class CustomBlueprintLoader
 
     public static void load()
     {
-        Map<Key, BlueprintFactory> factories = new LinkedHashMap<>();
-
         for (Module module : Flare.getModuleManager().getModules())
         {
             module.iterateNamespaces((folder, namespace) ->
@@ -41,8 +34,6 @@ public class CustomBlueprintLoader
                 ResourceCrawl.crawlAndLoadJsonCodec(file, BlueprintStructure.CODEC, (structure, id) ->
                 {
                     Key key = Key.withNamespace(namespace, id);
-                    LOGGER.info("" + structure);
-
 
                     Codec<Blueprint> CODEC = Codec.PASSTHROUGH.flatXmap(ops ->
                     {
@@ -68,7 +59,5 @@ public class CustomBlueprintLoader
                 });
             });
         }
-
-//        factories.values().forEach(MoonDustRegistries.WIDGET_FACTORY::register);
     }
 }

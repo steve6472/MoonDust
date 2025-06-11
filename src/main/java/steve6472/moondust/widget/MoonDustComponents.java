@@ -5,10 +5,7 @@ import net.hollowcube.luau.LuaState;
 import steve6472.core.registry.Key;
 import steve6472.moondust.ComponentEntry;
 import steve6472.moondust.MoonDustConstants;
-import steve6472.moondust.widget.component.CurrentSprite;
-import steve6472.moondust.widget.component.FocusedSprite;
-import steve6472.moondust.widget.component.Sprites;
-import steve6472.moondust.widget.component.Styles;
+import steve6472.moondust.widget.component.*;
 import steve6472.radiant.LuauMetaTable;
 
 import java.util.HashMap;
@@ -34,9 +31,12 @@ public final class MoonDustComponents
         register("current_sprite", CurrentSprite.CODEC, CurrentSprite.class);
         register("styles", Styles.CODEC, Styles.class);
         register("focused_sprite", FocusedSprite.CODEC, FocusedSprite.class);
+        register("bounds", Bounds.CODEC, Bounds.class);
+        register("clickbox_size", ClickboxSize.CODEC, ClickboxSize.class);
+        register("clickbox_offset", ClickboxOffset.CODEC, ClickboxOffset.class);
     }
 
-    private static void register(String id, Codec<?> codec, Class<?> clazz)
+    private static <T> void register(String id, Codec<T> codec, Class<T> clazz)
     {
         Key key = MoonDustConstants.key(id);
         ComponentEntry entry = new ComponentEntry(key, codec, clazz, Optional.empty());
@@ -45,7 +45,7 @@ public final class MoonDustComponents
     }
 
     // not working for reason: too hard to do
-    private static void register(String id, Codec<?> codec, Class<?> clazz, LuauMetaTable meta)
+    private static <T> void register(String id, Codec<T> codec, Class<T> clazz, LuauMetaTable meta)
     {
         Key key = MoonDustConstants.key(id);
         ComponentEntry entry = new ComponentEntry(key, codec, clazz, Optional.of(meta));

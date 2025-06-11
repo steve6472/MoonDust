@@ -54,14 +54,12 @@ public class LuaWidget
         META.addFunction("addComponent", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
             String type = state.checkStringArg(2);
-            state.checkType(3, LuaType.TABLE);
             Key typeKey = Key.parse(MoonDustConstants.NAMESPACE, type);
 
-            LuauTable table = new LuauTable();
-            table.readTable(state, 3);
+            Object java = LuauUtil.toJava(state, 3);
 
             Codec<?> codec = MoonDustComponents.byKey(typeKey).codec();
-            var decode = codec.decode(LuaTableOps.INSTANCE, table);
+            var decode = codec.decode(LuaTableOps.INSTANCE, java);
             Object first = decode.getOrThrow().getFirst();
             widget.addComponent(first);
             return 0;
@@ -92,13 +90,6 @@ public class LuaWidget
             }
             return 1;
         });
-//        META.addFunction("customData", state -> {
-//            LOGGER.warning("customData has to be reworked to return user object of custom data!");
-//            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
-//            Object lua = MoonDustComponents.byType(CustomData.class).toLua(widget.customData());
-//            LuauUtil.push(state, lua);
-//            return 1;
-//        });
         META.addFunction("internalStates", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
 

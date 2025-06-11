@@ -1,7 +1,6 @@
 package steve6472.moondust.widget.component;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 /**
  * Created by steve6472
@@ -12,9 +11,7 @@ public class CurrentSprite
 {
     public String sprite;
 
-    public static final Codec<CurrentSprite> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.fieldOf("sprite").forGetter(CurrentSprite::sprite)
-    ).apply(instance, CurrentSprite::new));
+    public static final Codec<CurrentSprite> CODEC = Codec.STRING.xmap(CurrentSprite::new, CurrentSprite::sprite);
 
     public CurrentSprite(String sprite)
     {

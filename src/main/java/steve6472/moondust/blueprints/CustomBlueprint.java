@@ -71,6 +71,7 @@ public class CustomBlueprint implements Keyable, Blueprint
         if (!state.isFunction(-1))
         {
             LOGGER.severe("Error: 'init' is not a function, can not create components");
+            LOGGER.severe("It either does not exist or is local");
             return null;
         }
 
@@ -83,14 +84,19 @@ public class CustomBlueprint implements Keyable, Blueprint
         }
         state.pcall(1, 1);
 
+        if (state.isNil(-1))
+        {
+            state.pop(0);
+            profiledScript.profiler().end();
+            return null;
+        }
+
         LuauTable output = new LuauTable();
         output.readTable(state, -1);
 
         state.pop(1);
 
         profiledScript.profiler().end();
-
-        // TODO: convert output
 
         List<Object> components = new ArrayList<>(output.table().size());
 

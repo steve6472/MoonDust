@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 public class MoonDust
 {
     /* # TODOS:
-     * Blueprints:
+     * [X] Blueprints:
      * - each blueprint is defined by file name
      * - 2 types
      *   - single inline value, blueprint contains the "value" field (limited_int)
@@ -37,19 +37,22 @@ public class MoonDust
      * - "fields" is an unbout map of string and value
      * - Have to load BEFORE widgets.. ofc
      *
-     * Blueprints verifier:
+     * [X] Blueprints verifier:
      * - each custom blueprint has to be verified when read from json, remember to verify the min/max limits too
      *
-     * Move clickable, enabled, visible, ??? to state variable in Widget instead each being a component, have blueprint to create this tho, special just like custom data
+     * [ ] Move clickable, enabled, visible, ??? to state variable in Widget instead each being a component, have blueprint to create this tho, special just like custom data
      *
-     * CustomData Struct
+     * [ ] CustomData Struct
      * - Just a Map of <String, Object>
      * - Idea is that this is settable from Lua (from custom blueprint for example)
      * - Basically just a custom component
      *
-     * All components that are NOT used to render or are used so interaction is possible should be replaced with CustomData structs and luaified
+     * [ ] All components that are NOT used to render or are used so interaction is possible should be replaced with CustomData structs and luaified
      *
-     * Scripts need arguments
+     *
+     * [ ] Scripts need arguments
+     * - Use custom blueprints for script input lol
+     * - If a script has input it should be specified by the script returning a table which is the custom blueprint.
      */
     private static final Logger LOGGER = Log.getLogger(MoonDust.class);
     private static final MoonDust INSTANCE = new MoonDust();

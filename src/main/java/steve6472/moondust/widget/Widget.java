@@ -39,6 +39,7 @@ import java.util.logging.Logger;
 public class Widget implements WidgetComponentGetter
 {
     public static boolean LOG_WIDGET_CREATION = false;
+    public static boolean LOG_LUA_EVENTS = false;
     private static final Logger LOGGER = Log.getLogger(Widget.class);
 
     private final Map<Class<?>, Object> components = new HashMap<>();
@@ -206,7 +207,6 @@ public class Widget implements WidgetComponentGetter
         }
 
         getComponent(Scripts.class).ifPresent(scripts -> {
-
             scripts.scripts().forEach((name, key) -> {
                 ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPTS.get(key);
                 if (profiledScript == null)
@@ -219,6 +219,11 @@ public class Widget implements WidgetComponentGetter
                 if (!profiledScript.enabled())
                     return;
                 UIEventEnum eventEnum = UIEventEnum.getEnumByType(eventType);
+
+                if (LOG_LUA_EVENTS)
+                {
+                    LOGGER.finest("Running event '" + key + "' for '" + eventEnum.id() + "' with " + override);
+                }
 
                 try
                 {

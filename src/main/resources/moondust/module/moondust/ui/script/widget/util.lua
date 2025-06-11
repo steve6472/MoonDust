@@ -4,8 +4,7 @@ local function changeCurrentSprite(widget, sprite)
     if widget == nil or sprite == nil then return end
     local currentSprite = widget:getComponent("moondust:current_sprite")
     if currentSprite == nil then return end
-    currentSprite = {sprite = sprite}
-    widget:addComponent("moondust:current_sprite", currentSprite)
+    widget:addComponent("moondust:current_sprite", sprite)
 end
 
 local function pickStyle(widget, hoverOverride)

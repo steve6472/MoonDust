@@ -7,16 +7,14 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.MoonDustRegistries;
-import steve6472.moondust.blueprints.values.BlueprintValueBool;
-import steve6472.moondust.blueprints.values.BlueprintValueInt;
-import steve6472.moondust.blueprints.values.BlueprintValueString;
-import steve6472.moondust.blueprints.values.BlueprintValueTable;
+import steve6472.moondust.blueprints.values.*;
 
 import java.util.Map;
 
 public final class BlueprintValueType<V, T extends BlueprintValue<V>> extends Type<T>
 {
     public static final BlueprintValueType<Integer, ?> INT = register("int", BlueprintValueInt.CODEC);
+    public static final BlueprintValueType<Double, ?> DOUBLE = register("double", BlueprintValueDouble.CODEC);
     public static final BlueprintValueType<String, ?> STRING = register("string", BlueprintValueString.CODEC);
     public static final BlueprintValueType<Boolean, ?> BOOL = register("bool", BlueprintValueBool.CODEC);
     public static final BlueprintValueType<Map<String, BlueprintValue<?>>, ?> TABLE = register("table", BlueprintValueTable.CODEC);

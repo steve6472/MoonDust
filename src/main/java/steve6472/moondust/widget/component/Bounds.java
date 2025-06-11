@@ -1,5 +1,8 @@
 package steve6472.moondust.widget.component;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 /**
  * Created by steve6472
  * Date: 12/4/2024
@@ -7,6 +10,11 @@ package steve6472.moondust.widget.component;
  */
 public class Bounds
 {
+    public static final Codec<Bounds> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codec.INT.fieldOf("width").forGetter(o -> o.width),
+        Codec.INT.fieldOf("height").forGetter(o -> o.height)
+    ).apply(instance, Bounds::new));
+
     public int width, height;
 
     public Bounds(int width, int height)
