@@ -256,6 +256,10 @@ public class Widget implements WidgetComponentGetter
         {
             //noinspection unchecked, rawtypes
             return ((Codec) OnGlobalMouseButton.CODEC).encodeStart(LuaTableOps.INSTANCE, e).getOrThrow();
+        } else if (e instanceof OnKeyInput)
+        {
+            //noinspection unchecked, rawtypes
+            return ((Codec) OnKeyInput.CODEC).encodeStart(LuaTableOps.INSTANCE, e).getOrThrow();
         }
         else
             throw new RuntimeException("Event to user object not done for " + e);

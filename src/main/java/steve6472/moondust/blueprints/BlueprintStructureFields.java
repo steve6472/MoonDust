@@ -2,6 +2,9 @@ package steve6472.moondust.blueprints;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import steve6472.core.registry.Key;
+import steve6472.moondust.MoonDustConstants;
+import steve6472.radiant.LuauTable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,14 +17,58 @@ import java.util.Map;
 public class BlueprintStructureFields implements BlueprintStructure
 {
     private final Map<String, BlueprintValue<?>> fields = new HashMap<>();
+    private final Key script;
 
     public static final Codec<BlueprintStructureFields> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.unboundedMap(Codec.STRING, BlueprintValue.CODEC).fieldOf("fields").forGetter(o -> o.fields)
+        Codec.unboundedMap(Codec.STRING, BlueprintValue.CODEC).fieldOf("fields").forGetter(o -> o.fields),
+        Key.withDefaultNamespace(MoonDustConstants.NAMESPACE).fieldOf("script").forGetter(BlueprintStructure::script)
     ).apply(instance, BlueprintStructureFields::new));
 
-    public BlueprintStructureFields(Map<String, BlueprintValue<?>> fields)
+    public BlueprintStructureFields(Map<String, BlueprintValue<?>> fields, Key script)
     {
         this.fields.putAll(fields);
+        this.script = script;
+    }
+
+    @Override
+    public ValidationResult validate(Object val)
+    {
+        if (!(val instanceof LuauTable table))
+            return ValidationResult.fail("Not a table");
+
+        for (Map.Entry<String, BlueprintValue<?>> entry : fields.entrySet())
+        {
+            String key = entry.getKey();
+            BlueprintValue<?> value = entry.getValue();
+
+            Object o = table.get(key);
+            if (o == null)
+                return ValidationResult.fail("Missing '%s' value".formatted(key));
+
+            if (o instanceof Number num)
+            {
+                ValidationResult res = value.convertNumericAndValidate(num);
+                if (!res.isPass())
+                    return res;
+
+                Number number = res.fixNumber();
+                if (number != null)
+                    table.add(key, number);
+            } else
+            {
+                //noinspection unchecked
+                ValidationResult res = ((BlueprintValue<Object>) value).validate(o);
+                if (!res.isPass())
+                    return res;
+            }
+        }
+        return ValidationResult.PASS;
+    }
+
+    @Override
+    public Key script()
+    {
+        return script;
     }
 
     @Override

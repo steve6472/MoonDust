@@ -6,6 +6,7 @@ import steve6472.core.registry.Key;
 import steve6472.moondust.ComponentEntry;
 import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.widget.component.CurrentSprite;
+import steve6472.moondust.widget.component.FocusedSprite;
 import steve6472.moondust.widget.component.Sprites;
 import steve6472.moondust.widget.component.Styles;
 import steve6472.radiant.LuauMetaTable;
@@ -32,6 +33,7 @@ public final class MoonDustComponents
         register("sprites", Sprites.CODEC, Sprites.class);
         register("current_sprite", CurrentSprite.CODEC, CurrentSprite.class);
         register("styles", Styles.CODEC, Styles.class);
+        register("focused_sprite", FocusedSprite.CODEC, FocusedSprite.class);
     }
 
     private static void register(String id, Codec<?> codec, Class<?> clazz)

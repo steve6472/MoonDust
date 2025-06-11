@@ -1,5 +1,6 @@
 package steve6472.moondust.widget.component;
 
+import com.mojang.serialization.Codec;
 import steve6472.core.registry.Key;
 
 /**
@@ -9,4 +10,5 @@ import steve6472.core.registry.Key;
  */
 public record FocusedSprite(Key sprite)
 {
+    public static final Codec<FocusedSprite> CODEC = Key.CODEC.xmap(FocusedSprite::new, FocusedSprite::sprite);
 }

@@ -1,4 +1,5 @@
 {
+    script: "moondust_test:blueprint/limit_int",
     value: {
         type: "int",
         min: 0,

@@ -95,6 +95,28 @@
             }
         },
         {
+            widget: "moondust:button",
+            name: "test_limit",
+            bounds: [22, 22],
+            clickable: true,
+
+            button: {
+                label: "Test Limit"
+            },
+
+//            "moondust_test:limit_int": 4,
+            "moondust_test:min_max": {
+                min: 0,
+                max: 3000
+            },
+
+            position: {
+                type: "relative",
+                parent: "test_button",
+                offset: [74, 0]
+            }
+        },
+        {
             widget: "moondust:debug/pixel_size",
             name: "pixel_sizes",
 

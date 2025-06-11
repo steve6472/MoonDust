@@ -1,0 +1,14 @@
+{
+    script: "moondust_test:blueprint/min_max",
+    fields: {
+        min: {
+            type: "int",
+            min: 0,
+            required: true
+        },
+        max: {
+            type: "int",
+            required: true
+        }
+    }
+}

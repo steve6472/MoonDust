@@ -20,7 +20,22 @@ public interface BlueprintValue<V> extends Typed<BlueprintValueType<V, ?>>
     /// Throws error if required and default are together in value definition (simply, the codec for this should never exist)
     boolean required();
 
+    /// Because Codecs decode 2 as Byte
+    default V convertNumeric(Number number)
+    {
+        throw new IllegalStateException("Unimplemented method");
+    }
+
     ValidationResult validate(V value);
+
+    default ValidationResult convertNumericAndValidate(Number number)
+    {
+        V fixedNumber = convertNumeric(number);
+        if (!(fixedNumber instanceof Number))
+            throw new IllegalStateException("Conversion did not result in a number");
+        ValidationResult result = validate(fixedNumber);
+        return result.withNumberFix((Number) fixedNumber);
+    }
 
     /// TODO: add doc
     static boolean validateForced(boolean required)

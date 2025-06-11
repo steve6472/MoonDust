@@ -38,10 +38,12 @@ public class Panel extends Widget
         this.focusOrder = List.copyOf(focusOrder);
     }
 
-//    public static Panel create(BlueprintFactory blueprint)
-//    {
-//        return new Panel(blueprint, null);
-//    }
+    public static Panel create(BlueprintFactory blueprint)
+    {
+        Panel panel = new Panel(blueprint, null);
+        panel.key = blueprint.key();
+        return panel;
+    }
 
     public static Panel create(Key key)
     {

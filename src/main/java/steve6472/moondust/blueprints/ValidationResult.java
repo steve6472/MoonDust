@@ -5,37 +5,110 @@ package steve6472.moondust.blueprints;
  * Date: 6/9/2025
  * Project: MoonDust <br>
  */
-public class ValidationResult
+public interface ValidationResult
 {
-    public static final ValidationResult PASS = new ValidationResult(true, "generic pass");
-    public static final ValidationResult FAIL = new ValidationResult(false, "unknown fail");
+    ValidationResult PASS = pass("generic pass");
+    ValidationResult FAIL = fail("unknown fail");
 
-    private final boolean isPass;
-    private final String message;
-
-    private ValidationResult(boolean isPass, String message)
+    static ValidationResult fail(String messaage, Object... args)
     {
-        this.isPass = isPass;
-        this.message = message;
+        return new Fail(String.format(messaage, args));
     }
 
-    public static ValidationResult fail(String messaage, Object... args)
+    static ValidationResult pass(String message)
     {
-        return new ValidationResult(false, String.format(messaage, args));
+        return new Pass(message);
     }
 
-    public static ValidationResult pass(String message)
+    default ValidationResult withNumberFix(Number number)
     {
-        return new ValidationResult(true, message);
+        if (isPass())
+            return new PassFixNumber(getMessage(), number);
+        else
+            return this;
     }
 
-    public boolean isPass()
+    default Number fixNumber()
     {
-        return isPass;
+        return null;
     }
 
-    public String getMessage()
+    boolean isPass();
+
+    String getMessage();
+
+    final class Pass implements ValidationResult
     {
-        return message;
+        private final String message;
+
+        private Pass(String message)
+        {
+            this.message = message;
+        }
+
+        @Override
+        public boolean isPass()
+        {
+            return true;
+        }
+
+        @Override
+        public String getMessage()
+        {
+            return message;
+        }
+    }
+
+    final class PassFixNumber implements ValidationResult
+    {
+        private final String message;
+        private final Number newNumber;
+
+        private PassFixNumber(String message, Number newNumber)
+        {
+            this.message = message;
+            this.newNumber = newNumber;
+        }
+
+
+        @Override
+        public Number fixNumber()
+        {
+            return newNumber;
+        }
+
+        @Override
+        public boolean isPass()
+        {
+            return true;
+        }
+
+        @Override
+        public String getMessage()
+        {
+            return message;
+        }
+    }
+
+    final class Fail implements ValidationResult
+    {
+        private final String message;
+
+        private Fail(String message)
+        {
+            this.message = message;
+        }
+
+        @Override
+        public boolean isPass()
+        {
+            return false;
+        }
+
+        @Override
+        public String getMessage()
+        {
+            return message;
+        }
     }
 }

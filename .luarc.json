@@ -2,6 +2,7 @@
     "diagnostics.disable": [
         "undefined-global",
         "trailing-space",
-        "undefined-field"
+        "undefined-field",
+        "lowercase-global"
     ]
 }

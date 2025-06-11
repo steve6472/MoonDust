@@ -61,7 +61,6 @@ public class MoonDustRegistries extends RegistryCreators
     });
 
     public static final ObjectRegistry<BlueprintFactory> WIDGET_FACTORY = createObjectRegistry(key("widget_factory"), WidgetLoader::load);
-    public static final ObjectRegistry<BlueprintFactory> CUSTOM_BLUEPRINT = createObjectRegistry(key("custom_blueprint"), WidgetLoader::load);
     public static final ObjectRegistry<ProfiledScript> LUA_SCRIPTS = createObjectRegistry(key("lua_script"), LuaScriptLoader::load);
 
     public static final Map<Key, UIEventCall<?>> EVENT_CALLS = new HashMap<>();

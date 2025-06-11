@@ -1,7 +1,0 @@
-{
-    value: {
-        type: "int",
-        min: 0,
-        max: 16
-    }
-}

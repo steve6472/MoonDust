@@ -39,6 +39,12 @@ public record BlueprintValueInt(int min, int max, int defaultValue, boolean requ
     }
 
     @Override
+    public Integer convertNumeric(Number number)
+    {
+        return number.intValue();
+    }
+
+    @Override
     public ValidationResult validate(Integer value)
     {
         int val = value;
