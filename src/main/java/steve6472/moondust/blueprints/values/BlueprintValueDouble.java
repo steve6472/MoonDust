@@ -6,7 +6,7 @@ import steve6472.moondust.blueprints.BlueprintValue;
 import steve6472.moondust.blueprints.BlueprintValueType;
 import steve6472.moondust.blueprints.ValidationResult;
 
-public record BlueprintValueDouble(double min, double max, double defaultValue, boolean required) implements BlueprintValue<Double>
+public record BlueprintValueDouble(double min, double max, Double defaultValue, boolean required) implements BlueprintValue<Double>
 {
     public static final Codec<BlueprintValueDouble> CODEC_DEFAULT = RecordCodecBuilder.create(instance -> instance.group(
         Codec.DOUBLE.optionalFieldOf("min", Double.MIN_VALUE).forGetter(BlueprintValueDouble::min),
@@ -18,7 +18,7 @@ public record BlueprintValueDouble(double min, double max, double defaultValue, 
         Codec.DOUBLE.optionalFieldOf("min", Double.MIN_VALUE).forGetter(BlueprintValueDouble::min),
         Codec.DOUBLE.optionalFieldOf("max", Double.MAX_VALUE).forGetter(BlueprintValueDouble::max),
         Codec.BOOL.fieldOf("required").forGetter(BlueprintValueDouble::required)
-    ).apply(instance, (min, max, required) -> new BlueprintValueDouble(min, max, 0, BlueprintValue.validateForced(required))));
+    ).apply(instance, (min, max, required) -> new BlueprintValueDouble(min, max, 0d, BlueprintValue.validateForced(required))));
 
     // TODO: this may have to be switched, idk
     public static final Codec<BlueprintValueDouble> CODEC = Codec.withAlternative(CODEC_DEFAULT, CODEC_REQUIRED);

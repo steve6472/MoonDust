@@ -244,6 +244,18 @@ public class Widget implements WidgetComponentGetter
 
         else if (e instanceof OnDataChanged<?> changed)
         {
+            // Special handling for tables 'cause I'm too lazy to create proper Codec
+            if (changed instanceof OnDataChanged.Table changedTable)
+            {
+                LuauTable table = new LuauTable();
+                table.add("key", changedTable.getChangedKey().toString());
+                table.add("type", OnDataChanged.Type.TABLE.stringValue());
+                table.add("previous", changedTable.previousValue);
+                if (!changedTable.removed)
+                    table.add("new", changedTable.newValue);
+                return table;
+            }
+
             Codec<?> codec = changed.codec();
             //noinspection unchecked, rawtypes
             DataResult<Object> objectDataResult = ((Codec) codec).encodeStart(LuaTableOps.INSTANCE, e);

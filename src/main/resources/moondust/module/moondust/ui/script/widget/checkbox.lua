@@ -35,8 +35,8 @@ local function dataChanged(widget, changed)
 end
 
 local function toggle(widget)
-    if not widget:isEnabled() then return end
     if not buttonTest(widget) then return end
+
     local data = widget:customData()
     local checked = data:getFlag(checkbox.checked)
     data:setFlag(checkbox.checked, not checked)

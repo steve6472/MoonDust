@@ -4,7 +4,6 @@ import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.core.registry.ObjectRegistry;
 import steve6472.core.registry.Registry;
-import steve6472.core.registry.RegistryRegister;
 import steve6472.flare.input.Keybind;
 import steve6472.flare.registry.RegistryCreators;
 import steve6472.moondust.blueprints.BlueprintValueType;
@@ -17,12 +16,13 @@ import steve6472.moondust.widget.BlueprintOverrides;
 import steve6472.moondust.widget.MoonDustComponents;
 import steve6472.moondust.widget.blueprint.layout.LayoutType;
 import steve6472.moondust.widget.blueprint.event.UIEventType;
-import steve6472.moondust.widget.blueprint.position.PositionType;
+import steve6472.moondust.widget.blueprint.position.PositionBlueprintType;
 import steve6472.moondust.core.blueprint.BlueprintEntry;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.widget.WidgetBlueprints;
 import steve6472.moondust.widget.WidgetLoader;
 import steve6472.moondust.widget.component.event.UIEventCall;
+import steve6472.moondust.widget.component.position.PositionType;
 import steve6472.moondust.widget.override.OverrideEntry;
 
 import java.util.HashMap;
@@ -40,10 +40,11 @@ public class MoonDustRegistries extends RegistryCreators
 
     static
     {
-        MoonDustComponents.init();
+        LOADERS.put(MoonDustConstants.key("moondust_components"), MoonDustComponents::init);
     }
 
     /* Types */
+    public static final Registry<PositionBlueprintType<?>> POSITION_BLUEPRINT_TYPE = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("position_blueprint_type"), () -> PositionBlueprintType.ABSOLUTE);
     public static final Registry<PositionType<?>> POSITION_TYPE = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("position_type"), () -> PositionType.ABSOLUTE);
     public static final Registry<LayoutType<?>> LAYOUT_TYPE = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("layout_type"), () -> LayoutType.ABSOLUTE);
     public static final Registry<BlueprintValueType<?, ?>> BLUEPRINT_VALUE_TYPE = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("blueprint_value_type"), () -> BlueprintValueType.INT);

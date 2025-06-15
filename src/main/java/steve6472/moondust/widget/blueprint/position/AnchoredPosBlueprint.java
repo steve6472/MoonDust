@@ -21,9 +21,9 @@ public record AnchoredPosBlueprint(Vector2i offset, AnchoredPos.Anchor anchor) i
     ).apply(instance, AnchoredPosBlueprint::new));
 
     @Override
-    public PositionType<?> getType()
+    public PositionBlueprintType<?> getType()
     {
-        return PositionType.ANCHORED;
+        return PositionBlueprintType.ANCHORED;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package steve6472.moondust.widget.component.position;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.joml.Vector2i;
 import steve6472.core.registry.StringValue;
+import steve6472.core.util.ExtraCodecs;
 import steve6472.moondust.widget.component.Bounds;
 import steve6472.moondust.widget.Widget;
 
@@ -15,6 +17,11 @@ import java.util.Locale;
  */
 public record AnchoredPos(Vector2i offset, Anchor anchor) implements Position
 {
+    public static final Codec<AnchoredPos> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        ExtraCodecs.VEC_2I.fieldOf("offset").forGetter(AnchoredPos::offset),
+        Anchor.CODEC.fieldOf("anchor").forGetter(AnchoredPos::anchor)
+    ).apply(instance, AnchoredPos::new));
+
     @Override
     public void evaluatePosition(Vector2i store, Widget widget)
     {
@@ -27,6 +34,12 @@ public record AnchoredPos(Vector2i offset, Anchor anchor) implements Position
                 });
             });
         }, () -> store.set(offset));
+    }
+
+    @Override
+    public PositionType<?> getType()
+    {
+        return PositionType.ANCHORED;
     }
 
     public enum Anchor implements StringValue

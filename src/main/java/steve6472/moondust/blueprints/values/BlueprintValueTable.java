@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public record BlueprintValueTable(Map<String, BlueprintValue<?>> fields, Map<String, BlueprintValue<?>> defaultValues, boolean required) implements BlueprintValue<Map<String, BlueprintValue<?>>>
+public record BlueprintValueTable(Map<String, BlueprintValue<?>> fields, Map<String, BlueprintValue<?>> defaultValue, boolean required) implements BlueprintValue<Map<String, BlueprintValue<?>>>
 {
     public static final Codec<BlueprintValueTable> CODEC_REQUIRED = RecordCodecBuilder.create(instance -> instance.group(
         Codec.unboundedMap(Codec.STRING, BlueprintValue.CODEC).fieldOf("fields").forGetter(o -> o.fields)

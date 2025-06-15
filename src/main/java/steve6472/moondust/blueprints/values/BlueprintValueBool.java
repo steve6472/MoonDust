@@ -6,7 +6,7 @@ import steve6472.moondust.blueprints.BlueprintValue;
 import steve6472.moondust.blueprints.BlueprintValueType;
 import steve6472.moondust.blueprints.ValidationResult;
 
-public record BlueprintValueBool(boolean defaultValue, boolean required) implements BlueprintValue<Boolean>
+public record BlueprintValueBool(Boolean defaultValue, boolean required) implements BlueprintValue<Boolean>
 {
     public static final Codec<BlueprintValueBool> CODEC_DEFAULT = RecordCodecBuilder.create(instance -> instance.group(
         Codec.BOOL.optionalFieldOf("default", false).forGetter(BlueprintValueBool::defaultValue)

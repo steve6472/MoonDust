@@ -34,6 +34,9 @@ public final class MoonDustComponents
         register("bounds", Bounds.CODEC, Bounds.class);
         register("clickbox_size", ClickboxSize.CODEC, ClickboxSize.class);
         register("clickbox_offset", ClickboxOffset.CODEC, ClickboxOffset.class);
+        register("text", MDText.CODEC, MDText.class);
+        // no worky 'cause typed... uhhh annoying
+//        register("position", Position.CODEC, Position.class);
     }
 
     private static <T> void register(String id, Codec<T> codec, Class<T> clazz)

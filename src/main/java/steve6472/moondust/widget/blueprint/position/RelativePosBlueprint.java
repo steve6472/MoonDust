@@ -21,9 +21,9 @@ public record RelativePosBlueprint(Vector2i offset, String parent) implements Po
     ).apply(instance, RelativePosBlueprint::new));
 
     @Override
-    public PositionType<?> getType()
+    public PositionBlueprintType<?> getType()
     {
-        return PositionType.RELATIVE;
+        return PositionBlueprintType.RELATIVE;
     }
 
     @Override

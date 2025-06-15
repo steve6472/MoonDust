@@ -81,7 +81,21 @@ public class MoonDustGlobal
 
         LuaKeyMap.KEYS.pushTable(global.state());
         global.state().setGlobal("Keys");
+        initLogFunctions(global, key);
 
+        global.state().registerLib("string", Map.of("replace", state -> {
+            String value = state.checkStringArg(1);
+            String target = state.checkStringArg(2);
+            String replacement = state.checkStringArg(3);
+            state.pushString(value.replace(target, replacement));
+            return 1;
+        }));
+
+        return global;
+    }
+
+    private static void initLogFunctions(LuauGlobal global, Key key)
+    {
         // Create logger for this script specifically for debug
         Logger log = Log.getLogger("Lua - " + key);
         // Override default print function
@@ -97,15 +111,41 @@ public class MoonDustGlobal
             return 0;
         });
 
-        global.state().registerLib("string", Map.of("replace", state -> {
-            String value = state.checkStringArg(1);
-            String target = state.checkStringArg(2);
-            String replacement = state.checkStringArg(3);
-            state.pushString(value.replace(target, replacement));
-            return 1;
-        }));
+        global.registerFunction("warning", state -> {
+            StringBuilder bob = new StringBuilder();
+            for (int i = 1; i <= state.getTop(); i++)
+            {
+                bob.append(LuauUtil.toString(state, i));
+                if (i != state.getTop())
+                    bob.append("    ");
+            }
+            log.warning(bob.toString());
+            return 0;
+        });
 
-        return global;
+        global.registerFunction("severe", state -> {
+            StringBuilder bob = new StringBuilder();
+            for (int i = 1; i <= state.getTop(); i++)
+            {
+                bob.append(LuauUtil.toString(state, i));
+                if (i != state.getTop())
+                    bob.append("    ");
+            }
+            log.severe(bob.toString());
+            return 0;
+        });
+
+        global.registerFunction("info", state -> {
+            StringBuilder bob = new StringBuilder();
+            for (int i = 1; i <= state.getTop(); i++)
+            {
+                bob.append(LuauUtil.toString(state, i));
+                if (i != state.getTop())
+                    bob.append("    ");
+            }
+            log.info(bob.toString());
+            return 0;
+        });
     }
 
     public static void addEventsRegistry(LuaState state)

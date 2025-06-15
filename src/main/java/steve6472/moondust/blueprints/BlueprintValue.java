@@ -20,6 +20,8 @@ public interface BlueprintValue<V> extends Typed<BlueprintValueType<V, ?>>
     /// Throws error if required and default are together in value definition (simply, the codec for this should never exist)
     boolean required();
 
+    V defaultValue();
+
     /// Because Codecs decode 2 as Byte
     default V convertNumeric(Number number)
     {

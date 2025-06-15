@@ -117,6 +117,16 @@
             }
         },
         {
+            widget: "moondust_test:test_radio",
+            name: "test_radio",
+
+            position: {
+                type: "relative",
+                parent: "test_limit",
+                offset: [0, 26]
+            }
+        },
+        {
             widget: "moondust:debug/pixel_size",
             name: "pixel_sizes",
 

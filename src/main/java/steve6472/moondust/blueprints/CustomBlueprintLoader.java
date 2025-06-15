@@ -49,6 +49,8 @@ public class CustomBlueprintLoader
                         Number number = validate.fixNumber();
                         if (number != null)
                             value = number;
+                        
+                        LOGGER.info("The input: " + value + " key: " + key);
 
                         return DataResult.success((Blueprint) new CustomBlueprint(structure, key, value));
                     }, d -> null);

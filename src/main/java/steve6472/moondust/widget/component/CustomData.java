@@ -12,6 +12,7 @@ import steve6472.moondust.core.Mergeable;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.event.OnDataChange;
 import steve6472.moondust.widget.component.event.OnDataChanged;
+import steve6472.radiant.LuauTable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,11 +24,11 @@ import java.util.Map;
  */
 public class CustomData implements Mergeable<CustomData>
 {
-    /// TODO: renamte to just "data"
     public final Object2DoubleArrayMap<Key> doubles = new Object2DoubleArrayMap<>();
     public final Object2IntArrayMap<Key> ints = new Object2IntArrayMap<>();
     public final Map<Key, String> strings = new HashMap<>();
     public final Object2BooleanArrayMap<Key> flags = new Object2BooleanArrayMap<>();
+    public final Map<Key, LuauTable> tables = new HashMap<>();
 
     public static final Codec<CustomData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ExtraCodecs.mapListCodec(Key.CODEC, Codec.STRING).optionalFieldOf("strings", new HashMap<>()).forGetter(c -> c.strings),
@@ -105,6 +106,18 @@ public class CustomData implements Mergeable<CustomData>
         }
     }
 
+    public void putTable(Key key, LuauTable value)
+    {
+        LuauTable previous = tables.put(key, value);
+        if (!value.equals(previous))
+        {
+            if (widget != null)
+            {
+                widget.handleEvents(OnDataChanged.class, _ -> true, new OnDataChanged.Table(key, previous, value, false));
+            }
+        }
+    }
+
     public double getDouble(Key key)
     {
         return doubles.getDouble(key);
@@ -123,6 +136,11 @@ public class CustomData implements Mergeable<CustomData>
     public boolean getFlag(Key key)
     {
         return flags.getBoolean(key);
+    }
+
+    public LuauTable getTable(Key key)
+    {
+        return tables.get(key);
     }
 
     public double removeDouble(Key key)
@@ -157,6 +175,14 @@ public class CustomData implements Mergeable<CustomData>
         return previous;
     }
 
+    public LuauTable removeTable(Key key)
+    {
+        LuauTable previous = tables.remove(key);
+        if (widget != null)
+            widget.handleEvents(OnDataChanged.class, _ -> true, new OnDataChanged.Table(key, previous, null, true));
+        return previous;
+    }
+
     @Override
     public CustomData merge(CustomData left, CustomData right)
     {
@@ -169,12 +195,14 @@ public class CustomData implements Mergeable<CustomData>
         data.strings.putAll(right.strings);
         data.flags.putAll(left.flags);
         data.flags.putAll(right.flags);
+        data.tables.putAll(left.tables);
+        data.tables.putAll(right.tables);
         return data;
     }
 
     @Override
     public String toString()
     {
-        return "CustomData{" + "nums=" + doubles + ", ints=" + ints + ", strings=" + strings + ", flags=" + flags + '}';
+        return "CustomData{" + "nums=" + doubles + ", ints=" + ints + ", strings=" + strings + ", flags=" + flags + ", tables=" + tables + '}';
     }
 }

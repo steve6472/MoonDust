@@ -12,12 +12,10 @@
             clickable: true,
             radio_group: {
                 group: "test",
-                selected: true
+                selected: true,
+                label: "6"
             },
             data: {
-                strings: {
-                    "radio_button:label": "6"
-                },
                 nums: {
                     "moondust:debug/set_pixel_scale": 6
                 }
@@ -36,12 +34,10 @@
             },
             clickable: true,
             radio_group: {
-                group: "test"
+                group: "test",
+                label: "4"
             },
             data: {
-                strings: {
-                    "radio_button:label": "4"
-                },
                 nums: {
                     "moondust:debug/set_pixel_scale": 4
                 }
@@ -60,12 +56,10 @@
             },
             clickable: true,
             radio_group: {
-                group: "test"
+                group: "test",
+                label: "2"
             },
             data: {
-                strings: {
-                    "radio_button:label": "2"
-                },
                 nums: {
                     "moondust:debug/set_pixel_scale": 2
                 }
@@ -84,12 +78,10 @@
             },
             clickable: true,
             radio_group: {
-                group: "test"
+                group: "test",
+                label: "1"
             },
             data: {
-                strings: {
-                    "radio_button:label": "1"
-                },
                 nums: {
                     "moondust:debug/set_pixel_scale": 1
                 }

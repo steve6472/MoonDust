@@ -10,6 +10,7 @@ import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.luau.ProfiledScript;
 import steve6472.moondust.widget.MoonDustComponents;
+import steve6472.moondust.widget.component.CustomData;
 import steve6472.radiant.*;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.logging.Logger;
  */
 public class CustomBlueprint implements Keyable, Blueprint
 {
+    public static boolean LOG_CREATION = false;
     private static final Logger LOGGER = Log.getLogger(CustomBlueprint.class);
     public final BlueprintStructure structure;
     public final Key key;
@@ -45,7 +47,8 @@ public class CustomBlueprint implements Keyable, Blueprint
     @Override
     public List<?> createComponents()
     {
-        LOGGER.info("Creating components for " + key + " with input data: " + input);
+        if (LOG_CREATION)
+            LOGGER.info("Creating components for " + key + " with input data: " + input);
         ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPTS.get(structure.script());
         if (profiledScript == null)
             throw new RuntimeException("Script '%s' not found for custom blueprint '%s'".formatted(structure.script(), key));
@@ -107,6 +110,17 @@ public class CustomBlueprint implements Keyable, Blueprint
 
             if (!(key instanceof String keyStr))
                 throw new IllegalStateException("Component key has to be a string!");
+
+            if (Key.parse(MoonDustConstants.NAMESPACE, keyStr).toString().equals("moondust:tables"))
+            {
+                CustomData data = new CustomData();
+                LuauTable tableVal = (LuauTable) value;
+                tableVal.table().forEach((lKey, lValue) -> {
+                    data.putTable(Key.parse(lKey.toString()), ((LuauTable) lValue));
+                });
+                components.add(data);
+                continue;
+            }
 
             Codec<?> codec = MoonDustComponents.byKey(Key.parse(MoonDustConstants.NAMESPACE, keyStr)).codec();
             var decode = codec.decode(LuaTableOps.INSTANCE, value);

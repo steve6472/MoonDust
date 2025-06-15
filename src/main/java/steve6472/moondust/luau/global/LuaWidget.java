@@ -9,6 +9,7 @@ import steve6472.moondust.ComponentEntry;
 import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.widget.MoonDustComponents;
 import steve6472.moondust.widget.Widget;
+import steve6472.moondust.widget.component.CustomData;
 import steve6472.moondust.widget.component.InternalStates;
 import steve6472.radiant.*;
 import steve6472.radiant.func.OverloadFuncArgs;
@@ -51,6 +52,12 @@ public class LuaWidget
             LuauUtil.push(state, lua);
             return 1;
         });
+        META.addFunction("getTable", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            Key key = Key.parse(state.checkStringArg(2));
+            widget.customData().getTable(key).pushTable(state);
+            return 1;
+        });
         META.addFunction("addComponent", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
             String type = state.checkStringArg(2);
@@ -64,6 +71,20 @@ public class LuaWidget
             widget.addComponent(first);
             return 0;
         });
+        META.addFunction("setTable", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            Key key = Key.parse(state.checkStringArg(2));
+            LuauTable luauTable = new LuauTable();
+            luauTable.readTable(state, 3);
+            widget.customData().putTable(key, luauTable);
+            return 1;
+        });
+        META.addFunction("removeTable", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            Key key = Key.parse(state.checkStringArg(2));
+            LuauUtil.push(state, widget.customData().removeTable(key));
+            return 1;
+        });
 
         // Getters
         META.addFunction("getChild", state -> {
@@ -76,6 +97,18 @@ public class LuaWidget
             {
                 state.pushNil();
             }
+            return 1;
+        });
+        META.addFunction("getChildrenNames", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            LuauTable names = new LuauTable();
+            int i = 1;
+            for (Widget child : widget.getChildren())
+            {
+                names.add(i, child.getName());
+                i++;
+            }
+            names.pushTable(state);
             return 1;
         });
         META.addFunction("getParent", state -> {

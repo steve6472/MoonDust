@@ -21,9 +21,9 @@ public record AbsolutePosBlueprint(Vector2i position) implements PositionBluepri
     ).apply(instance, AbsolutePosBlueprint::new));
 
     @Override
-    public PositionType<?> getType()
+    public PositionBlueprintType<?> getType()
     {
-        return PositionType.ABSOLUTE;
+        return PositionBlueprintType.ABSOLUTE;
     }
 
     @Override

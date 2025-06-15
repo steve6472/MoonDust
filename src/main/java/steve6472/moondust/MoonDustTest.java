@@ -38,8 +38,7 @@ public class MoonDustTest extends FlareApp
     @Override
     protected void initRegistries()
     {
-        initRegistry(MoonDustRegistries.POSITION_TYPE);
-        MoonDustEventCalls.init();
+        initRegistry(MoonDustRegistries.POSITION_BLUEPRINT_TYPE);
         BuiltinEventCalls.init();
         TestEventCalls.init(this);
     }

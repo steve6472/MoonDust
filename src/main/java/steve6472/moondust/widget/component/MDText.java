@@ -1,5 +1,7 @@
 package steve6472.moondust.widget.component;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import steve6472.flare.ui.font.render.Text;
 import steve6472.flare.ui.font.render.TextPart;
 import steve6472.moondust.widget.component.position.Position;
@@ -11,6 +13,11 @@ import steve6472.moondust.widget.component.position.Position;
  */
 public record MDText(Text text, Position position)
 {
+    public static final Codec<MDText> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Text.CODEC.fieldOf("text").forGetter(MDText::text),
+        Position.CODEC.fieldOf("position").forGetter(MDText::position)
+    ).apply(instance, MDText::new));
+
     public void replaceText(TextPart part, int index)
     {
         text.parts().set(index, part);

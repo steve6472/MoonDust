@@ -2,11 +2,16 @@ package steve6472.moondust.luau.global;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.moondust.widget.component.CustomData;
 import steve6472.radiant.*;
 
-public class LuaCustomData {
+import java.util.logging.Logger;
+
+public class LuaCustomData
+{
+    private static final Logger LOGGER = Log.getLogger(LuaCustomData.class);
     public static final LuauMetaTable META = new LuauMetaTable("CustomData");
 
     public static LuauUserObject createObject(CustomData data)
@@ -116,7 +121,16 @@ public class LuaCustomData {
             data.ints.keySet().forEach(data::removeInt);
             data.strings.keySet().forEach(data::removeString);
             data.flags.keySet().forEach(data::removeFlag);
+            data.tables.keySet().forEach(data::removeFlag);
             return 0;
+        });
+
+        META.addFunction("getTables", state -> {
+            CustomData data = (CustomData) state.checkUserDataArg(1, "CustomData");
+            LuauTable table = new LuauTable();
+            data.tables.forEach((key, value) -> table.add(key.toString(), value));
+            table.pushTable(state);
+            return 1;
         });
 
         META.addFunction("toTable", state -> {
@@ -124,6 +138,14 @@ public class LuaCustomData {
             //noinspection unchecked, rawtypes
             DataResult<Object> objectDataResult = ((Codec) CustomData.CODEC).encodeStart(LuaTableOps.INSTANCE, data);
             LuauTable table = (LuauTable) objectDataResult.getOrThrow();
+//            LuauTable tables = new LuauTable();
+//            for (Map.Entry<Key, LuauTable> entry : data.tables.entrySet())
+//            {
+//                Key key = entry.getKey();
+//                LuauTable value = entry.getValue();
+//                tables.add(key, value);
+//            }
+//            table.add("tables", tables);
             table.pushTable(state);
             return 1;
         });

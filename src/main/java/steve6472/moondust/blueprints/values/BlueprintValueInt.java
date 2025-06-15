@@ -8,7 +8,7 @@ import steve6472.moondust.blueprints.BlueprintValue;
 import steve6472.moondust.blueprints.BlueprintValueType;
 import steve6472.moondust.blueprints.ValidationResult;
 
-public record BlueprintValueInt(int min, int max, int defaultValue, boolean required) implements BlueprintValue<Integer>
+public record BlueprintValueInt(int min, int max, Integer defaultValue, boolean required) implements BlueprintValue<Integer>
 {
     public static final Codec<BlueprintValueInt> CODEC_DEFAULT = RecordCodecBuilder.create(instance -> instance.group(
         Codec.INT.optionalFieldOf("min", Integer.MIN_VALUE).forGetter(BlueprintValueInt::min),

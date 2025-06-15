@@ -10,53 +10,31 @@
 
     focusable: true,
     focused_sprite: "moondust:generic_dark_pixel/generic/focus/sharper",
-    radio_group: {
-        group: "__ungrouped"
-    },
 
     clickable: true,
     bounds: [32, 7],
     sprite_size: [7, 7],
-    events: [
-        {
-            call: "moondust:radio_button/init",
-            event: { type: "on_init" }
-        },
-        {
-            call: "moondust:radio_button/release",
-            event: {type: "on_mouse_release"},
-            condition: {
-                states: {
-                    direct_hover: true
-                }
-            }
-        }
-    ],
 
-    children: [
-        {
-            widget: "moondust:empty",
-            name: "label",
-            position: {
-                type: "anchored",
-                anchor: "left",
-                offset: [8, -2]
-            },
-            bounds: [0, 0],
-            text: {
-                text: {
-                    parts: [
-                        {
-                            text: "Radio",
-                            style: "moondust:tiny_pixie2"
-                        }
-                    ],
-                    anchor: "top_left",
-                    text_size: 6,
-                    vertical_anchor: "text_height",
-                    force_single_line: true
+    scripts: {
+        "main": "moondust:widget/radio_button"
+    },
+
+    text: {
+        text: {
+            parts: [
+                {
+                    text: "Radio",
+                    style: "moondust:button/normal"
                 }
-            }
+            ],
+            anchor: "top_left",
+            text_size: 6,
+            vertical_anchor: "text_height",
+            force_single_line: true
+        },
+        position: {
+            type: "absolute",
+            pos: [8, 1]
         }
-    ]
+    }
 }

@@ -43,7 +43,16 @@ public class BlueprintStructureFields implements BlueprintStructure
 
             Object o = table.get(key);
             if (o == null)
-                return ValidationResult.fail("Missing '%s' value".formatted(key));
+            {
+                if (fields.get(key).required())
+                {
+                    return ValidationResult.fail("Missing '%s' value".formatted(key));
+                } else
+                {
+                    o = fields.get(key).defaultValue();
+                    table.add(key, o);
+                }
+            }
 
             if (o instanceof Number num)
             {

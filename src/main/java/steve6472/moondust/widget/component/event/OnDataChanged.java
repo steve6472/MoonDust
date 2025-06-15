@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import steve6472.core.registry.Key;
 import steve6472.core.registry.Serializable;
 import steve6472.core.registry.StringValue;
+import steve6472.radiant.LuauTable;
 
 /**
  * Created by steve6472
@@ -180,9 +181,40 @@ public abstract class OnDataChanged<T> implements UIEvent, Serializable<T>
         }
     }
 
+    public static class Table extends OnDataChanged<Table>
+    {
+        public final LuauTable previousValue;
+        public final LuauTable newValue;
+
+        public Table(Key changedKey, LuauTable previousValue, LuauTable newValue, boolean removed)
+        {
+            super(changedKey, removed);
+            this.previousValue = previousValue;
+            this.newValue = newValue;
+        }
+
+        @Override
+        public Codec<Table> codec()
+        {
+            // This has special handling in Widget 'cause I'm lazy
+            return null;
+        }
+
+        public Key getChangedKey()
+        {
+            return changedKey;
+        }
+
+        @Override
+        public Type type()
+        {
+            return Type.TABLE;
+        }
+    }
+
     public enum Type implements StringValue
     {
-        NUM, INT, STRING, FLAG;
+        NUM, INT, STRING, FLAG, TABLE;
 
         public static final Codec<Type> CODEC = StringValue.fromValues(Type::values);
 
@@ -195,6 +227,7 @@ public abstract class OnDataChanged<T> implements UIEvent, Serializable<T>
                 case INT -> "int";
                 case STRING -> "string";
                 case FLAG -> "flag";
+                case TABLE -> "table";
             };
         }
     }
