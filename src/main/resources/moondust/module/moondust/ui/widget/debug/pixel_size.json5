@@ -15,13 +15,11 @@
                 selected: true,
                 label: "6"
             },
-            data: {
-                nums: {
-                    "moondust:debug/set_pixel_scale": 6
-                }
-            },
             scripts: {
-                "set_scale_press": "moondust:debug/set_pixel_scale"
+                set_scale_press: {
+                    script: "moondust:debug/set_pixel_scale",
+                    input: 6
+                }
             }
         },
         {
@@ -37,13 +35,11 @@
                 group: "test",
                 label: "4"
             },
-            data: {
-                nums: {
-                    "moondust:debug/set_pixel_scale": 4
-                }
-            },
             scripts: {
-                "set_scale_press": "moondust:debug/set_pixel_scale"
+                set_scale_press: {
+                    script: "moondust:debug/set_pixel_scale",
+                    input: 4
+                }
             }
         },
         {
@@ -59,13 +55,11 @@
                 group: "test",
                 label: "2"
             },
-            data: {
-                nums: {
-                    "moondust:debug/set_pixel_scale": 2
-                }
-            },
             scripts: {
-                "set_scale_press": "moondust:debug/set_pixel_scale"
+                set_scale_press: {
+                    script: "moondust:debug/set_pixel_scale",
+                    input: 2
+                }
             }
         },
         {
@@ -81,13 +75,11 @@
                 group: "test",
                 label: "1"
             },
-            data: {
-                nums: {
-                    "moondust:debug/set_pixel_scale": 1
-                }
-            },
             scripts: {
-                "set_scale_press": "moondust:debug/set_pixel_scale"
+                set_scale_press: {
+                    script: "moondust:debug/set_pixel_scale",
+                    input: 1
+                }
             }
         }
     ]

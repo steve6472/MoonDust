@@ -1,18 +1,20 @@
 package steve6472.moondust.luau;
 
+import net.hollowcube.luau.LuaState;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.core.registry.Keyable;
 import steve6472.core.util.Profiler;
 import steve6472.moondust.luau.global.MoonDustGlobal;
 import steve6472.radiant.LuauScript;
-import steve6472.radiant.LuauUserObject;
+import steve6472.radiant.LuauUtil;
 
 import java.util.logging.Logger;
 
 public final class ProfiledScript implements Keyable
 {
     private static final Logger LOGGER = Log.getLogger(ProfiledScript.class);
+    public static final String INPUT_VAR = "inputArgs";
 
     private final LuauScript script;
     private final String numberedScript;
@@ -64,6 +66,13 @@ public final class ProfiledScript implements Keyable
             LOGGER.info("Script that failed ->\n" + numberedScript);
             throw new RuntimeException(e);
         }
+    }
+
+    public void setVariable(String variableName, Object value)
+    {
+        LuaState state = script().state();
+        LuauUtil.push(state, value);
+        state.setGlobal(variableName);
     }
 
     public void run(String eventName, Object... objects)

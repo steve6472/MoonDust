@@ -6,6 +6,7 @@ import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.builtin.BuiltinEventCalls;
 import steve6472.moondust.core.blueprint.Blueprint;
+import steve6472.moondust.widget.blueprint.ScriptEntry;
 import steve6472.moondust.widget.blueprint.event.condition.EventCondition;
 import steve6472.moondust.widget.blueprint.event.condition.States;
 import steve6472.moondust.widget.blueprint.event.condition.Tristate;
@@ -53,7 +54,7 @@ public record ButtonBlueprint(Key pressCall, Key pressScript, String label, bool
 
         if (!pressScript.equals(NO_CALL))
         {
-            components.add(new Scripts(Map.of("button_press_script", pressScript)));
+            components.add(new Scripts(Map.of("button_press_script", new ScriptEntry(pressScript))));
         }
 
         if (!label.isBlank())

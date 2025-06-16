@@ -6,19 +6,15 @@ import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.builtin.BuiltinEventCalls;
 import steve6472.moondust.core.blueprint.Blueprint;
+import steve6472.moondust.widget.blueprint.ScriptEntry;
 import steve6472.moondust.widget.blueprint.event.condition.EventCondition;
-import steve6472.moondust.widget.blueprint.event.condition.States;
-import steve6472.moondust.widget.blueprint.event.condition.Tristate;
-import steve6472.moondust.widget.component.CurrentSprite;
 import steve6472.moondust.widget.component.CustomData;
 import steve6472.moondust.widget.component.Scripts;
 import steve6472.moondust.widget.component.Styles;
 import steve6472.moondust.widget.component.event.OnDataChange;
-import steve6472.moondust.widget.component.event.OnMouseRelease;
 import steve6472.moondust.widget.component.event.UIEventCallEntry;
 import steve6472.moondust.widget.component.event.UIEvents;
 import steve6472.moondust.widget.component.flag.Clickable;
-import steve6472.moondust.widget.component.flag.Enabled;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +51,7 @@ public record CheckBoxBlueprint(Key pressCall, Key pressScript, String label, bo
 
         if (!pressScript.equals(NO_CALL))
         {
-            components.add(new Scripts(Map.of("checkbox_press_script", pressScript)));
+            components.add(new Scripts(Map.of("checkbox_press_script", new ScriptEntry(pressScript))));
         }
 
         CustomData data = new CustomData();

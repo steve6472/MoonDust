@@ -1,5 +1,5 @@
 {
-    script: "moondust_test:blueprint/min_max",
+    script: "none",
     fields: {
         min: {
             type: "int",

@@ -53,7 +53,7 @@ public class CustomBlueprintLoader
                         LOGGER.info("The input: " + value + " key: " + key);
 
                         return DataResult.success((Blueprint) new CustomBlueprint(structure, key, value));
-                    }, d -> null);
+                    }, _ -> null);
 
                     MoonDustRegistries.WIDGET_BLUEPRINT.register(key, new BlueprintEntry<>(key, CODEC));
 

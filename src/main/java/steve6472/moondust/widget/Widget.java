@@ -12,6 +12,7 @@ import steve6472.moondust.core.Mergeable;
 import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.luau.ProfiledScript;
 import steve6472.moondust.luau.global.LuaWidget;
+import steve6472.moondust.widget.blueprint.ScriptEntry;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 import steve6472.moondust.widget.component.event.global.OnGlobalMouseButton;
@@ -207,22 +208,25 @@ public class Widget implements WidgetComponentGetter
         }
 
         getComponent(Scripts.class).ifPresent(scripts -> {
-            scripts.scripts().forEach((name, key) -> {
-                ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPTS.get(key);
+            scripts.scripts().forEach((name, scriptEntry) -> {
+                ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPTS.get(scriptEntry.script());
                 if (profiledScript == null)
                 {
                     // TODO: print once
-                    LOGGER.warning("Could not find script " + key);
+                    LOGGER.warning("Could not find script " + scriptEntry.script());
                     return;
                 }
 
                 if (!profiledScript.enabled())
                     return;
+
+                profiledScript.setVariable(ProfiledScript.INPUT_VAR, scriptEntry.input() == ScriptEntry.EMPTY ? null : scriptEntry.input());
+
                 UIEventEnum eventEnum = UIEventEnum.getEnumByType(eventType);
 
                 if (LOG_LUA_EVENTS)
                 {
-                    LOGGER.finest("Running event '" + key + "' for '" + eventEnum.id() + "' with " + override);
+                    LOGGER.finest("Running event '" + scriptEntry.script() + "' for '" + eventEnum.id() + "' with " + override);
                 }
 
                 try
@@ -230,7 +234,7 @@ public class Widget implements WidgetComponentGetter
                     profiledScript.run(eventEnum.id, LuaWidget.createObject(this), eventToUserObject(override));
                 } catch (RuntimeException ex)
                 {
-                    LOGGER.severe("Exception thrown for %s : %s in widget %s".formatted(name, key, getPath()));
+                    LOGGER.severe("Exception thrown for %s : %s in widget %s".formatted(name, scriptEntry.script(), getPath()));
                     ex.printStackTrace();
                 }
             });

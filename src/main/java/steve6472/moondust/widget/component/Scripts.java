@@ -1,8 +1,8 @@
 package steve6472.moondust.widget.component;
 
 import com.mojang.serialization.Codec;
-import steve6472.core.registry.Key;
 import steve6472.moondust.core.Mergeable;
+import steve6472.moondust.widget.blueprint.ScriptEntry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,19 +12,20 @@ import java.util.Map;
  * Date: 12/1/2024
  * Project: MoonDust <br>
  */
-public record Scripts(Map<String, Key> scripts) implements Mergeable<Scripts>
+public record Scripts(Map<String, ScriptEntry> scripts) implements Mergeable<Scripts>
 {
-    public static final Codec<Scripts> CODEC = Codec.unboundedMap(Codec.STRING, Key.CODEC).xmap(Scripts::new, Scripts::scripts);
+    // TODO: this may not work actually
+    public static final Codec<Scripts> CODEC = Codec.unboundedMap(Codec.STRING, ScriptEntry.CODEC).xmap(Scripts::new, Scripts::scripts);
 
     @Override
     public Scripts merge(Scripts left, Scripts right)
     {
-        Map<String, Key> map = new HashMap<>(left.scripts);
+        Map<String, ScriptEntry> map = new HashMap<>(left.scripts);
         map.putAll(right.scripts);
         return new Scripts(map);
     }
 
-    public Key get(String id)
+    public ScriptEntry get(String id)
     {
         return scripts.get(id);
     }

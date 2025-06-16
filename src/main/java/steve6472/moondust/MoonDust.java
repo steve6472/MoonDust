@@ -1,5 +1,7 @@
 package steve6472.moondust;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import org.joml.Vector2i;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
@@ -10,6 +12,8 @@ import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.ClickboxOffset;
 import steve6472.moondust.widget.component.ClickboxSize;
 import steve6472.moondust.widget.component.event.*;
+import steve6472.radiant.LuaTableOps;
+import steve6472.radiant.LuauTable;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -42,7 +46,7 @@ public class MoonDust
      *
      * [ ] Move clickable, enabled, visible, ??? to state variable in Widget instead each being a component, have blueprint to create this tho, special just like custom data
      *
-     * [ ] CustomData Struct
+     * [X] CustomData Struct
      * - Just a Map of <String, Object>
      * - Idea is that this is settable from Lua (from custom blueprint for example)
      * - Basically just a custom component
@@ -50,9 +54,10 @@ public class MoonDust
      * [ ] All components that are NOT used to render or are used so interaction is possible should be replaced with CustomData structs and luaified
      *
      *
-     * [ ] Scripts need arguments
+     * [X] Scripts need arguments
      * - Use custom blueprints for script input lol
      * - If a script has input it should be specified by the script returning a table which is the custom blueprint.
+     * - This ended up being done completely differently lol, no verification 'cause I was lazy. Maybe one day (but probably not)
      */
     private static final Logger LOGGER = Log.getLogger(MoonDust.class);
     private static final MoonDust INSTANCE = new MoonDust();
@@ -63,6 +68,18 @@ public class MoonDust
     private final List<Panel> panels = new ArrayList<>(2);
     private float pixelScale = 6;
     private Panel focusedPanel;
+
+    public static final Codec<LuauTable> CODEC_TABLE = Codec.PASSTHROUGH.flatXmap(dyn -> {
+        Object value = dyn.convert(LuaTableOps.INSTANCE).getValue();
+        if (!(value instanceof LuauTable table))
+            return DataResult.error(() -> "Not a lua table!");
+        return DataResult.success(table);
+    }, table -> DataResult.error(() -> "Do not know how to serialize " + table));
+
+    public static final Codec<Object> CODEC_LUA_VALUE = Codec.PASSTHROUGH.flatXmap(dyn -> {
+        Object value = dyn.convert(LuaTableOps.INSTANCE).getValue();
+        return DataResult.success(value);
+    }, object -> DataResult.error(() -> "Do not know how to serialize " + object));
 
     public void addPanel(Panel panel)
     {

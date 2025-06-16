@@ -91,29 +91,15 @@
             ],
 
             scripts: {
-                "test_press": "moondust:test"
-            }
-        },
-        {
-            widget: "moondust:button",
-            name: "test_limit",
-            bounds: [22, 22],
-            clickable: true,
-
-            button: {
-                label: "Test Limit"
-            },
-
-            "moondust_test:limit_int": 4,
-            "moondust_test:min_max": {
-                min: 0,
-                max: 3000
-            },
-
-            position: {
-                type: "relative",
-                parent: "test_button",
-                offset: [74, 0]
+                test_press: "moondust:test",
+                test_inputs: {
+                    script: "moondust_test:widget/print_input_on_release",
+                    input: {
+                        int: 5,
+                        double: 6.9,
+                        string: "Hello World!"
+                    }
+                }
             }
         },
         {
@@ -122,8 +108,8 @@
 
             position: {
                 type: "relative",
-                parent: "test_limit",
-                offset: [0, 26]
+                parent: "test_button",
+                offset: [74, 6]
             }
         },
         {

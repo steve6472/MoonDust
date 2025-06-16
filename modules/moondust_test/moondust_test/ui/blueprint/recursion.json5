@@ -1,4 +1,5 @@
 {
+    script: "none",
     fields: {
         test: {
             // Allow recursion, fuck, don't use "table" probably
