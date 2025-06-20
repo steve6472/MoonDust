@@ -1,0 +1,7 @@
+{
+    path: "minecraft/MinecraftBoldItalic-1y1e.otf",
+    size: 70, //10
+    type: "mtsdf",
+    filtering: "nearest",
+    px_padding: 6
+}

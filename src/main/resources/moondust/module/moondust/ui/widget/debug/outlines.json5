@@ -1,5 +1,5 @@
 {
-    bounds: [73, 49],
+    bounds: [66, 57],
 
     children: [
         {
@@ -118,6 +118,26 @@
             data: {
                 strings: {
                     "moondust:debug/text_lines": "flare:message_anchors"
+                }
+            }
+        },
+        {
+            widget: "moondust:checkbox",
+            name: "checkbox_message_origin",
+            position: {
+                type: "relative",
+                parent: "checkbox_message",
+                offset: [0, 8]
+            },
+
+            checkbox: {
+                press_script: "moondust:debug/lines_text",
+                label: "Origin"
+            },
+
+            data: {
+                strings: {
+                    "moondust:debug/text_lines": "flare:message_origin"
                 }
             }
         }

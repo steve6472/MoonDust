@@ -1,0 +1,7 @@
+{
+    path: "minecraft/MinecraftRegular-Bmg3.otf",
+    size: 70, //10
+    type: "mtsdf",
+    filtering: "nearest",
+    px_padding: 6
+}

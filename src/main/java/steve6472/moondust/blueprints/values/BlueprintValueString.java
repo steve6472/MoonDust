@@ -25,7 +25,6 @@ public record BlueprintValueString(int maxLength, Pattern pattern, String defaul
         Codec.BOOL.fieldOf("required").forGetter(BlueprintValueString::required)
     ).apply(instance, (maxLen, pattern, required) -> new BlueprintValueString(maxLen, pattern, "", BlueprintValue.validateForced(required))));
 
-    // TODO: this may have to be switched, idk
     public static final Codec<BlueprintValueString> CODEC = Codec.withAlternative(CODEC_DEFAULT, CODEC_REQUIRED);
 
     public BlueprintValueString

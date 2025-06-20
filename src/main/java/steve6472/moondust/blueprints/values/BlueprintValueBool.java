@@ -16,7 +16,6 @@ public record BlueprintValueBool(Boolean defaultValue, boolean required) impleme
         Codec.BOOL.fieldOf("required").forGetter(BlueprintValueBool::required)
     ).apply(instance, required -> new BlueprintValueBool(false, BlueprintValue.validateForced(required))));
 
-    // TODO: this may have to be switched, idk
     public static final Codec<BlueprintValueBool> CODEC = Codec.withAlternative(CODEC_DEFAULT, CODEC_REQUIRED);
 
     @Override

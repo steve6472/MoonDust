@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 public class LuaScriptLoader
 {
     public static boolean DEBUG_SCRIPT_LOAD_PRINT = false;
+    public static boolean DEBUG_META = false;
 
     private static final Logger LOGGER = Log.getLogger(LuaScriptLoader.class);
 
@@ -127,7 +128,8 @@ public class LuaScriptLoader
             Matcher matcher = PATTERN_NO_SCRIPT.matcher(script);
             if (matcher.find())
             {
-                LOGGER.finest("Ignoring " + scriptKey);
+                if (DEBUG_META)
+                    LOGGER.finest("Ignoring " + scriptKey);
                 return null;
             }
         } else

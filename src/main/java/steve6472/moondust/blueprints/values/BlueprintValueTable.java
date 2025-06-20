@@ -17,7 +17,6 @@ public record BlueprintValueTable(Map<String, BlueprintValue<?>> fields, Map<Str
         Codec.unboundedMap(Codec.STRING, BlueprintValue.CODEC).fieldOf("fields").forGetter(o -> o.fields)
     ).apply(instance, v -> new BlueprintValueTable(v, null, true)));
 
-    // TODO: this may have to be switched, idk
 //    public static final Codec<BlueprintValueTable> CODEC = Codec.withAlternative(CODEC_DEFAULT, CODEC_REQUIRED);
     public static final Codec<BlueprintValueTable> CODEC = CODEC_REQUIRED;
 

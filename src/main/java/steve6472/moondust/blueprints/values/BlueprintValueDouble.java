@@ -20,7 +20,6 @@ public record BlueprintValueDouble(double min, double max, Double defaultValue, 
         Codec.BOOL.fieldOf("required").forGetter(BlueprintValueDouble::required)
     ).apply(instance, (min, max, required) -> new BlueprintValueDouble(min, max, 0d, BlueprintValue.validateForced(required))));
 
-    // TODO: this may have to be switched, idk
     public static final Codec<BlueprintValueDouble> CODEC = Codec.withAlternative(CODEC_DEFAULT, CODEC_REQUIRED);
 
     public BlueprintValueDouble

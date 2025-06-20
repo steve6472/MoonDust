@@ -1,0 +1,19 @@
+{
+     font: "mcfont:italic",
+    base: {
+        color: [0.65882355, 0.0, 0.0, 1.0],
+        softness: 0.0,
+        thickness: 0.5
+    },
+    outline: {
+        color: [1.0, 1.0, 1.0, 1.0],
+        softness: 0.0,
+        thickness: 0.0
+    },
+    shadow: {
+        color: [0.16276817, 0.0, 0.0, 1.0],
+        softness: 0.0,
+        thickness: 0.5
+    },
+    shadow_offset: [0.1, 0.1]
+}

@@ -42,6 +42,45 @@
         },
         {
             widget: "moondust:empty",
+            name: "label_test",
+            position: {
+                type: "anchored",
+                anchor: "bottom",
+                offset: [0, -5]
+            },
+            bounds: [55, 10],
+
+            text: {
+                text: {
+                    parts: [
+                        {
+                            text: "MoonDusty",
+                            style: "mcfont:normal/dark_green"
+                        }
+                    ],
+                    anchor: "middle_left",
+                    text_size: 10,
+                    vertical_anchor: "text_height",
+                    force_single_line: true
+                },
+                position: {
+                    type: "absolute",
+                    pos: [0, 5]
+                }
+            }
+        },
+        {
+            widget: "mcfont:text_label_area",
+            name: "text_label_area",
+            position: {
+                type: "anchored",
+                anchor: "bottom_right",
+                offset: [-2, -2]
+            },
+            bounds: [48, 48]
+        },
+        {
+            widget: "moondust:empty",
             name: "debug_label",
             position: {
                 type: "absolute",
@@ -199,7 +238,7 @@
             position: {
                 type: "relative",
                 parent: "test_button",
-                offset: [0, 34]
+                offset: [16, 34]
             },
             bounds: [5, 9],
 

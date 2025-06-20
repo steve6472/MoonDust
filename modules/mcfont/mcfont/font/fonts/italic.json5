@@ -1,0 +1,7 @@
+{
+    path: "minecraft/MinecraftItalic-R8Mo.otf",
+    size: 70, //10
+    type: "mtsdf",
+    filtering: "nearest",
+    px_padding: 6
+}

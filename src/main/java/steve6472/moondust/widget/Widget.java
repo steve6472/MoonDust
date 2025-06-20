@@ -212,8 +212,7 @@ public class Widget implements WidgetComponentGetter
                 ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPTS.get(scriptEntry.script());
                 if (profiledScript == null)
                 {
-                    // TODO: print once
-                    LOGGER.warning("Could not find script " + scriptEntry.script());
+                    Log.warningOnce(LOGGER, "could not find script " + scriptEntry.script());
                     return;
                 }
 

@@ -55,7 +55,11 @@ public class LuaWidget
         META.addFunction("getTable", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
             Key key = Key.parse(state.checkStringArg(2));
-            widget.customData().getTable(key).pushTable(state);
+            LuauTable table = widget.customData().getTable(key);
+            if (table == null)
+                state.pushNil();
+            else
+                table.pushTable(state);
             return 1;
         });
         META.addFunction("addComponent", state -> {

@@ -1,0 +1,9 @@
+{
+    script: "mcfont:blueprint/text_area",
+    fields: {
+        text: {
+            type: "string",
+            required: true
+        }
+    }
+}

@@ -13,7 +13,6 @@ public interface BlueprintValue<V> extends Typed<BlueprintValueType<V, ?>>
     Codec<BlueprintValue<?>> CODEC = MoonDustRegistries.BLUEPRINT_VALUE_TYPE.byKeyCodec().dispatch("type", BlueprintValue::getType, BlueprintValueType::mapCodec);
 
     // TODO: format this better lol
-    // TODO: maybe put this in BlueprintValue
     /// if true -> the presence in the custom blueprint is required and default is ignored
     ///         -> if it is missing, throws error
     /// if false -> if the value is missing from custom blueprint the default is used

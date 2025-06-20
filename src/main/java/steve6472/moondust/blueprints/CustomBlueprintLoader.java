@@ -24,6 +24,8 @@ public class CustomBlueprintLoader
 {
     private static final Logger LOGGER = Log.getLogger(CustomBlueprintLoader.class);
 
+    public static boolean DEBUG_INPUTS = false;
+
     public static void load()
     {
         for (Module module : Flare.getModuleManager().getModules())
@@ -49,8 +51,9 @@ public class CustomBlueprintLoader
                         Number number = validate.fixNumber();
                         if (number != null)
                             value = number;
-                        
-                        LOGGER.info("The input: " + value + " key: " + key);
+
+                        if (DEBUG_INPUTS)
+                            LOGGER.info("The input: " + value + " key: " + key);
 
                         return DataResult.success((Blueprint) new CustomBlueprint(structure, key, value));
                     }, _ -> null);
