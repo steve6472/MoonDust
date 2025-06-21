@@ -49,7 +49,7 @@ public class CustomBlueprint implements Keyable, Blueprint
     {
         if (LOG_CREATION)
             LOGGER.info("Creating components for " + key + " with input data: " + input);
-        ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPTS.get(structure.script());
+        ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPT.get(structure.script());
         if (profiledScript == null)
             throw new RuntimeException("Script '%s' not found for custom blueprint '%s'".formatted(structure.script(), key));
 
@@ -124,6 +124,8 @@ public class CustomBlueprint implements Keyable, Blueprint
 
             Codec<?> codec = MoonDustComponents.byKey(Key.parse(MoonDustConstants.NAMESPACE, keyStr)).codec();
             var decode = codec.decode(LuaTableOps.INSTANCE, value);
+            if (decode.isError())
+                LOGGER.severe("Error while decoding " + Key.parse(MoonDustConstants.NAMESPACE, keyStr));
             Object comp = decode.getOrThrow().getFirst();
             components.add(comp);
         }

@@ -1,17 +1,30 @@
 package steve6472.moondust.luau.libraries;
 
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.DataResult;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.flare.registry.FlareRegistries;
 import steve6472.flare.ui.font.render.TextPart;
+import steve6472.flare.ui.font.render.TextRenderSegment;
 import steve6472.flare.ui.font.style.FontStyleEntry;
+import steve6472.flare.util.FloatUtil;
 import steve6472.moondust.MoonDust;
+import steve6472.moondust.MoonDustConstants;
+import steve6472.moondust.MoonDustRegistries;
+import steve6472.moondust.core.JavaFunc;
+import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.luau.global.LuaWidget;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.MDText;
+import steve6472.radiant.LuaTableOps;
 import steve6472.radiant.LuauLib;
+import steve6472.radiant.LuauTable;
+import steve6472.radiant.LuauUtil;
 
+import javax.swing.text.Segment;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -30,6 +43,24 @@ public class MoonDustLib extends LuauLib
     @Override
     public void createFunctions()
     {
+        addFunction("runJavaFunc", state -> {
+            String key = state.checkStringArg(1);
+            Key parsedKey = Key.parse(MoonDustConstants.NAMESPACE, key);
+            Object input = null;
+            if (state.getTop() == 2)
+                input = LuauUtil.toJava(state, 2);
+            JavaFunc javaFunc = MoonDustRegistries.JAVA_FUNC.get(parsedKey);
+            if (javaFunc == null)
+            {
+                Log.warningOnce(LOGGER, "Could not find java function '%s'".formatted(parsedKey));
+                state.pushNil();
+                return 1;
+            }
+            Object o = javaFunc.runFunction(input);
+            LuauUtil.push(state, o);
+            return 1;
+        });
+
         addFunction("getPixelScale", state -> {
             state.pushNumber(MoonDust.getInstance().getPixelScale());
             return 1;
@@ -55,9 +86,17 @@ public class MoonDustLib extends LuauLib
         addFunction("addPanel", state -> {
             String key = state.checkStringArg(1);
             Key parsedKey = Key.parse(key);
-            Panel panel = Panel.create(parsedKey);
+            BlueprintFactory blueprintFactory = MoonDustRegistries.WIDGET_FACTORY.get(parsedKey);
+            if (blueprintFactory == null)
+            {
+                LOGGER.warning("Panel '%s' not found, can not add".formatted(parsedKey));
+                state.pushNil();
+                return 1;
+            }
+            Panel panel = Panel.create(blueprintFactory);
             MoonDust.getInstance().addPanel(panel);
-            return 0;
+            LuaWidget.createObject(panel).pushUserObject(state);
+            return 1;
         });
 
         addFunction("removePanel", state -> {
@@ -70,7 +109,7 @@ public class MoonDustLib extends LuauLib
                 .stream()
                 .filter(panel -> panel.getKey().equals(parsedKey))
                 .findFirst();
-            first.ifPresentOrElse(panel -> MoonDust.getInstance().removePanel(panel), () -> LOGGER.warning("panel %s not found".formatted(parsedKey)));
+            first.ifPresentOrElse(panel -> MoonDust.getInstance().removePanel(panel), () -> LOGGER.warning("Panel '%s' not found, can not remove".formatted(parsedKey)));
             return 0;
         });
 
@@ -147,6 +186,79 @@ public class MoonDustLib extends LuauLib
                 text.replaceText(replacement, index);
             });
             return 0;
+        });
+
+        // getTextTotalFontHeight("moondust:text" table)
+        addOverloadedFunc("getTextTotalFontHeight", args().table(), state -> {
+            LuauTable table = new LuauTable();
+            table.readTable(state, 1);
+            var decode = MDText.CODEC.decode(LuaTableOps.INSTANCE, table);
+            if (decode.isError())
+            {
+                state.pushNumber(0);
+                return 1;
+            }
+            MDText text = decode.getOrThrow().getFirst();
+            List<TextRenderSegment> segments = text.text().createSegments();
+            final float totalHeight = segments.stream().map(s -> s.fontHeight).collect(FloatUtil.summing(Float::floatValue));
+            state.pushNumber(totalHeight);
+            return 1;
+        });
+
+        // getTextTotalCharHeight("moondust:text" table)
+        addOverloadedFunc("getTextTotalCharHeight", args().table(), state -> {
+            LuauTable table = new LuauTable();
+            table.readTable(state, 1);
+            var decode = MDText.CODEC.decode(LuaTableOps.INSTANCE, table);
+            if (decode.isError())
+            {
+                state.pushNumber(0);
+                return 1;
+            }
+            MDText text = decode.getOrThrow().getFirst();
+            List<TextRenderSegment> segments = text.text().createSegments();
+            float totalHeight = 0f;
+
+            for (int i = 0; i < segments.size(); i++)
+            {
+                TextRenderSegment s = segments.get(i);
+                final float[] maxHeight = {0f};
+
+                if (i == segments.size() - 1)
+                {
+                    text.text().iterateCharacters(s.start, s.end, c ->
+                    {
+                        float height = c.glyph().planeBounds().height();
+                        if (height > maxHeight[0])
+                        {
+                            maxHeight[0] = height * c.size();
+                        }
+                    });
+                } else
+                {
+                    maxHeight[0] = s.fontHeight;
+                }
+
+                totalHeight += maxHeight[0];
+            }
+            state.pushNumber(totalHeight);
+            return 1;
+        });
+
+        // getTextMaxWidth("moondust:text" table)
+        addOverloadedFunc("getTextMaxWidth", args().table(), state -> {
+            LuauTable table = new LuauTable();
+            table.readTable(state, 1);
+            var decode = MDText.CODEC.decode(LuaTableOps.INSTANCE, table);
+            if (decode.isError())
+            {
+                state.pushNumber(0);
+                return 1;
+            }
+            MDText text = decode.getOrThrow().getFirst();
+            float width = text.text().getWidth(0, text.text().len());
+            state.pushNumber(width);
+            return 1;
         });
     }
 

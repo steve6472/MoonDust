@@ -12,6 +12,7 @@ import steve6472.flare.render.UILineRender;
 import steve6472.flare.render.UIRenderSystem;
 import steve6472.flare.ui.font.style.FontStyle;
 import steve6472.moondust.builtin.BuiltinEventCalls;
+import steve6472.moondust.builtin.JavaFunctions;
 import steve6472.moondust.widget.Panel;
 import steve6472.test.DebugUILines;
 
@@ -41,8 +42,8 @@ public class MoonDustTest extends FlareApp
     protected void initRegistries()
     {
         initRegistry(MoonDustRegistries.POSITION_BLUEPRINT_TYPE);
+        JavaFunctions.init(this);
         BuiltinEventCalls.init();
-        TestEventCalls.init(this);
     }
 
     @Override

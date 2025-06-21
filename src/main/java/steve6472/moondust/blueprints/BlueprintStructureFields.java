@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustConstants;
+import steve6472.moondust.blueprints.values.BlueprintValueScript;
+import steve6472.moondust.luau.ImmutableLuauTable;
 import steve6472.radiant.LuauTable;
 
 import java.util.HashMap;
@@ -65,6 +67,11 @@ public class BlueprintStructureFields implements BlueprintStructure
                     table.add(key, number);
             } else
             {
+                if (value instanceof BlueprintValueScript)
+                {
+                    if (o instanceof String)
+                        o = ImmutableLuauTable.of("script", o, "input", new ImmutableLuauTable());
+                }
                 //noinspection unchecked
                 ValidationResult res = ((BlueprintValue<Object>) value).validate(o);
                 if (!res.isPass())

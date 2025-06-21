@@ -92,7 +92,7 @@ public class LuaScriptLoader
                 throw new RuntimeException(ex);
             }
 
-            MoonDustRegistries.LUA_SCRIPTS.register(profiledScript);
+            MoonDustRegistries.LUA_SCRIPT.register(profiledScript);
         });
         profiler.end();
         LOGGER.fine("%s in: %s ms".formatted("Scripts primed", profiler.lastMilli()));

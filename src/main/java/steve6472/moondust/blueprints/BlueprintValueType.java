@@ -8,6 +8,7 @@ import com.mojang.serialization.MapCodec;
 import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.blueprints.values.*;
+import steve6472.radiant.LuauTable;
 
 import java.util.Map;
 
@@ -17,6 +18,7 @@ public final class BlueprintValueType<V, T extends BlueprintValue<V>> extends Ty
     public static final BlueprintValueType<Double, ?> DOUBLE = register("double", BlueprintValueDouble.CODEC);
     public static final BlueprintValueType<String, ?> STRING = register("string", BlueprintValueString.CODEC);
     public static final BlueprintValueType<Boolean, ?> BOOL = register("bool", BlueprintValueBool.CODEC);
+    public static final BlueprintValueType<LuauTable, ?> SCRIPT = register("script", BlueprintValueScript.CODEC);
     public static final BlueprintValueType<Map<String, BlueprintValue<?>>, ?> TABLE = register("table", BlueprintValueTable.CODEC);
 
     public BlueprintValueType(Key key, MapCodec<T> codec)

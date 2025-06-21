@@ -18,7 +18,6 @@ import java.util.Optional;
  */
 public class Panel extends Widget
 {
-    private Key key;
     private final List<Widget> focusOrder;
     private static final int NO_FOCUS = -1;
     private int currentFocusIndex = NO_FOCUS;
@@ -40,16 +39,12 @@ public class Panel extends Widget
 
     public static Panel create(BlueprintFactory blueprint)
     {
-        Panel panel = new Panel(blueprint, null);
-        panel.key = blueprint.key();
-        return panel;
+        return new Panel(blueprint, null);
     }
 
     public static Panel create(Key key)
     {
-        Panel panel = new Panel(MoonDustRegistries.WIDGET_FACTORY.get(key), null);
-        panel.key = key;
-        return panel;
+        return new Panel(MoonDustRegistries.WIDGET_FACTORY.get(key), null);
     }
 
     public void clearFocus()
@@ -103,10 +98,5 @@ public class Panel extends Widget
         }
         focusOrder.get(currentFocusIndex).internalStates().focused = true;
         return ret;
-    }
-
-    public Key getKey()
-    {
-        return key;
     }
 }

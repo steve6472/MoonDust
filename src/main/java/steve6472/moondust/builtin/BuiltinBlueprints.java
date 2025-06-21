@@ -17,7 +17,7 @@ import steve6472.moondust.core.blueprint.BlueprintEntry;
  */
 public class BuiltinBlueprints
 {
-    public static final BlueprintEntry<ButtonBlueprint> BUTTON = register(ButtonBlueprint.KEY, ButtonBlueprint.CODEC);
+//    public static final BlueprintEntry<ButtonBlueprint> BUTTON = register(ButtonBlueprint.KEY, ButtonBlueprint.CODEC);
     public static final BlueprintEntry<CheckBoxBlueprint> CHECKBOX = register(CheckBoxBlueprint.KEY, CheckBoxBlueprint.CODEC);
     public static final BlueprintEntry<SpinnerBlueprint> SPINNER = register(SpinnerBlueprint.KEY, SpinnerBlueprint.CODEC);
 

@@ -43,12 +43,7 @@ public class BuiltinEventCalls
         /*
          * Icons
          */
-        create(key("icon/hover/on"),  (Widget widget, OnMouseEnter _) -> setCurrentSprite(widget, widget.isEnabled() && !widget.internalStates().hovered ? ID.SPRITE_HOVER : null));
-        create(key("icon/hover/off"), (Widget widget, OnMouseLeave _) -> setCurrentSprite(widget, widget.isEnabled() && widget.internalStates().hovered ? ID.SPRITE_NORMAL : null));
-        create(key("icon/press"),     (Widget widget, OnMousePress _) -> setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_PRESSED : null));
-        create(key("icon/release"), (Widget widget, OnMouseRelease _) -> setCurrentSprite(widget, widget.isEnabled() ? (widget.internalStates().hovered ? ID.SPRITE_HOVER : ID.SPRITE_NORMAL) : null));
         create(key("icon/change_enabled"), (Widget widget, OnEnableStateChange _) -> setCurrentSprite(widget, widget.isEnabled() ? (widget.internalStates().hovered ? ID.SPRITE_HOVER : ID.SPRITE_NORMAL) : ID.SPRITE_DISABLED));
-        create(key("icon/change_enabled_no_hover"), (Widget widget, OnEnableStateChange _) -> setCurrentSprite(widget, widget.isEnabled() ? ID.SPRITE_NORMAL : ID.SPRITE_DISABLED));
 
         /*
          * Text
@@ -70,13 +65,6 @@ public class BuiltinEventCalls
                 widget.addComponent(new MDText(mdLine.text(), mdLine.position()));
             });
             replaceStyle(widget, pickStyle(widget, (widget.internalStates().hovered || widget.internalStates().directHover) ? Tristate.TRUE : Tristate.FALSE));
-        });
-        create(key("text/copy_width"), (Widget widget, OnInit _) -> {
-            widget.getComponent(MDText.class).ifPresent(mdText -> {
-                widget.getComponent(Bounds.class).ifPresent(bounds -> {
-                    widget.addComponent(new MDText(mdText.text().withMaxWidth(bounds.width), mdText.position()));
-                });
-            });
         });
 
         /*

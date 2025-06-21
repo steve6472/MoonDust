@@ -35,6 +35,7 @@ public final class MoonDustComponents
         register("clickbox_size", ClickboxSize.CODEC, ClickboxSize.class);
         register("clickbox_offset", ClickboxOffset.CODEC, ClickboxOffset.class);
         register("text", MDText.CODEC, MDText.class);
+        register("scripts", Scripts.CODEC, Scripts.class);
         // no worky 'cause typed... uhhh annoying
 //        register("position", Position.CODEC, Position.class);
     }

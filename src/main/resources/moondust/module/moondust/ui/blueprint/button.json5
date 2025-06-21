@@ -1,0 +1,11 @@
+{
+    script: "moondust:blueprint/button",
+    fields: {
+        on_press: {
+            type: "script"
+        },
+        label: {
+            type: "string"
+        }
+    }
+}

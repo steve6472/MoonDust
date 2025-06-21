@@ -43,6 +43,7 @@ public class Widget implements WidgetComponentGetter
     public static boolean LOG_LUA_EVENTS = false;
     private static final Logger LOGGER = Log.getLogger(Widget.class);
 
+    private final Key key;
     private final Map<Class<?>, Object> components = new HashMap<>();
     private final Map<String, Widget> children = new LinkedHashMap<>();
     private final Widget parent;
@@ -54,6 +55,7 @@ public class Widget implements WidgetComponentGetter
     protected Widget(BlueprintFactory blueprint, Widget parent)
     {
         this.parent = parent;
+        key = blueprint.key();
 
         // Create InternalStates, a super-default components
         addComponent(internalStates = new InternalStates());
@@ -202,14 +204,14 @@ public class Widget implements WidgetComponentGetter
                     }
                 } else
                 {
-                    LOGGER.warning("No event call found for " + e.call());
+                    Log.warningOnce(LOGGER, "No event call found for '" + e.call() + "' from '" + getPath() + "'");
                 }
             });
         }
 
         getComponent(Scripts.class).ifPresent(scripts -> {
             scripts.scripts().forEach((name, scriptEntry) -> {
-                ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPTS.get(scriptEntry.script());
+                ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPT.get(scriptEntry.script());
                 if (profiledScript == null)
                 {
                     Log.warningOnce(LOGGER, "could not find script " + scriptEntry.script());
@@ -280,6 +282,10 @@ public class Widget implements WidgetComponentGetter
         {
             //noinspection unchecked, rawtypes
             return ((Codec) OnKeyInput.CODEC).encodeStart(LuaTableOps.INSTANCE, e).getOrThrow();
+        } else if (e instanceof OnCharInput)
+        {
+            //noinspection unchecked, rawtypes
+            return ((Codec) OnCharInput.CODEC).encodeStart(LuaTableOps.INSTANCE, e).getOrThrow();
         }
         else
             throw new RuntimeException("Event to user object not done for " + e);
@@ -388,6 +394,11 @@ public class Widget implements WidgetComponentGetter
             return "-root-";
 
         return parent.getPath() + "." + getName();
+    }
+
+    public Key getKey()
+    {
+        return key;
     }
 
     public Optional<Widget> getChild(String name)

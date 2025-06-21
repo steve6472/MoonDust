@@ -58,6 +58,9 @@ public class MoonDust
      * - Use custom blueprints for script input lol
      * - If a script has input it should be specified by the script returning a table which is the custom blueprint.
      * - This ended up being done completely differently lol, no verification 'cause I was lazy. Maybe one day (but probably not)
+     *
+     * Bugs:
+     *  [ ] Tab navigation after changing panels does not work
      */
     private static final Logger LOGGER = Log.getLogger(MoonDust.class);
     private static final MoonDust INSTANCE = new MoonDust();

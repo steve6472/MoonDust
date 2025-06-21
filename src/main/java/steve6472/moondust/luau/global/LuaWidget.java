@@ -7,6 +7,9 @@ import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.moondust.ComponentEntry;
 import steve6472.moondust.MoonDustConstants;
+import steve6472.moondust.MoonDustRegistries;
+import steve6472.moondust.core.InputWithWidget;
+import steve6472.moondust.core.JavaFunc;
 import steve6472.moondust.widget.MoonDustComponents;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.CustomData;
@@ -127,6 +130,11 @@ public class LuaWidget
             }
             return 1;
         });
+        META.addFunction("getKey", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            state.pushString(widget.getKey().toString());
+            return 1;
+        });
         META.addFunction("internalStates", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
 
@@ -234,6 +242,26 @@ public class LuaWidget
             widget.setBounds(state.checkIntegerArg(2), state.checkIntegerArg(3));
             return 0;
         });
+
+        META.addFunction("runJavaFunc", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            String key = state.checkStringArg(2);
+            Key parsedKey = Key.parse(MoonDustConstants.NAMESPACE, key);
+            Object input = null;
+            if (state.getTop() == 3)
+                input = LuauUtil.toJava(state, 3);
+            JavaFunc javaFunc = MoonDustRegistries.JAVA_FUNC.get(parsedKey);
+            if (javaFunc == null)
+            {
+                Log.warningOnce(LOGGER, "Could not find java function '%s'".formatted(parsedKey));
+                state.pushNil();
+                return 1;
+            }
+            Object o = javaFunc.runFunction(new InputWithWidget(widget, input));
+            LuauUtil.push(state, o);
+            return 1;
+        });
+
         META.processOverloadedFunctions();
     }
 

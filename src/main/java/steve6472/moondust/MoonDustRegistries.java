@@ -9,6 +9,8 @@ import steve6472.flare.registry.RegistryCreators;
 import steve6472.moondust.blueprints.BlueprintValueType;
 import steve6472.moondust.blueprints.CustomBlueprintLoader;
 import steve6472.moondust.builtin.BuiltinBlueprints;
+import steve6472.moondust.builtin.JavaFunctions;
+import steve6472.moondust.core.JavaFunc;
 import steve6472.moondust.core.MoonDustKeybinds;
 import steve6472.moondust.luau.LuaScriptLoader;
 import steve6472.moondust.luau.ProfiledScript;
@@ -43,6 +45,12 @@ public class MoonDustRegistries extends RegistryCreators
         LOADERS.put(MoonDustConstants.key("moondust_components"), MoonDustComponents::init);
     }
 
+    public static final ObjectRegistry<ProfiledScript> LUA_SCRIPT = createObjectRegistry(key("lua_script"), LuaScriptLoader::load);
+    public static final ObjectRegistry<JavaFunc> JAVA_FUNC = createObjectRegistry(key("java_func"), () -> {
+//        JavaFunctions.init();
+        // TODO: Run event
+    });
+
     /* Types */
     public static final Registry<PositionBlueprintType<?>> POSITION_BLUEPRINT_TYPE = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("position_blueprint_type"), () -> PositionBlueprintType.ABSOLUTE);
     public static final Registry<PositionType<?>> POSITION_TYPE = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("position_type"), () -> PositionType.ABSOLUTE);
@@ -55,14 +63,12 @@ public class MoonDustRegistries extends RegistryCreators
     public static final Registry<BlueprintEntry<?>> WIDGET_BLUEPRINT = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("widget_blueprint"), () ->
     {
         LOGGER.finest("Bootstrapping '%s'".formatted(WidgetBlueprints.SPRITES.key()));
-        LOGGER.finest("Bootstrapping '%s'".formatted(BuiltinBlueprints.BUTTON.key()));
+        LOGGER.finest("Bootstrapping '%s'".formatted(BuiltinBlueprints.SPINNER.key()));
         LOGGER.finest("Bootstrapping '%s'".formatted("Custom Blueprints"));
-        // Ugly thing to make IDE shut up while still properly initializing entries for the registry
         CustomBlueprintLoader.load();
     });
 
     public static final ObjectRegistry<BlueprintFactory> WIDGET_FACTORY = createObjectRegistry(key("widget_factory"), WidgetLoader::load);
-    public static final ObjectRegistry<ProfiledScript> LUA_SCRIPTS = createObjectRegistry(key("lua_script"), LuaScriptLoader::load);
 
     public static final Map<Key, UIEventCall<?>> EVENT_CALLS = new HashMap<>();
 

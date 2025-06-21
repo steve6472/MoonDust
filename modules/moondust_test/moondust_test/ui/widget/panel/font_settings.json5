@@ -1,0 +1,58 @@
+{
+    position: {
+        type: "absolute",
+        pos: [0, 0]
+    },
+    layout: {
+        type: "absolute"
+    },
+
+    bounds: [0, 0],
+
+    children: [
+        {
+            widget: "moondust:debug/outlines",
+            name: "debug_outlines",
+            position: {
+                type: "anchored",
+                anchor: "top_left",
+                offset: [2, 2]
+            }
+        },
+        {
+            widget: "moondust:button",
+            name: "navigate_back",
+            bounds: [32, 13],
+            clickable: true,
+
+            "moondust:button": {
+                on_press: {
+                    script: "moondust_test:navigate/back"
+                },
+                label: "<--"
+            },
+
+            position: {
+                type: "anchored",
+                anchor: "bottom_left",
+                offset: [0, 0]
+            }
+        },
+        {
+            widget: "moondust:button",
+            name: "test",
+            bounds: [32, 32],
+            clickable: true,
+
+            button: {
+                label: "TEST THE BUTTON TEXT"
+            },
+
+            position: {
+                type: "anchored",
+                anchor: "center",
+                offset: [0, 0]
+            }
+        }
+    ]
+}

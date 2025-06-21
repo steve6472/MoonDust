@@ -24,7 +24,8 @@ public class CustomBlueprintLoader
 {
     private static final Logger LOGGER = Log.getLogger(CustomBlueprintLoader.class);
 
-    public static boolean DEBUG_INPUTS = false;
+    public static boolean DEBUG_INPUTS_BEFORE = false;
+    public static boolean DEBUG_INPUTS_AFTER = true;
 
     public static void load()
     {
@@ -40,7 +41,18 @@ public class CustomBlueprintLoader
                     Codec<Blueprint> CODEC = Codec.PASSTHROUGH.flatXmap(ops ->
                     {
                         Object value = ops.convert(LuaTableOps.INSTANCE).getValue();
-                        ValidationResult validate = structure.validate(value);
+                        if (DEBUG_INPUTS_BEFORE)
+                            LOGGER.info("The input before validation: " + value + " key: " + key);
+
+                        ValidationResult validate;
+                        try
+                        {
+                            validate = structure.validate(value);
+                        } catch (Exception exception)
+                        {
+                            LOGGER.severe("Error while validating custom blueprint: " + structure.toString() + " with input: " + value);
+                            throw exception;
+                        }
 
                         if (!validate.isPass())
                         {
@@ -52,7 +64,7 @@ public class CustomBlueprintLoader
                         if (number != null)
                             value = number;
 
-                        if (DEBUG_INPUTS)
+                        if (DEBUG_INPUTS_AFTER)
                             LOGGER.info("The input: " + value + " key: " + key);
 
                         return DataResult.success((Blueprint) new CustomBlueprint(structure, key, value));

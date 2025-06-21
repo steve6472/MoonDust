@@ -18,18 +18,11 @@
 
     clickable: true,
     bounds: [8, 8],
-    events: [
-        { call: "moondust:icon/press",            event: { type: "on_mouse_press" } },
-        { call: "moondust:icon/release",          event: { type: "on_mouse_release" } },
-        { call: "moondust:icon/hover/on",         event: { type: "on_mouse_enter" } },
-        { call: "moondust:icon/hover/off",        event: { type: "on_mouse_leave" } },
-        { call: "moondust:icon/change_enabled",   event: { type: "on_enable_change" } },
-        { call: "moondust:text/init",             event: { type: "on_init" } },
-        { call: "moondust:text/hover/on",         event: { type: "on_mouse_enter" } },
-        { call: "moondust:text/hover/off",        event: { type: "on_mouse_leave" } },
-        { call: "moondust:text/change_enabled",   event: { type: "on_enable_change" } },
-        { call: "moondust:text/copy_width",       event: { type: "on_init" } }
-    ],
+
+    scripts: {
+        button_icon: "moondust:widget/button/icon",
+        button_label: "moondust:widget/button/label"
+    },
 
     text: {
         text: {
@@ -39,10 +32,10 @@
                     style: "moondust:button/normal"
                 }
             ],
-            anchor: "middle_left",
+            anchor: "top_left",
             align: "center",
             text_size: 6,
-            vertical_anchor: "text_height"
+            vertical_anchor: "max_height"
         },
         position: {
             type: "anchored",

@@ -14,7 +14,6 @@ import java.util.Map;
  */
 public record Scripts(Map<String, ScriptEntry> scripts) implements Mergeable<Scripts>
 {
-    // TODO: this may not work actually
     public static final Codec<Scripts> CODEC = Codec.unboundedMap(Codec.STRING, ScriptEntry.CODEC).xmap(Scripts::new, Scripts::scripts);
 
     @Override

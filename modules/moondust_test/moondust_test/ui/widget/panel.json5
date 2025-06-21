@@ -32,15 +32,6 @@
 
     children: [
         {
-            widget: "moondust:debug/outlines",
-            name: "debug_outlines",
-            position: {
-                type: "anchored",
-                anchor: "bottom_left",
-                offset: [0, 0]
-            }
-        },
-        {
             widget: "moondust:empty",
             name: "label_test",
             position: {
@@ -105,29 +96,12 @@
             clickable: true,
 
             button: {
-                on_press: "moondust:button/test_press",
-                label: "Test Button",
-                label_shadow: false
+                on_press: {
+                    script: "moondust:run_java_func_widget",
+                    input: "moondust:button/test_press"
+                },
+                label: "Test Button"
             },
-
-            styles: {
-                disabled: "flare:arial"
-            },
-
-            position: {
-                type: "absolute",
-                pos: [30, 10]
-            },
-
-            events: [
-                {
-                    call: "moondust:button/random_toggle_enabled",
-                    event: {
-                        type: "on_random_tick",
-                        probability: 0.0001
-                    }
-                }
-            ],
 
             scripts: {
                 test_press: "moondust:test",
@@ -138,7 +112,17 @@
                         double: 6.9,
                         string: "Hello World!"
                     }
-                }
+                },
+                test_button_func: "moondust_test:random_toggle_enabled"
+            },
+
+            styles: {
+                disabled: "flare:arial"
+            },
+
+            position: {
+                type: "absolute",
+                pos: [30, 10]
             }
         },
         {
@@ -251,6 +235,36 @@
                     max: 8,
                     value: 6
                 }
+            }
+        },
+        {
+            // The widget type, required
+            widget: "moondust:button",
+
+            // Non-namespaced name, required
+            name: "font_settings_button",
+            bounds: [64, 13],
+            clickable: true,
+
+            button: {
+                on_press: {
+                    script: "moondust_test:navigate/to_panel",
+                    input: {
+                        to_open: "moondust_test:panel/font_settings",
+                        to_close: "moondust_test:panel"
+                    }
+                },
+                label: "Font Settings"
+            },
+
+            styles: {
+                disabled: "flare:arial"
+            },
+
+            position: {
+                type: "anchored",
+                anchor: "bottom_right",
+                offset: [0, 0]
             }
         }
     ]

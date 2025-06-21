@@ -1,5 +1,5 @@
 {
-    bounds: [66, 57],
+    bounds: [66, 73],
 
     children: [
         {
@@ -138,6 +138,46 @@
             data: {
                 strings: {
                     "moondust:debug/text_lines": "flare:message_origin"
+                }
+            }
+        },
+        {
+            widget: "moondust:checkbox",
+            name: "checkbox_message_max_width",
+            position: {
+                type: "relative",
+                parent: "checkbox_message_origin",
+                offset: [0, 8]
+            },
+
+            checkbox: {
+                press_script: "moondust:debug/lines_text",
+                label: "Max Width"
+            },
+
+            data: {
+                strings: {
+                    "moondust:debug/text_lines": "flare:message_max_width"
+                }
+            }
+        },
+        {
+            widget: "moondust:checkbox",
+            name: "checkbox_message_max_height",
+            position: {
+                type: "relative",
+                parent: "checkbox_message_max_width",
+                offset: [0, 8]
+            },
+
+            checkbox: {
+                press_script: "moondust:debug/lines_text",
+                label: "Max Height"
+            },
+
+            data: {
+                strings: {
+                    "moondust:debug/text_lines": "flare:message_max_height"
                 }
             }
         }
