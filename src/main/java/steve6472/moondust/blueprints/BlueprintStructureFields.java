@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.blueprints.values.BlueprintValueScript;
+import steve6472.moondust.blueprints.values.BlueprintValueStringArray;
 import steve6472.moondust.luau.ImmutableLuauTable;
 import steve6472.radiant.LuauTable;
 
@@ -67,10 +68,24 @@ public class BlueprintStructureFields implements BlueprintStructure
                     table.add(key, number);
             } else
             {
-                if (value instanceof BlueprintValueScript)
+                if (value instanceof BlueprintValueScript && o instanceof String)
                 {
-                    if (o instanceof String)
-                        o = ImmutableLuauTable.of("script", o, "input", new ImmutableLuauTable());
+                    o = ImmutableLuauTable.of("script", o, "input", new ImmutableLuauTable());
+                }
+                if (value instanceof BlueprintValueStringArray && o instanceof LuauTable arr)
+                {
+                    int size = arr.table().size();
+                    String[] strArr = new String[size];
+                    for (int i = 0; i < size; i++)
+                    {
+                        Object o1 = arr.get(i);
+                        if (o1 == null)
+                            return ValidationResult.fail("Expected string array, however mismatched indicies. Offending table: %s", arr);
+                        if (!(o1 instanceof String str))
+                            return ValidationResult.fail("Element not a string! found: %s", o1);
+                        strArr[i] = str;
+                    }
+                    o = strArr;
                 }
                 //noinspection unchecked
                 ValidationResult res = ((BlueprintValue<Object>) value).validate(o);

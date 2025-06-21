@@ -6,6 +6,28 @@
     children: [
         {
             widget: "moondust:empty",
+            name: "tooltip/frame",
+            position: {
+                type: "absolute",
+                pos: [0, 0]
+            },
+            sprites: {normal: "mcfont:tooltip/frame"},
+            current_sprite: "normal",
+            bounds: [48, 48]
+        },
+        {
+            widget: "moondust:empty",
+            name: "tooltip/background",
+            position: {
+                type: "absolute",
+                pos: [0, 0]
+            },
+            sprites: {normal: "mcfont:tooltip/background"},
+            current_sprite: "normal",
+            bounds: [48, 48]
+        },
+        {
+            widget: "moondust:empty",
             name: "text",
             position: {
                 type: "absolute",
@@ -16,7 +38,7 @@
                 text: {
                     parts: [
                         {
-                            text: "A B C",
+                            text: "Dark Bait",
                             style: "mcfont:normal/white"
                         }
                     ],
@@ -24,11 +46,11 @@
                     text_size: 10,
                     vertical_anchor: "text_height",
                     force_single_line: false,
-                    max_width: 48
+                    max_width: 40
                 },
                 position: {
                     type: "absolute",
-                    pos: [0, 0]
+                    pos: [4, 3]
                 }
             }
         }

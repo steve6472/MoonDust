@@ -12,7 +12,6 @@
             clickable: true,
             radio_group: {
                 group: "test",
-                selected: true,
                 label: "6"
             },
             scripts: {
@@ -33,7 +32,8 @@
             clickable: true,
             radio_group: {
                 group: "test",
-                label: "4"
+                label: "4",
+                selected: true
             },
             scripts: {
                 set_scale_press: {

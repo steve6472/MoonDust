@@ -1,0 +1,102 @@
+{
+    // TODO: this needs ordering... probably "after": "scriptname"
+    scripts: {
+        text__: "mcfont:widget/tooltip/set_text",
+        bounds: "mcfont:widget/tooltip/set_bounds"
+    },
+    children: [
+        {
+            widget: "moondust:empty",
+            name: "tooltip/frame",
+            position: {
+                type: "absolute",
+                pos: [0, 0]
+            },
+            sprites: {normal: "mcfont:tooltip/frame"},
+            // TODO: current_sprite should through all parents until it finds a sprite (or fails)
+            current_sprite: "normal"
+        },
+        {
+            widget: "moondust:empty",
+            name: "tooltip/background",
+            position: {
+                type: "absolute",
+                pos: [0, 0]
+            },
+            sprites: {normal: "mcfont:tooltip/background"},
+            current_sprite: "normal"
+        },
+        {
+            widget: "moondust:empty",
+            name: "title",
+            position: {
+                type: "absolute",
+                pos: [4, 3]
+            },
+
+            text: {
+                text: {
+                    parts: [
+                        {
+                            text: "Dark Bait",
+                            style: "mcfont:normal/white"
+                        }
+                    ],
+                    anchor: "top_left",
+                    text_size: 10,
+                    vertical_anchor: "text_height",
+                    force_single_line: true
+                }
+            }
+        },
+        {
+            widget: "moondust:empty",
+            name: "lore",
+            position: {
+                type: "absolute",
+                pos: [4, 15]
+            },
+
+            text: {
+                text: {
+                    parts: [
+                        {
+                            text: "Fishing Bait\nConsumes on Cast\n\n",
+                            style: "mcfont:normal/dark_gray"
+                        },
+                        {
+                            text: "Increases your chance to catch\nrare Sea Creatures during the night.",
+                            style: "mcfont:normal/gray"
+                        },
+                        {
+                            text: "\n\n",
+                            style: "mcfont:normal/dark_gray"
+                        },
+                        {
+                            text: "COMMON BAIT\n",
+                            style: "mcfont:bold/white"
+                        },
+                        {
+                            text: "Est. Item Value:    ",
+                            style: "mcfont:normal/gold"
+                        },
+                        {
+                            text: "6.456.1 Coins ",
+                            style: "mcfont:normal/dark_aqua"
+                        },
+                        {
+                            text: "(922.3 each)",
+                            style: "mcfont:normal/gray"
+                        }
+                    ],
+                    anchor: "top_left",
+                    text_size: 10,
+                    vertical_anchor: "text_height",
+                    force_single_line: false,
+                    max_width: 2147483647,
+                    line_gap_offset: -2
+                }
+            }
+        }
+    ]
+}

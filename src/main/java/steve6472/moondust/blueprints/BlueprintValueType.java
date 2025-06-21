@@ -17,6 +17,7 @@ public final class BlueprintValueType<V, T extends BlueprintValue<V>> extends Ty
     public static final BlueprintValueType<Integer, ?> INT = register("int", BlueprintValueInt.CODEC);
     public static final BlueprintValueType<Double, ?> DOUBLE = register("double", BlueprintValueDouble.CODEC);
     public static final BlueprintValueType<String, ?> STRING = register("string", BlueprintValueString.CODEC);
+    public static final BlueprintValueType<String[], ?> STRING_ARRAY = register("string_array", BlueprintValueStringArray.CODEC);
     public static final BlueprintValueType<Boolean, ?> BOOL = register("bool", BlueprintValueBool.CODEC);
     public static final BlueprintValueType<LuauTable, ?> SCRIPT = register("script", BlueprintValueScript.CODEC);
     public static final BlueprintValueType<Map<String, BlueprintValue<?>>, ?> TABLE = register("table", BlueprintValueTable.CODEC);

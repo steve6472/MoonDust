@@ -1,0 +1,75 @@
+{
+    position: {
+        type: "absolute",
+        pos: [0, 0]
+    },
+    layout: {
+        type: "absolute"
+    },
+
+    bounds: [0, 0],
+
+    children: [
+        {
+            widget: "mcfont:tooltip",
+            name: "text_label_area",
+            position: {
+                type: "anchored",
+                anchor: "center",
+                offset: [0, 0]
+            },
+            "mcfont:tooltip": {
+                title: "§dDivan\u0027s Drill",
+                lore: [
+                    "§8Breaking Power 10",
+                    "",
+                    "§7Damage: §c+75",
+                    "§7Mining Speed: §a+1,800 ",
+                    "§7Mining Fortune: §a+150",
+                    " §8[§7⸕§8] §8[§7⸕§8] §8[§8☘§8] §8[§8☘§8] §8[§8✦§8]",
+                    "",
+                    "§7Fuel Tank: §cNot Installed",
+                    "§7§7Increases fuel capacity with",
+                    "§7part installed.",
+                    "",
+                    "§7Drill Engine: §cNot Installed",
+                    "§7§7Increases §6⸕ Mining Speed",
+                    "§6§7with part installed.",
+                    "",
+                    "§7Upgrade Module: §cNot Installed",
+                    "§7§7Applies a passive upgrade with",
+                    "§7part installed.",
+                    "",
+                    "§7Apply Drill Parts to this Drill",
+                    "§7by talking to a §2Drill",
+                    "§2Mechanic§7!",
+                    "",
+                    "§7Fuel: §23,000§8/3k",
+                    "",
+                    "§7§8This item can be reforged!",
+                    "§7§4❣ §cRequires §5Heart of the Mountain Tier 7§c.",
+                    "§d§lMYTHIC DRILL"
+                ]
+            }
+        },
+        {
+            widget: "moondust:button",
+            name: "navigate_back",
+            bounds: [32, 13],
+            clickable: true,
+
+            "moondust:button": {
+                on_press: {
+                    script: "moondust_test:navigate/back"
+                },
+                label: "<--"
+            },
+
+            position: {
+                type: "anchored",
+                anchor: "bottom_left",
+                offset: [0, 0]
+            }
+        }
+    ]
+}

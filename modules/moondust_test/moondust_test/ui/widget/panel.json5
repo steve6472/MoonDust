@@ -61,16 +61,6 @@
             }
         },
         {
-            widget: "mcfont:text_label_area",
-            name: "text_label_area",
-            position: {
-                type: "anchored",
-                anchor: "bottom_right",
-                offset: [-2, -2]
-            },
-            bounds: [48, 48]
-        },
-        {
             widget: "moondust:empty",
             name: "debug_label",
             position: {
@@ -265,6 +255,32 @@
                 type: "anchored",
                 anchor: "bottom_right",
                 offset: [0, 0]
+            }
+        },
+        {
+            // The widget type, required
+            widget: "moondust:button",
+
+            // Non-namespaced name, required
+            name: "tooltip_test_button",
+            bounds: [64, 13],
+            clickable: true,
+
+            button: {
+                on_press: {
+                    script: "moondust_test:navigate/to_panel",
+                    input: {
+                        to_open: "mcfont:test/tooltip",
+                        to_close: "moondust_test:panel"
+                    }
+                },
+                label: "MC Tooltip"
+            },
+
+            position: {
+                type: "anchored",
+                anchor: "bottom_right",
+                offset: [0, -14]
             }
         }
     ]

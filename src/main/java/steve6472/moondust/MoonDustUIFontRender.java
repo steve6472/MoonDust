@@ -46,7 +46,8 @@ public class MoonDustUIFontRender extends UIFontRenderImpl
                     // Adjust to pixel scale
                     .withTextSize(text.textSize() * pixelScale)
                     .withMaxWidth(text.maxWidth() * pixelScale)
-                    .withMaxHeight(text.maxHeight() * pixelScale);
+                    .withMaxHeight(text.maxHeight() * pixelScale)
+                    .withLineGapOffset(text.lineGapOffset() * pixelScale);
 
                 Vector2i pos = new Vector2i();
 

@@ -69,7 +69,7 @@ public class MoonDust
     public static final Key ERROR_FOCUSED = Key.withNamespace("moondust", "widget/error/focused");
 
     private final List<Panel> panels = new ArrayList<>(2);
-    private float pixelScale = 6;
+    private float pixelScale = 4;
     private Panel focusedPanel;
 
     public static final Codec<LuauTable> CODEC_TABLE = Codec.PASSTHROUGH.flatXmap(dyn -> {

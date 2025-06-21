@@ -1,0 +1,13 @@
+{
+    script: "mcfont:blueprint/tooltip",
+    fields: {
+        title: {
+            type: "string",
+            required: true
+        },
+        lore: {
+            type: "string_array",
+            max_size: 256
+        }
+    }
+}
