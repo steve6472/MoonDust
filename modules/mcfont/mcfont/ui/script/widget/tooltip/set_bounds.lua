@@ -1,5 +1,4 @@
 local widthPadding = 8;
-local heightPadding = -8;
 
 local function init(widget)
 
@@ -14,8 +13,9 @@ local function init(widget)
     local width = math.max(titleTextWidth, loreTextWidth)
 
     local bounds = {}
-    bounds.width = loreTextWidth + widthPadding
-    bounds.height = MoonDust.getTextTotalFontHeight(titleText) + MoonDust.getTextTotalFontHeight(loreText) + heightPadding
+    bounds.width = width + widthPadding
+    bounds.height = MoonDust.getTextTotalFontHeight(titleText) + 4
+    bounds.height = bounds.height + MoonDust.getTextTotalFontHeight(loreText) - MoonDust.getTextLineCount(loreText) * 2 + 2
     widget:addComponent("moondust:bounds", bounds)
     local tooltipFrame = widget:getChild("tooltip/frame")
     tooltipFrame:addComponent("moondust:bounds", bounds)
@@ -25,8 +25,5 @@ local function init(widget)
     tooltipBackground:addComponent("moondust:bounds", bounds)
     tooltipBackground:addComponent("moondust:sprite_size", bounds)
 end
-
--- 107 = 424
--- 146 = 732
 
 events.onInit:register(init)

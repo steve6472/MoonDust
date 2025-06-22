@@ -245,6 +245,22 @@ public class MoonDustLib extends LuauLib
             return 1;
         });
 
+        // getTextLineCount("moondust:text" table)
+        addOverloadedFunc("getTextLineCount", args().table(), state -> {
+            LuauTable table = new LuauTable();
+            table.readTable(state, 1);
+            var decode = MDText.CODEC.decode(LuaTableOps.INSTANCE, table);
+            if (decode.isError())
+            {
+                state.pushNumber(0);
+                return 1;
+            }
+            MDText text = decode.getOrThrow().getFirst();
+            List<TextRenderSegment> segments = text.text().createSegments();
+            state.pushInteger(segments.size());
+            return 1;
+        });
+
         // getTextMaxWidth("moondust:text" table)
         addOverloadedFunc("getTextMaxWidth", args().table(), state -> {
             LuauTable table = new LuauTable();

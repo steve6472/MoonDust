@@ -18,6 +18,20 @@
                 anchor: "center",
                 offset: [0, 0]
             },
+//            "mcfont:tooltip": {
+//                title: "§fAcacia Wood Stairs",
+//                lore: [
+//                    "§f§lCOMMON",
+//                    "",
+//                    "§fCOMMON❤",
+//                    "",
+//                    "§f§lCOMMON❤",
+//                    "",
+//                    "§fCOMMON",
+//                    "",
+//                    "§f§lCOMMON"
+//                ]
+//            }
             "mcfont:tooltip": {
                 title: "§dDivan\u0027s Drill",
                 lore: [
