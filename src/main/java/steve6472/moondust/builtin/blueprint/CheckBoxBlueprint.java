@@ -11,10 +11,10 @@ import steve6472.moondust.widget.blueprint.event.condition.EventCondition;
 import steve6472.moondust.widget.component.CustomData;
 import steve6472.moondust.widget.component.Scripts;
 import steve6472.moondust.widget.component.Styles;
+import steve6472.moondust.widget.component.WidgetStates;
 import steve6472.moondust.widget.component.event.OnDataChange;
 import steve6472.moondust.widget.component.event.UIEventCallEntry;
 import steve6472.moondust.widget.component.event.UIEvents;
-import steve6472.moondust.widget.component.flag.Clickable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +70,7 @@ public record CheckBoxBlueprint(Key pressCall, Key pressScript, String label, bo
         }
 
         components.add(data);
-        components.add(Clickable.YES);
+        components.add(WidgetStates.clickable(true));
 
         return components;
     }

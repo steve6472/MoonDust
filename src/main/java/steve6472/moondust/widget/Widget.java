@@ -12,15 +12,12 @@ import steve6472.moondust.core.Mergeable;
 import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.luau.ProfiledScript;
 import steve6472.moondust.luau.global.LuaWidget;
+import steve6472.moondust.widget.blueprint.NameBlueprint;
 import steve6472.moondust.widget.blueprint.ScriptEntry;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 import steve6472.moondust.widget.component.event.global.OnGlobalMouseButton;
 import steve6472.moondust.widget.component.event.global.OnGlobalScroll;
-import steve6472.moondust.widget.component.flag.Clickable;
-import steve6472.moondust.widget.component.flag.Enabled;
-import steve6472.moondust.widget.component.flag.Focusable;
-import steve6472.moondust.widget.component.flag.Visible;
 import steve6472.moondust.widget.component.position.Position;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.radiant.LuaTableOps;
@@ -50,6 +47,7 @@ public class Widget implements WidgetComponentGetter
 
     /// Internal states of the widget, set only from MoonDust, visible for Lua for special conditions (button)
     private final InternalStates internalStates;
+    private final WidgetStates states;
     private final CustomData customData;
 
     protected Widget(BlueprintFactory blueprint, Widget parent)
@@ -59,6 +57,7 @@ public class Widget implements WidgetComponentGetter
 
         // Create InternalStates, a super-default components
         addComponent(internalStates = new InternalStates());
+        addComponent(states = new WidgetStates());
 
         Object temp = blueprint.blueprints().get(WidgetBlueprints.WIDGET.key());
         if (temp instanceof Blueprint bp)
@@ -131,7 +130,18 @@ public class Widget implements WidgetComponentGetter
             }
         });
 
+        postCreateValidation();
         handleEvents(OnInit.class);
+    }
+
+    private void postCreateValidation()
+    {
+        states.validate();
+
+        if (states.focusable)
+        {
+            getComponent(FocusedSprite.class).ifPresentOrElse(_ -> {}, () -> LOGGER.warning(String.format("Widget '%s' is focusable, but lacks '%s' blueprint!", key, WidgetBlueprints.FOCUSED_SPRITE.key())));
+        }
     }
 
     public static Widget create(Key key)
@@ -307,9 +317,26 @@ public class Widget implements WidgetComponentGetter
         return store;
     }
 
+    public Optional<IBounds> getClickboxSize()
+    {
+        Optional<ClickboxSize> clickboxSize = getComponent(ClickboxSize.class);
+        if (clickboxSize.isPresent())
+            return Optional.of(clickboxSize.get());
+        Optional<Bounds> bounds = getComponent(Bounds.class);
+        //noinspection OptionalIsPresent (This suggestion is actually wrong lol)
+        if (bounds.isPresent())
+            return Optional.of(bounds.get());
+        return Optional.empty();
+    }
+
     public InternalStates internalStates()
     {
         return internalStates;
+    }
+
+    public WidgetStates states()
+    {
+        return states;
     }
 
     public CustomData customData()
@@ -319,43 +346,43 @@ public class Widget implements WidgetComponentGetter
 
     public boolean isVisible()
     {
-        return getComponent(Visible.class).orElseThrow(() -> new RuntimeException("Visible component not found!")).flag();
+        return states.visible;
     }
 
     public boolean isEnabled()
     {
-        return getComponent(Enabled.class).orElseThrow(() -> new RuntimeException("Enabled component not found!")).flag();
+        return states.enabled;
     }
 
     public boolean isClickable()
     {
-        return getComponent(Clickable.class).orElseThrow(() -> new RuntimeException("Clickable component not found!")).flag();
+        return states.clickable;
     }
 
     public boolean isFocusable()
     {
-        return getComponent(Focusable.class).orElseThrow(() -> new RuntimeException("Focusable component not found!")).flag();
+        return states.focusable;
     }
 
     public void setVisible(boolean visible)
     {
-        addComponent(visible ? Visible.YES : Visible.NO);
+        states.visible = visible;
     }
 
     public void setEnabled(boolean enabled)
     {
-        addComponent(enabled ? Enabled.YES : Enabled.NO);
+        states.enabled = enabled;
         handleEvents(OnEnableStateChange.class, event -> event.enabled().test(enabled));
     }
 
     public void setClickable(boolean clickable)
     {
-        addComponent(clickable ? Clickable.YES : Clickable.NO);
+        states.clickable = clickable;
     }
 
     public void setFocusable(boolean focusable)
     {
-        addComponent(focusable ? Focusable.YES : Focusable.NO);
+        states.focusable = focusable;
     }
 
     public void setBounds(int width, int height)
@@ -448,7 +475,10 @@ public class Widget implements WidgetComponentGetter
             existing.ifPresentOrElse(comp ->
             {
                 //noinspection unchecked
-                this.components.put(component.getClass(), ((Mergeable<T>) mergable).merge((T) comp, component));
+                T merged = ((Mergeable<T>) mergable).merge((T) comp, component);
+                this.components.put(component.getClass(), merged);
+                if (component.getClass() == WidgetStates.class)
+                    states.setFrom((WidgetStates) merged);
             }, () -> this.components.put(component.getClass(), component));
 
         } else
@@ -459,6 +489,9 @@ public class Widget implements WidgetComponentGetter
 
     public <T> boolean removeComponent(Class<T> type)
     {
+        if (type == WidgetStates.class)
+            throw new RuntimeException("States can not be removed");
+
         Collection<Class<?>> redirectClasses = ComponentRedirect.get(type);
         if (redirectClasses != null)
         {

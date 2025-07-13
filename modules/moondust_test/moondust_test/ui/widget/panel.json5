@@ -32,6 +32,29 @@
 
     children: [
         {
+            widget: "moondust:button",
+            name: "close_button",
+            bounds: [13, 13],
+
+            button: {
+                on_press: "moondust:button/exit_app"
+            },
+
+            // Widget components on panel
+            position: {
+                type: "anchored",
+                offset: [0, 0],
+                anchor: "top_right"
+            },
+
+            sprites: {
+                normal: "moondust:generic_dark_pixel/button/close_red/normal",
+                disabled: "moondust:generic_dark_pixel/button/close_red/disabled",
+                hover: "moondust:generic_dark_pixel/button/close_red/hover",
+                pressed: "moondust:generic_dark_pixel/button/close_red/pressed"
+            }
+        },
+        {
             widget: "moondust:empty",
             name: "label_test",
             position: {
@@ -83,7 +106,6 @@
             // Non-namespaced name, required
             name: "test_button",
             bounds: [32, 32],
-            clickable: true,
 
             button: {
                 on_press: {
@@ -157,34 +179,9 @@
             }
         },
         {
-            widget: "moondust:button",
-            name: "close_button",
-            bounds: [13, 13],
-            clickable: true,
-
-            button: {
-                on_press: "moondust:button/exit_app"
-            },
-
-            // Widget components on panel
-            position: {
-                type: "anchored",
-                offset: [0, 0],
-                anchor: "top_right"
-            },
-
-            sprites: {
-                normal: "moondust:generic_dark_pixel/button/close_red/normal",
-                disabled: "moondust:generic_dark_pixel/button/close_red/disabled",
-                hover: "moondust:generic_dark_pixel/button/close_red/hover",
-                pressed: "moondust:generic_dark_pixel/button/close_red/pressed"
-            }
-        },
-        {
             widget: "moondust:text_field",
             name: "text_field",
             bounds: [48, 13],
-            clickable: true,
 
             // Widget components on panel
             position: {
@@ -197,7 +194,6 @@
             widget: "moondust:text_field",
             name: "text_field_password",
             bounds: [48, 13],
-            clickable: true,
 
             // Widget components on panel
             position: {
@@ -234,7 +230,6 @@
             // Non-namespaced name, required
             name: "font_settings_button",
             bounds: [64, 13],
-            clickable: true,
 
             button: {
                 on_press: {
@@ -264,7 +259,6 @@
             // Non-namespaced name, required
             name: "tooltip_test_button",
             bounds: [64, 13],
-            clickable: true,
 
             button: {
                 on_press: {

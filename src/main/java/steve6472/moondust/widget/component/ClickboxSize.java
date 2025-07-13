@@ -8,7 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
  * Date: 12/9/2024
  * Project: MoonDust <br>
  */
-public class ClickboxSize
+public class ClickboxSize implements IBounds
 {
     public static final Codec<ClickboxSize> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.INT.fieldOf("width").forGetter(o -> o.width),
@@ -27,5 +27,17 @@ public class ClickboxSize
     public String toString()
     {
         return "ClickboxSize{" + "width=" + width + ", height=" + height + '}';
+    }
+
+    @Override
+    public int width()
+    {
+        return width;
+    }
+
+    @Override
+    public int height()
+    {
+        return height;
     }
 }

@@ -42,18 +42,6 @@
                     "§7Mining Fortune: §a+150",
                     " §8[§7⸕§8] §8[§7⸕§8] §8[§8☘§8] §8[§8☘§8] §8[§8✦§8]",
                     "",
-                    "§7Fuel Tank: §cNot Installed",
-                    "§7§7Increases fuel capacity with",
-                    "§7part installed.",
-                    "",
-                    "§7Drill Engine: §cNot Installed",
-                    "§7§7Increases §6⸕ Mining Speed",
-                    "§6§7with part installed.",
-                    "",
-                    "§7Upgrade Module: §cNot Installed",
-                    "§7§7Applies a passive upgrade with",
-                    "§7part installed.",
-                    "",
                     "§7Apply Drill Parts to this Drill",
                     "§7by talking to a §2Drill",
                     "§2Mechanic§7!",
@@ -70,7 +58,9 @@
             widget: "moondust:button",
             name: "navigate_back",
             bounds: [32, 13],
-            clickable: true,
+            states: {
+                clickable: true
+            },
 
             "moondust:button": {
                 on_press: {

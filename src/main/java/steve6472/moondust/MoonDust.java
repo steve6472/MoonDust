@@ -44,7 +44,9 @@ public class MoonDust
      * [X] Blueprints verifier:
      * - each custom blueprint has to be verified when read from json, remember to verify the min/max limits too
      *
-     * [ ] Move clickable, enabled, visible, ??? to state variable in Widget instead each being a component, have blueprint to create this tho, special just like custom data
+     * [x] Move clickable, enabled, visible, ??? to state variable in Widget instead each being a component, have blueprint to create this tho, special just like custom data
+     *
+     * [ ] WidgetLoader L95 - sprite_size should work same as clickbox, if sprite size is not present use bounds
      *
      * [X] CustomData Struct
      * - Just a Map of <String, Object>

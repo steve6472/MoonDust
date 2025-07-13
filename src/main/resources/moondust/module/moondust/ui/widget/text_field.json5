@@ -10,10 +10,12 @@
         disabled: "moondust:button/disabled"
     },
 
-    focusable: true,
     focused_sprite: "moondust:generic_dark_pixel/text_field/focused",
 
-    clickable: true,
+    states: {
+        focusable: true,
+        clickable: true
+    },
     bounds: [8, 8],
     events: [
         { call: "moondust:icon/change_enabled",   event: { type: "on_enable_change" } },

@@ -5,15 +5,11 @@ import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.widget.blueprint.*;
 import steve6472.moondust.widget.blueprint.event.EventsBlueprint;
-import steve6472.moondust.widget.blueprint.flag.ClickableBlueprint;
-import steve6472.moondust.widget.blueprint.flag.FocusableBlueprint;
 import steve6472.moondust.widget.blueprint.position.PositionBlueprint;
 import steve6472.moondust.core.MoonDustComponentRegister;
 import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.core.blueprint.BlueprintEntry;
 import steve6472.moondust.core.blueprint.DefaultBlueprint;
-import steve6472.moondust.widget.blueprint.flag.EnabledBlueprint;
-import steve6472.moondust.widget.blueprint.flag.VisibleBlueprint;
 import steve6472.moondust.widget.blueprint.layout.LayoutBlueprint;
 
 import java.util.ArrayList;
@@ -32,10 +28,6 @@ public class WidgetBlueprints
      * Default Blueprints
      * Each component has these even if not defined in file
      */
-    public static final BlueprintEntry<EnabledBlueprint> ENABLED = registerDefault(EnabledBlueprint.KEY, EnabledBlueprint.CODEC, EnabledBlueprint.DEFAULT);
-    public static final BlueprintEntry<VisibleBlueprint> VISIBLE = registerDefault(VisibleBlueprint.KEY, VisibleBlueprint.CODEC, VisibleBlueprint.DEFAULT);
-    public static final BlueprintEntry<ClickableBlueprint> CLICKABLE = registerDefault(ClickableBlueprint.KEY, ClickableBlueprint.CODEC, ClickableBlueprint.DEFAULT);
-    public static final BlueprintEntry<FocusableBlueprint> FOCUSABLE = registerDefault(FocusableBlueprint.KEY, FocusableBlueprint.CODEC, FocusableBlueprint.DEFAULT);
     public static final BlueprintEntry<LayoutBlueprint> LAYOUT = registerDefault(LayoutBlueprint.KEY, LayoutBlueprint.CODEC, LayoutBlueprint.DEFAULT);
 
     /*
@@ -64,6 +56,7 @@ public class WidgetBlueprints
     public static final BlueprintEntry<OverridesBlueprint> OVERRIDES = register(OverridesBlueprint.KEY, OverridesBlueprint.CODEC);
     public static final BlueprintEntry<CustomDataBlueprint> DATA = register(CustomDataBlueprint.KEY, CustomDataBlueprint.CODEC);
     public static final BlueprintEntry<RadioGroupBlueprint> RADIO_GROUP = register(RadioGroupBlueprint.KEY, RadioGroupBlueprint.CODEC);
+    public static final BlueprintEntry<WidgetStatesBl> WIDGET_STATES = register(WidgetStatesBl.KEY, WidgetStatesBl.CODEC);
 
     // Children specific
     public static final BlueprintEntry<WidgetReferenceBlueprint> WIDGET = register(WidgetReferenceBlueprint.KEY, WidgetReferenceBlueprint.CODEC);

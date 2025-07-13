@@ -92,10 +92,10 @@ public class MoonDustUIRender extends UIRenderImpl
                 pressedWidget = null;
             } else
             {
-                pressedWidget.getComponent(ClickboxSize.class).ifPresent(clickboxSize -> {
+                pressedWidget.getClickboxSize().ifPresent(clickboxSize -> {
                     Vector2i clickboxPosition = pressedWidget.getPosition();
                     pressedWidget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
-                    boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width, clickboxPosition.y + clickboxSize.height, mousePos.x, mousePos.y);
+                    boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width(), clickboxPosition.y + clickboxSize.height(), mousePos.x, mousePos.y);
                     pressedWidget.internalStates().directHover = hovered;
                     if (leftPress)
                         return;
@@ -145,11 +145,11 @@ public class MoonDustUIRender extends UIRenderImpl
         long window = this.window.window();
         boolean leftPress = GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
 
-        widget.getComponent(ClickboxSize.class).ifPresent(clickboxSize ->
+        widget.getClickboxSize().ifPresent(clickboxSize ->
         {
             Vector2i clickboxPosition = widget.getPosition();
             widget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
-            boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width, clickboxPosition.y + clickboxSize.height, mousePos.x, mousePos.y);
+            boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width(), clickboxPosition.y + clickboxSize.height(), mousePos.x, mousePos.y);
 
             widget.internalStates().directHover = hovered;
             // Hover events

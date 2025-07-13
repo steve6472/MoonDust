@@ -23,7 +23,6 @@
             widget: "moondust:button",
             name: "navigate_back",
             bounds: [32, 13],
-            clickable: true,
 
             "moondust:button": {
                 on_press: {
@@ -42,7 +41,6 @@
             widget: "moondust:button",
             name: "test",
             bounds: [32, 32],
-            clickable: true,
 
             button: {
                 label: "TEST THE BUTTON TEXT"

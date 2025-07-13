@@ -41,12 +41,15 @@ public class DebugWidgetUILines extends UILineRenderImpl
 
             if (clickbox)
             {
-                widget.getComponent(ClickboxSize.class).ifPresent(clickboxSize ->
+                widget.getClickboxSize().ifPresent(clickboxSize ->
                 {
+                    if (!widget.isClickable())
+                        return;
+
                     Vector2i clickboxPosition = widget.getPosition();
                     widget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
 
-                    rectangleScaled(clickboxPosition.x, clickboxPosition.y, clickboxSize.width, clickboxSize.height, CLICKBOX);
+                    rectangleScaled(clickboxPosition.x, clickboxPosition.y, clickboxSize.width(), clickboxSize.height(), CLICKBOX);
                 });
             }
 

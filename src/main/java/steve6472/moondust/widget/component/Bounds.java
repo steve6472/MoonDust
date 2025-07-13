@@ -8,7 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
  * Date: 12/4/2024
  * Project: MoonDust <br>
  */
-public class Bounds
+public class Bounds implements IBounds
 {
     public static final Codec<Bounds> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.INT.fieldOf("width").forGetter(o -> o.width),
@@ -27,5 +27,17 @@ public class Bounds
     public String toString()
     {
         return "Bounds{" + "width=" + width + ", height=" + height + '}';
+    }
+
+    @Override
+    public int width()
+    {
+        return width;
+    }
+
+    @Override
+    public int height()
+    {
+        return height;
     }
 }

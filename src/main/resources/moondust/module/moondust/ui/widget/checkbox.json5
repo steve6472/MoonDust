@@ -13,10 +13,11 @@
         disabled: "moondust:button/disabled"
     },
 
-    focusable: true,
     focused_sprite: "moondust:generic_dark_pixel/generic/focus/square",
-
-    clickable: true,
+    states: {
+        clickable: true,
+        focusable: true
+    },
     bounds: [64, 7],
     sprite_size: [7, 7],
 

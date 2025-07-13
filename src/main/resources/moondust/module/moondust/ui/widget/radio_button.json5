@@ -8,10 +8,12 @@
     },
     current_sprite: "unchecked",
 
-    focusable: true,
     focused_sprite: "moondust:generic_dark_pixel/generic/focus/sharper",
 
-    clickable: true,
+    states: {
+        clickable: true,
+        focusable: true
+    },
     bounds: [32, 7],
     sprite_size: [7, 7],
 

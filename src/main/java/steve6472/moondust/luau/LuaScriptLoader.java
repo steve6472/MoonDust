@@ -8,6 +8,7 @@ import steve6472.core.module.ResourceCrawl;
 import steve6472.core.registry.Key;
 import steve6472.core.util.Profiler;
 import steve6472.flare.core.Flare;
+import steve6472.moondust.MoonDustParts;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.luau.global.MoonDustGlobal;
 import steve6472.radiant.LuauGlobal;
@@ -47,14 +48,14 @@ public class LuaScriptLoader
         for (Module module : Flare.getModuleManager().getModules())
         {
             module.iterateNamespaces((folder, namespace) -> {
-                File file = new File(folder, "ui/script");
+                File file = new File(folder, MoonDustParts.UI_LUA_SCRIPT.path());
 
                 ResourceCrawl.crawl(file, true, (filePath, id) -> {
                     Key key = Key.withNamespace(namespace, id);
 
                     try
                     {
-                        LOGGER.finest("Reading %s '%s' from module '%s'".formatted("Luau script", key, module.name()));
+                        LOGGER.finest("Reading %s '%s' from module '%s'".formatted(MoonDustParts.UI_LUA_SCRIPT.name(), key, module.name()));
                         cache.put(key, new WithModule<>(module, Files.readString(filePath.toPath()).trim()));
                     } catch (IOException e)
                     {
@@ -68,7 +69,7 @@ public class LuaScriptLoader
 
         cache.forEach((key, withModule) -> {
             String script = withModule.obj;
-            LOGGER.finest("Processing %s '%s' from module '%s'".formatted("Luau script", key, withModule.module.name()));
+            LOGGER.finest("Processing %s '%s' from module '%s'".formatted(MoonDustParts.UI_LUA_SCRIPT.name(), key, withModule.module.name()));
             String processedScript = processMeta(cache, new HashSet<>(), key, script, false);
             if (processedScript != null)
                 processed.put(key, new WithModule<>(withModule.module, processedScript));

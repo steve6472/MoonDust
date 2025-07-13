@@ -21,7 +21,9 @@
             },
             z_index: -0.05,
             current_sprite: "left",
-            visible: false
+            states: {
+                visible: false
+            }
         },
         {
             widget: "moondust:empty",
@@ -34,7 +36,9 @@
             },
             z_index: -0.05,
             current_sprite: "right",
-            visible: false
+            states: {
+                visible: false
+            }
         },
         {
             widget: "moondust:empty",
@@ -53,7 +57,9 @@
             },
             z_index: -0.05,
             current_sprite: "middle",
-            visible: false
+            states: {
+                visible: false
+            }
         },
         {
             widget: "moondust:empty",
@@ -66,7 +72,9 @@
             },
             z_index: -0.05,
             current_sprite: "scroll_up",
-            visible: false
+            states: {
+                visible: false
+            }
         },
         {
             widget: "moondust:empty",
@@ -79,7 +87,9 @@
             },
             z_index: -0.05,
             current_sprite: "scroll_down",
-            visible: false
+            states: {
+                visible: false
+            }
         }
     ]
 }
