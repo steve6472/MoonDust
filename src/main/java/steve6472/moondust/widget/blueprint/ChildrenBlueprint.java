@@ -31,7 +31,7 @@ public record ChildrenBlueprint(List<BlueprintFactory> children) implements Blue
 
             for (Map<BlueprintEntry<?>, Object> map : list)
             {
-                factories.add(WidgetLoader.createWidgetFactory(map, false, KEY_CHILD_COMPONENT));
+                factories.add(WidgetLoader.createWidgetFactory(map, KEY_CHILD_COMPONENT));
             }
 
             return new ChildrenBlueprint(factories);

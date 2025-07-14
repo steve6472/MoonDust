@@ -3,6 +3,7 @@ package steve6472.moondust;
 import org.lwjgl.system.MemoryStack;
 import steve6472.core.registry.Key;
 import steve6472.flare.Camera;
+import steve6472.flare.core.Flare;
 import steve6472.flare.core.FlareApp;
 import steve6472.flare.core.FrameInfo;
 import steve6472.flare.input.KeybindUpdater;
@@ -68,6 +69,7 @@ public class MoonDustTest extends FlareApp
         MoonDust.getInstance().addPanel(testPanel);
 
         KeybindUpdater.updateKeybinds(MoonDustRegistries.KEYBIND, input());
+        Flare.getModuleManager().clearPartsCache();
     }
 
     @Override

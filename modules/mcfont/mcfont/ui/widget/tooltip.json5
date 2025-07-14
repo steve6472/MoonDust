@@ -8,10 +8,7 @@
         {
             widget: "moondust:empty",
             name: "tooltip/frame",
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            },
+            position: [0, 0],
             sprites: {normal: "mcfont:tooltip/frame"},
             // TODO: current_sprite should through all parents until it finds a sprite (or fails)
             current_sprite: "normal"
@@ -19,20 +16,14 @@
         {
             widget: "moondust:empty",
             name: "tooltip/background",
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            },
+            position: [0, 0],
             sprites: {normal: "mcfont:tooltip/background"},
             current_sprite: "normal"
         },
         {
             widget: "moondust:empty",
             name: "title",
-            position: {
-                type: "absolute",
-                pos: [4, 3]
-            },
+            position: [4, 3],
 
             text: {
                 text: {
@@ -52,10 +43,7 @@
         {
             widget: "moondust:empty",
             name: "lore",
-            position: {
-                type: "absolute",
-                pos: [4, 15]
-            },
+            position: [4, 15],
 
             text: {
                 text: {

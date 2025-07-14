@@ -1,14 +1,4 @@
 {
-    position: {
-        type: "absolute",
-        pos: [0, 0]
-    },
-    layout: {
-        type: "absolute"
-    },
-
-    bounds: [0, 0],
-
     children: [
         {
             widget: "mcfont:tooltip",
@@ -58,11 +48,8 @@
             widget: "moondust:button",
             name: "navigate_back",
             bounds: [32, 13],
-            states: {
-                clickable: true
-            },
 
-            "moondust:button": {
+            button: {
                 on_press: {
                     script: "moondust_test:navigate/back"
                 },

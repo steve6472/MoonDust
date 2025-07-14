@@ -5,10 +5,7 @@
         {
             widget: "moondust:radio_button",
             name: "radio_0",
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            },
+            position: [0, 0],
             radio_group: {
                 group: "test",
                 label: "6"

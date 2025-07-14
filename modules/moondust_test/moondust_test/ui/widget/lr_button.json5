@@ -5,10 +5,7 @@
             name: "left",
             bounds: [10, 10],
 
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            }
+            position: [0, 0]
         },
         {
             widget: "moondust:button",

@@ -46,7 +46,7 @@ public class MoonDust
      *
      * [x] Move clickable, enabled, visible, ??? to state variable in Widget instead each being a component, have blueprint to create this tho, special just like custom data
      *
-     * [ ] WidgetLoader L95 - sprite_size should work same as clickbox, if sprite size is not present use bounds
+     * [x] WidgetLoader L95 - sprite_size should work same as clickbox, if sprite size is not present use bounds
      *
      * [X] CustomData Struct
      * - Just a Map of <String, Object>
@@ -71,7 +71,7 @@ public class MoonDust
     public static final Key ERROR_FOCUSED = Key.withNamespace("moondust", "widget/error/focused");
 
     private final List<Panel> panels = new ArrayList<>(2);
-    private float pixelScale = 3;
+    private float pixelScale = 4;
     private Panel focusedPanel;
 
     public static final Codec<LuauTable> CODEC_TABLE = Codec.PASSTHROUGH.flatXmap(dyn -> {

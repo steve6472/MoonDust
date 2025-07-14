@@ -15,10 +15,7 @@
             name: "lmb",
             sprites: { "left": "moondust:sprites/mouse/left" },
             bounds: [13, 19],
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            },
+            position: [0, 0],
             z_index: -0.05,
             current_sprite: "left",
             states: {
@@ -30,10 +27,7 @@
             name: "rmb",
             sprites: { "right": "moondust:sprites/mouse/right" },
             bounds: [13, 19],
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            },
+            position: [0, 0],
             z_index: -0.05,
             current_sprite: "right",
             states: {
@@ -51,10 +45,7 @@
                 "middle": "moondust:sprites/mouse/middle"
             },
             bounds: [13, 19],
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            },
+            position: [0, 0],
             z_index: -0.05,
             current_sprite: "middle",
             states: {
@@ -66,10 +57,7 @@
             name: "scroll_up",
             sprites: { "scroll_up": "moondust:sprites/mouse/scroll_up" },
             bounds: [13, 19],
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            },
+            position: [0, 0],
             z_index: -0.05,
             current_sprite: "scroll_up",
             states: {
@@ -81,10 +69,7 @@
             name: "scroll_down",
             sprites: { "scroll_down": "moondust:sprites/mouse/scroll_down" },
             bounds: [13, 19],
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            },
+            position: [0, 0],
             z_index: -0.05,
             current_sprite: "scroll_down",
             states: {

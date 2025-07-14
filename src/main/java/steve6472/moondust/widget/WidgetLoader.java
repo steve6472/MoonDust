@@ -1,6 +1,5 @@
 package steve6472.moondust.widget;
 
-import org.joml.Vector2i;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.flare.core.Flare;
@@ -34,14 +33,14 @@ public class WidgetLoader
 
         Flare.getModuleManager().loadParts(MoonDustParts.WIDGET, MoonDustRegistries.WIDGET_BLUEPRINT.valueMapCodec(), (map, key) ->
         {
-            BlueprintFactory factory = createWidgetFactory(map, true, key);
+            BlueprintFactory factory = createWidgetFactory(map, key);
             factories.put(key, factory);
         });
 
         factories.values().forEach(MoonDustRegistries.WIDGET_FACTORY::register);
     }
 
-    public static BlueprintFactory createWidgetFactory(Map<BlueprintEntry<?>, Object> map, boolean includeDefault, Key key)
+    public static BlueprintFactory createWidgetFactory(Map<BlueprintEntry<?>, Object> map, Key key)
     {
         Map<Key, Blueprint> blueprints = new LinkedHashMap<>(map.size());
 
@@ -57,20 +56,17 @@ public class WidgetLoader
             blueprints.put(blueprintEntry.key(), blueprint);
         }
 
-        if (includeDefault)
+        for (DefaultBlueprint<?> genericBlueprint : WidgetBlueprints.DEFAULT_BLUEPRINTS)
         {
-            for (DefaultBlueprint<?> genericBlueprint : WidgetBlueprints.DEFAULT_BLUEPRINTS)
+            if (!map.containsKey(genericBlueprint.entry()))
             {
-                if (!map.containsKey(genericBlueprint.entry()))
+                blueprints.put(genericBlueprint.entry().key(), genericBlueprint.defaultValue());
+            } else
+            {
+                Object current = map.get(genericBlueprint.entry());
+                if (current.equals(genericBlueprint.defaultValue()))
                 {
-                    blueprints.put(genericBlueprint.entry().key(), genericBlueprint.defaultValue());
-                } else
-                {
-                    Object current = map.get(genericBlueprint.entry());
-                    if (current.equals(genericBlueprint.defaultValue()))
-                    {
-                        LOGGER.fine("Pointless declaration of default component '" + genericBlueprint.entry().key() + "' with default value '" + current + "' in: " + key);
-                    }
+                    LOGGER.fine("Pointless declaration of default component '" + genericBlueprint.entry().key() + "' with default value '" + current + "' in: " + key);
                 }
             }
         }
@@ -86,15 +82,10 @@ public class WidgetLoader
     private static void doWarnings(Map<Key, Blueprint> blueprints, Key key)
     {
         // Add sprite_size if it is not defined, uses size size if defined, otherwise nothing is added
-        find(blueprints, SpriteSizeBlueprint.class).ifPresentOrElse(spriteSize -> {
+        find(blueprints, SpriteSizeBlueprint.class).ifPresent(spriteSize -> {
             find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
                 if (spriteSize.size().equals(bounds.bounds()))
                     LOGGER.fine("Pointless declaration of '%s', it has same size as '%s', value: %s in: %s".formatted(WidgetBlueprints.SPRITE_SIZE.key(), WidgetBlueprints.BOUNDS.key(), bounds.bounds(), key));
-            });
-        }, () -> {
-            // TODO: Should work same as clickbox, if sprite size is not present use bounds!!
-            find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
-                blueprints.put(SpriteSizeBlueprint.KEY, new SpriteSizeBlueprint(new Vector2i(bounds.bounds())));
             });
         });
 
@@ -117,6 +108,7 @@ public class WidgetLoader
             return;
 
         Optional<LayoutBlueprint> layoutBlueprint = find(widget, LayoutBlueprint.class);
+        // Is this check required ? Layout is defaulted component
         if (layoutBlueprint.isEmpty())
             throw new IllegalStateException("Layout Blueprint is required");
         LayoutBlueprint layout = layoutBlueprint.orElseThrow();

@@ -15,6 +15,6 @@ import steve6472.moondust.widget.blueprint.position.PositionBlueprintType;
  */
 public interface Position extends Typed<PositionType<?>>
 {
-    Codec<Position> CODEC = MoonDustRegistries.POSITION_TYPE.byKeyCodec().dispatch("type", Position::getType, PositionType::mapCodec);
+    Codec<Position> CODEC = Codec.withAlternative(MoonDustRegistries.POSITION_TYPE.byKeyCodec().dispatch("type", Position::getType, PositionType::mapCodec), AbsolutePos.CODEC_SMALL);
     void evaluatePosition(Vector2i store, Widget widget);
 }

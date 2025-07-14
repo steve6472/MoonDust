@@ -34,9 +34,6 @@
             vertical_anchor: "text_height",
             force_single_line: true
         },
-        position: {
-            type: "absolute",
-            pos: [8, 1]
-        }
+        position: [8, 1]
     }
 }

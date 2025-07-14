@@ -1,14 +1,4 @@
 {
-    position: {
-        type: "absolute",
-        pos: [0, 0]
-    },
-    layout: {
-        type: "absolute"
-    },
-
-    bounds: [0, 0],
-
     children: [
         {
             widget: "moondust:debug/outlines",

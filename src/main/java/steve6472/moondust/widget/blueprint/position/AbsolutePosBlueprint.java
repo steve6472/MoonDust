@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.joml.Vector2i;
 import steve6472.core.util.ExtraCodecs;
 import steve6472.moondust.widget.component.position.AbsolutePos;
+import steve6472.moondust.widget.component.position.Position;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public record AbsolutePosBlueprint(Vector2i position) implements PositionBluepri
     public static final Codec<AbsolutePosBlueprint> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ExtraCodecs.VEC_2I.fieldOf("pos").forGetter(AbsolutePosBlueprint::position)
     ).apply(instance, AbsolutePosBlueprint::new));
+
+    public static final Codec<PositionBlueprint> CODEC_SMALL = ExtraCodecs.VEC_2I.xmap(AbsolutePosBlueprint::new, p -> ((AbsolutePosBlueprint) p).position);
 
     @Override
     public PositionBlueprintType<?> getType()

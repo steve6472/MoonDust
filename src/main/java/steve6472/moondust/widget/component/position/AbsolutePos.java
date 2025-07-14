@@ -19,7 +19,7 @@ public record AbsolutePos(Vector2i position) implements Position
         ExtraCodecs.VEC_2I.fieldOf("pos").forGetter(AbsolutePos::position)
     ).apply(instance, AbsolutePos::new));
 
-//    public static final Codec<AbsolutePos> CODEC = ExtraCodecs.VEC_2I.xmap(AbsolutePos::new, AbsolutePos::position);
+    public static final Codec<AbsolutePos> CODEC_SMALL = ExtraCodecs.VEC_2I.xmap(AbsolutePos::new, AbsolutePos::position);
 
     @Override
     public void evaluatePosition(Vector2i store, Widget widget)

@@ -29,13 +29,14 @@ public class DebugWidgetUILines extends UILineRenderImpl
         {
             if (spriteSize)
             {
-                widget.getComponents(SpriteSize.class, CurrentSprite.class).ifPresent(comp ->
-                {
-                    SpriteSize spriteSize = comp.comp1();
+                widget.getSpriteSize().ifPresent(spriteSize -> {
+                    if (widget.getComponent(CurrentSprite.class).isEmpty())
+                        return;
+
                     Vector2i position = widget.getPosition();
                     widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
 
-                    rectangleScaled(position.x, position.y, spriteSize.width, spriteSize.height, SPRITE_SIZE);
+                    rectangleScaled(position.x, position.y, spriteSize.width(), spriteSize.height(), SPRITE_SIZE);
                 });
             }
 

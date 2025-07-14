@@ -33,7 +33,6 @@ public class MoonDustUIRender extends UIRenderImpl
 {
     private static final Logger LOGGER = Log.getLogger(MoonDustUIRender.class);
     private static final boolean DEBUG_CURSOR = true;
-    private static final Set<String> MISSING_SPRITES = new HashSet<>(16);
 
     private final Window window;
     private final UserInput input;
@@ -190,7 +189,7 @@ public class MoonDustUIRender extends UIRenderImpl
 
         if (widget.isFocusable() && widget.internalStates().focused)
         {
-            widget.getComponent(SpriteSize.class).ifPresent(spriteSize ->
+            widget.getSpriteSize().ifPresent(spriteSize ->
             {
                 Vector2i position = widget.getPosition();
                 widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
@@ -199,12 +198,12 @@ public class MoonDustUIRender extends UIRenderImpl
                     float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(0f);
                     SpriteEntry textureEntry = getTextureEntry(focusedSprite.sprite());
                     if (textureEntry == null)
-                        sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, MoonDust.ERROR_FOCUSED);
+                        sprite(position.x, position.y, index, spriteSize.width(), spriteSize.height(), MoonDust.ERROR_FOCUSED);
                     else
-                        sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, focusedSprite.sprite());
+                        sprite(position.x, position.y, index, spriteSize.width(), spriteSize.height(), focusedSprite.sprite());
                 }, () -> {
                     float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(0f);
-                    sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, MoonDust.ERROR_FOCUSED);
+                    sprite(position.x, position.y, index, spriteSize.width(), spriteSize.height(), MoonDust.ERROR_FOCUSED);
                 });
             });
         }
@@ -213,12 +212,12 @@ public class MoonDustUIRender extends UIRenderImpl
         {
             Key sprite = getSprite(result.comp1(), result.comp2());
 
-            widget.getComponent(SpriteSize.class).ifPresent(spriteSize ->
+            widget.getSpriteSize().ifPresent(spriteSize ->
             {
                 Vector2i position = widget.getPosition();
                 widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
                 float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(-0.1f);
-                sprite(position.x, position.y, index, spriteSize.width, spriteSize.height, sprite);
+                sprite(position.x, position.y, index, spriteSize.width(), spriteSize.height(), sprite);
             });
         });
     }
@@ -229,11 +228,7 @@ public class MoonDustUIRender extends UIRenderImpl
         Key spriteKey = sprites.sprites().get(sprite);
         if (spriteKey == null)
         {
-            if (!MISSING_SPRITES.contains(sprite))
-            {
-                MISSING_SPRITES.add(sprite);
-                LOGGER.warning("Missing Sprite '%s'".formatted(sprite));
-            }
+            Log.warningOnce(LOGGER, "Missing Sprite '%s'".formatted(sprite));
             return FlareConstants.ERROR_TEXTURE;
         }
         return spriteKey;

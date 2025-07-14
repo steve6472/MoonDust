@@ -8,7 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
  * Date: 12/4/2024
  * Project: MoonDust <br>
  */
-public class SpriteSize
+public class SpriteSize implements IBounds
 {
     public static final Codec<SpriteSize> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.INT.fieldOf("width").forGetter(o -> o.width),
@@ -27,5 +27,17 @@ public class SpriteSize
     public String toString()
     {
         return "SpriteSize{" + "width=" + width + ", height=" + height + '}';
+    }
+
+    @Override
+    public int width()
+    {
+        return width;
+    }
+
+    @Override
+    public int height()
+    {
+        return height;
     }
 }

@@ -15,5 +15,5 @@ import steve6472.moondust.core.blueprint.Blueprint;
 public interface PositionBlueprint extends Typed<PositionBlueprintType<?>>, Blueprint
 {
     Key KEY = Key.withNamespace(MoonDustConstants.NAMESPACE, "position");
-    Codec<PositionBlueprint> CODEC = MoonDustRegistries.POSITION_BLUEPRINT_TYPE.byKeyCodec().dispatch("type", PositionBlueprint::getType, PositionBlueprintType::mapCodec);
+    Codec<PositionBlueprint> CODEC = Codec.withAlternative(MoonDustRegistries.POSITION_BLUEPRINT_TYPE.byKeyCodec().dispatch("type", PositionBlueprint::getType, PositionBlueprintType::mapCodec), AbsolutePosBlueprint.CODEC_SMALL);
 }

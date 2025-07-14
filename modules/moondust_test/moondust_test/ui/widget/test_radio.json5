@@ -1,5 +1,5 @@
 {
-    bounds: [32, 18],
+    bounds: [32, 16],
 
     children: [
         {
@@ -7,11 +7,8 @@
             name: "w1",
             bounds: [32, 7],
             sprite_size: [7, 7],
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            },
-            "moondust:radio_group": {
+            position: [0, 0],
+            radio_group: {
                 group: "test1",
                 selected: true,
                 label: "Test 1"
@@ -22,11 +19,8 @@
             name: "w2",
             bounds: [32, 7],
             sprite_size: [7, 7],
-            position: {
-                type: "absolute",
-                pos: [0, 9]
-            },
-            "moondust:radio_group": {
+            position: [0, 9],
+            radio_group: {
                 group: "test1",
                 label: "Test 2"
             }

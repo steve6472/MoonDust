@@ -1,16 +1,4 @@
 {
-//    tick_call: "moondust:panel/tick_test",
-
-    position: {
-        type: "absolute",
-        pos: [0, 0]
-    },
-    layout: {
-        type: "absolute"
-    },
-
-    bounds: [0, 0],
-
     text: {
         text: {
             parts: [
@@ -24,10 +12,7 @@
             vertical_anchor: "text_height",
             force_single_line: true
         },
-        position: {
-            type: "absolute",
-            pos: [8, 1]
-        }
+        position: [8, 1]
     },
 
     children: [
@@ -86,10 +71,8 @@
         {
             widget: "moondust:empty",
             name: "debug_label",
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            }/*,
+            position: [0, 0]
+            /*,
             text_line: {
                 text: {
                     text: "DEBUG",
@@ -132,10 +115,7 @@
                 disabled: "flare:arial"
             },
 
-            position: {
-                type: "absolute",
-                pos: [30, 10]
-            }
+            position: [30, 10]
         },
         {
             widget: "moondust_test:test_radio",
@@ -161,10 +141,7 @@
             widget: "moondust:empty",
             name: "test_icon",
             sprite_size: [8, 8],
-            position: {
-                type: "absolute",
-                pos: [0, 0]
-            },
+            position: [0, 0],
             sprites: {
                 "icon": "moondust:sprites/unknown"
             },
@@ -173,10 +150,7 @@
         {
             widget: "moondust:mouse_view",
             name: "mouse_view",
-            position: {
-                type: "absolute",
-                pos: [4, 20]
-            }
+            position: [4, 20]
         },
         {
             widget: "moondust:text_field",

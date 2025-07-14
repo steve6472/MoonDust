@@ -21,10 +21,7 @@
             vertical_anchor: "text_height",
             force_single_line: true
         },
-        position: {
-            type: "absolute",
-            pos: [6, 2]
-        }
+        position: [6, 2]
     },
 
     children: [

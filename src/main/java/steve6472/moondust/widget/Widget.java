@@ -12,12 +12,12 @@ import steve6472.moondust.core.Mergeable;
 import steve6472.moondust.core.blueprint.Blueprint;
 import steve6472.moondust.luau.ProfiledScript;
 import steve6472.moondust.luau.global.LuaWidget;
-import steve6472.moondust.widget.blueprint.NameBlueprint;
 import steve6472.moondust.widget.blueprint.ScriptEntry;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 import steve6472.moondust.widget.component.event.global.OnGlobalMouseButton;
 import steve6472.moondust.widget.component.event.global.OnGlobalScroll;
+import steve6472.moondust.widget.component.position.AbsolutePos;
 import steve6472.moondust.widget.component.position.Position;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.radiant.LuaTableOps;
@@ -307,7 +307,11 @@ public class Widget implements WidgetComponentGetter
 
     public void getPosition(Vector2i store)
     {
-        getComponent(Position.class).orElseThrow().evaluatePosition(store, this);
+        getComponent(Position.class).ifPresentOrElse(pos -> pos.evaluatePosition(store, this), () -> {
+            Position position = new AbsolutePos(new Vector2i(0, 0));
+            addComponent(position);
+            position.evaluatePosition(store, this);
+        });
     }
 
     public Vector2i getPosition()
@@ -317,16 +321,20 @@ public class Widget implements WidgetComponentGetter
         return store;
     }
 
-    public Optional<IBounds> getClickboxSize()
+    public Optional<? extends IBounds> getClickboxSize()
     {
         Optional<ClickboxSize> clickboxSize = getComponent(ClickboxSize.class);
         if (clickboxSize.isPresent())
-            return Optional.of(clickboxSize.get());
-        Optional<Bounds> bounds = getComponent(Bounds.class);
-        //noinspection OptionalIsPresent (This suggestion is actually wrong lol)
-        if (bounds.isPresent())
-            return Optional.of(bounds.get());
-        return Optional.empty();
+            return clickboxSize;
+        return getComponent(Bounds.class);
+    }
+
+    public Optional<? extends IBounds> getSpriteSize()
+    {
+        Optional<SpriteSize> spriteSize = getComponent(SpriteSize.class);
+        if (spriteSize.isPresent())
+            return spriteSize;
+        return getComponent(Bounds.class);
     }
 
     public InternalStates internalStates()
@@ -387,9 +395,10 @@ public class Widget implements WidgetComponentGetter
 
     public void setBounds(int width, int height)
     {
-        Bounds bounds = getComponent(Bounds.class).orElseThrow();
-        bounds.width = width;
-        bounds.height = height;
+        getComponent(Bounds.class).ifPresentOrElse(b -> {
+            b.width = width;
+            b.height = height;
+        }, () -> addComponent(new Bounds(width, height)));
     }
 
     public String getName()
@@ -487,6 +496,7 @@ public class Widget implements WidgetComponentGetter
         }
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public <T> boolean removeComponent(Class<T> type)
     {
         if (type == WidgetStates.class)
