@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 public class MoonDust
 {
     /* # TODOS:
+
      * [X] Blueprints:
      * - each blueprint is defined by file name
      * - 2 types
@@ -44,9 +45,9 @@ public class MoonDust
      * [X] Blueprints verifier:
      * - each custom blueprint has to be verified when read from json, remember to verify the min/max limits too
      *
-     * [x] Move clickable, enabled, visible, ??? to state variable in Widget instead each being a component, have blueprint to create this tho, special just like custom data
+     * [X] Move clickable, enabled, visible, ??? to state variable in Widget instead each being a component, have blueprint to create this tho, special just like custom data
      *
-     * [x] WidgetLoader L95 - sprite_size should work same as clickbox, if sprite size is not present use bounds
+     * [X] WidgetLoader L95 - sprite_size should work same as clickbox, if sprite size is not present use bounds
      *
      * [X] CustomData Struct
      * - Just a Map of <String, Object>
@@ -60,6 +61,11 @@ public class MoonDust
      * - Use custom blueprints for script input lol
      * - If a script has input it should be specified by the script returning a table which is the custom blueprint.
      * - This ended up being done completely differently lol, no verification 'cause I was lazy. Maybe one day (but probably not)
+     *
+     * [ ] Expand custom blueprints into custom components, with full field checking
+     *  - [ ] Change validation result fix to include any value
+     *
+     * [ ] Canvas - abilty to render arbitary graphics
      *
      * Bugs:
      *  [ ] Tab navigation after changing panels does not work

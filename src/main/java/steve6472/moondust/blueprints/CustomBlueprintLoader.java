@@ -33,39 +33,44 @@ public class CustomBlueprintLoader
     {
         Flare.getModuleManager().loadParts(MoonDustParts.UI_BLUEPRINT, BlueprintStructure.CODEC, (structure, key) ->
         {
-            Codec<Blueprint> CODEC = Codec.PASSTHROUGH.flatXmap(ops ->
-            {
-                Object value = ops.convert(LuaTableOps.INSTANCE).getValue();
-                if (DEBUG_INPUTS_BEFORE)
-                    LOGGER.info("The input before validation: " + value + " key: " + key);
-
-                ValidationResult validate;
-                try
-                {
-                    validate = structure.validate(value);
-                } catch (Exception exception)
-                {
-                    LOGGER.severe("Error while validating custom blueprint: " + structure.toString() + " with input: " + value);
-                    throw exception;
-                }
-
-                if (!validate.isPass())
-                {
-                    LOGGER.severe("Failed to validate blueprint '" + key + "' Reason: " + validate.getMessage());
-                    return DataResult.error(() -> "Failed to validate blueprint '" + key + "' Reason: " + validate.getMessage());
-                }
-
-                Number number = validate.fixNumber();
-                if (number != null)
-                    value = number;
-
-                if (DEBUG_INPUTS_AFTER)
-                    LOGGER.info("The input after: " + value + " key: " + key);
-
-                return DataResult.success((Blueprint) new CustomBlueprint(structure, key, value));
-            }, _ -> null);
-
+            Codec<Blueprint> CODEC = createCodec(structure, key);
             MoonDustRegistries.WIDGET_BLUEPRINT.register(key, new BlueprintEntry<>(key, CODEC));
         });
+    }
+
+    private static Codec<Blueprint> createCodec(BlueprintStructure structure, Key key)
+    {
+        return Codec.PASSTHROUGH.flatXmap(ops ->
+        {
+            Object value = ops.convert(LuaTableOps.INSTANCE).getValue();
+
+            if (DEBUG_INPUTS_BEFORE)
+                LOGGER.info("The input before validation: " + value + " key: " + key);
+
+            ValidationResult validate;
+            try
+            {
+                validate = structure.validate(value);
+            } catch (Exception exception)
+            {
+                LOGGER.severe("Error while validating custom blueprint: " + structure.toString() + " with input: " + value);
+                throw exception;
+            }
+
+            if (!validate.isPass())
+            {
+                LOGGER.severe("Failed to validate blueprint '" + key + "' Reason: " + validate.getMessage());
+                return DataResult.error(() -> "Failed to validate blueprint '" + key + "' Reason: " + validate.getMessage());
+            }
+
+            Number number = validate.fixNumber();
+            if (number != null)
+                value = number;
+
+            if (DEBUG_INPUTS_AFTER)
+                LOGGER.info("The input after: " + value + " key: " + key);
+
+            return DataResult.success((Blueprint) new CustomBlueprint(structure, key, value));
+        }, _ -> null);
     }
 }
