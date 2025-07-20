@@ -59,24 +59,24 @@ public class JavaFunctions
 
         register("button/dump_textures", input ->
         {
-            LOGGER.info("Dumping textures");
-            File file = getFile();
+            LOGGER.info("Dumping samplers");
+            File file = getFile("/sampler");
 
-            LOGGER.info("Generating new textures");
+            LOGGER.info("Generating new samplers");
             for (Key key : FlareRegistries.SAMPLER.keys())
             {
+                LOGGER.info("Dumping " + key);
                 File dumpFile = new File(file, key.namespace() + "-" + key.id().replaceAll("/", "__") + ".png");
                 TextureSampler textureSampler = FlareRegistries.SAMPLER.get(key);
-                textureSampler.texture.saveTextureAsPNG(app.device(), app.masterRenderer().getCommands(), app.masterRenderer()
-                    .getGraphicsQueue(), dumpFile);
+                textureSampler.texture.saveTextureAsPNG(app.device(), app.masterRenderer().getCommands(), app.masterRenderer().getGraphicsQueue(), dumpFile);
             }
-            LOGGER.info("Finished dumping textures");
+            LOGGER.info("Finished dumping samplers");
         });
     }
 
-    private static @NotNull File getFile()
+    private static @NotNull File getFile(String suffix)
     {
-        File file = new File(FlareConstants.FLARE_DEBUG_FOLDER, "dumped");
+        File file = new File(FlareConstants.FLARE_DEBUG_FOLDER, "dumped" + suffix);
         if (file.exists())
         {
             LOGGER.info("Removing old textures");

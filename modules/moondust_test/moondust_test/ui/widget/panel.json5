@@ -259,6 +259,10 @@
             name: "dump_textures",
             bounds: [64, 13],
 
+            sprites: {
+                hover: "moondust_test:hover_pulsing"
+            },
+
             button: {
                 on_press: {
                     script: "moondust:run_java_func_widget",
