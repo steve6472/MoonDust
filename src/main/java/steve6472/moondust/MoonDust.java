@@ -67,6 +67,8 @@ public class MoonDust
      *
      * [ ] Canvas - abilty to render arbitary graphics
      *
+     * [ ] Bridge parameters - changing value in lua should reflect value change in java and vice versa
+     *
      * Bugs:
      *  [ ] Tab navigation after changing panels does not work
      */

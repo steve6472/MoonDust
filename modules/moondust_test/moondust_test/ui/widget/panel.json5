@@ -24,6 +24,7 @@
             button: {
                 on_press: "moondust:button/exit_app"
             },
+            focused_sprite: "moondust_test:sharper_animated",
 
             // Widget components on panel
             position: {
