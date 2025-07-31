@@ -6,7 +6,9 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
+import steve6472.flare.Window;
 import steve6472.moondust.ComponentRedirect;
+import steve6472.moondust.MoonDust;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.core.Mergeable;
 import steve6472.moondust.core.blueprint.Blueprint;
@@ -16,7 +18,9 @@ import steve6472.moondust.widget.blueprint.ScriptEntry;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 import steve6472.moondust.widget.component.event.global.OnGlobalMouseButton;
+import steve6472.moondust.widget.component.event.global.OnGlobalPixelScaleChange;
 import steve6472.moondust.widget.component.event.global.OnGlobalScroll;
+import steve6472.moondust.widget.component.event.global.OnGlobalWindowSizeChange;
 import steve6472.moondust.widget.component.position.AbsolutePos;
 import steve6472.moondust.widget.component.position.Position;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
@@ -58,6 +62,13 @@ public class Widget implements WidgetComponentGetter
         // Create InternalStates, a super-default components
         addComponent(internalStates = new InternalStates());
         addComponent(states = new WidgetStates());
+
+        if (this instanceof Panel panel)
+        {
+            Window window = MoonDust.getInstance().window();
+            float pixelScale = MoonDust.getInstance().getPixelScale();
+            panel.setBounds((int) (window.getWidth() / pixelScale), (int) (window.getHeight() / pixelScale));
+        }
 
         Object temp = blueprint.blueprints().get(WidgetBlueprints.WIDGET.key());
         if (temp instanceof Blueprint bp)
@@ -144,15 +155,15 @@ public class Widget implements WidgetComponentGetter
         }
     }
 
-    public static Widget create(Key key)
-    {
-        return create(MoonDustRegistries.WIDGET_FACTORY.get(key));
-    }
+//    public static Widget create(Key key)
+//    {
+//        return create(MoonDustRegistries.WIDGET_FACTORY.get(key));
+//    }
 
-    public static Widget create(BlueprintFactory blueprint)
-    {
-        return new Widget(blueprint, null);
-    }
+//    public static Widget create(BlueprintFactory blueprint)
+//    {
+//        return new Widget(blueprint, null);
+//    }
 
     public static Widget withParent(BlueprintFactory blueprint, Widget parent)
     {
@@ -224,7 +235,7 @@ public class Widget implements WidgetComponentGetter
                 ProfiledScript profiledScript = MoonDustRegistries.LUA_SCRIPT.get(scriptEntry.script());
                 if (profiledScript == null)
                 {
-                    Log.warningOnce(LOGGER, "could not find script " + scriptEntry.script());
+                    Log.warningOnce(LOGGER, "Could not find script '%s' for '%s' in widget '%s'".formatted(scriptEntry.script(), name, getPath()));
                     return;
                 }
 
@@ -296,6 +307,14 @@ public class Widget implements WidgetComponentGetter
         {
             //noinspection unchecked, rawtypes
             return ((Codec) OnCharInput.CODEC).encodeStart(LuaTableOps.INSTANCE, e).getOrThrow();
+        } else if (e instanceof OnGlobalWindowSizeChange)
+        {
+            //noinspection unchecked, rawtypes
+            return ((Codec) OnGlobalWindowSizeChange.CODEC).encodeStart(LuaTableOps.INSTANCE, e).getOrThrow();
+        } else if (e instanceof OnGlobalPixelScaleChange)
+        {
+            //noinspection unchecked, rawtypes
+            return ((Codec) OnGlobalPixelScaleChange.CODEC).encodeStart(LuaTableOps.INSTANCE, e).getOrThrow();
         }
         else
             throw new RuntimeException("Event to user object not done for " + e);

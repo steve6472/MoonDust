@@ -62,7 +62,7 @@ public class CustomData implements Mergeable<CustomData>
         {
             if (widget != null)
             {
-                widget.handleEvents(OnDataChange.class, event -> event.floats().contains(key));
+                widget.handleEvents(OnDataChange.class, event -> event.doubles().contains(key));
                 widget.handleEvents(OnDataChanged.class, _ -> true, new OnDataChanged.Num(key, previous, value, false));
             }
         }

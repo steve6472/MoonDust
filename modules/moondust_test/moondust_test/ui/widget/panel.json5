@@ -277,6 +277,28 @@
                 anchor: "bottom_right",
                 offset: [0, -28]
             }
+        },
+        {
+            widget: "moondust:button",
+            name: "navigate_mock_chat",
+            bounds: [64, 13],
+
+            button: {
+                on_press: {
+                    script: "moondust_test:navigate/to_panel",
+                    input: {
+                        to_open: "mock_chat:panel/chat",
+                        to_close: "moondust_test:panel"
+                    }
+                },
+                label: "Mock Chat"
+            },
+
+            position: {
+                type: "anchored",
+                anchor: "bottom_right",
+                offset: [0, -42]
+            }
         }
     ]
 }

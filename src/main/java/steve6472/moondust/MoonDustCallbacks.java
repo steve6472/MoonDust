@@ -1,17 +1,14 @@
 package steve6472.moondust;
 
-import org.joml.Vector2i;
 import steve6472.core.log.Log;
 import steve6472.flare.WindowCallbacks;
 import steve6472.flare.input.UserInput;
-import steve6472.moondust.widget.Panel;
-import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.event.OnCharInput;
 import steve6472.moondust.widget.component.event.OnKeyInput;
 import steve6472.moondust.widget.component.event.global.OnGlobalMouseButton;
 import steve6472.moondust.widget.component.event.global.OnGlobalScroll;
+import steve6472.moondust.widget.component.event.global.OnGlobalWindowSizeChange;
 
-import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -28,6 +25,7 @@ public class MoonDustCallbacks
         // Global
         callbacks.addScrollCallback(MoonDustConstants.key("lua_global_scroll"), (_, _, yOffset) -> MoonDust.getInstance().runGlobalEvent(new OnGlobalScroll(yOffset)));
         callbacks.addMouseButtonCallback(MoonDustConstants.key("lua_global_mouse_button"), (_, button, action, mods) -> MoonDust.getInstance().runGlobalEvent(new OnGlobalMouseButton(button, action, mods)));
+        callbacks.addFramebufferSizeCallback(MoonDustConstants.key("lua_global_window_size_change"), (_, w, h) -> MoonDust.getInstance().runGlobalEvent(new OnGlobalWindowSizeChange(w, h)));
 
         // TODO: will have to disable/enable focusing with tab if in char_input component....
 

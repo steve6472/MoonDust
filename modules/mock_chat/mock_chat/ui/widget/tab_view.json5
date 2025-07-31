@@ -1,0 +1,74 @@
+{
+    scripts: {
+        width: {
+            script: "mock_chat:fit_width"
+        },
+        height: {
+            script: "mock_chat:fit_height"
+        }
+    },
+    bounds: [10, 10],
+
+    children: [
+        {
+            widget: "moondust:empty",
+            name: "outer_frame",
+            position: [0, 0],
+            bounds: [100, 100],
+            scripts: {
+                width: {
+                    script: "mock_chat:fit_width"
+                },
+                height: {
+                    script: "mock_chat:fit_height"
+                }
+            },
+
+            sprites: {
+                "main": "moondust:generic_dark_pixel/button/generic/round/normal"
+            },
+            current_sprite: "main",
+            z_index: -0.03
+        },
+        {
+            widget: "moondust:empty",
+            name: "inner_frame",
+            position: [4, 4],
+            bounds: [92, 92],
+            scripts: {
+                width: {
+                    script: "mock_chat:fit_width"
+                },
+                height: {
+                    script: "mock_chat:fit_height"
+                }
+            },
+
+            sprites: {
+                "main": "moondust:generic_dark_pixel/button/generic/round/pressed"
+            },
+            current_sprite: "main",
+            z_index: -0.02
+        },
+        {
+            widget: "moondust:empty",
+            name: "inner_frame_overlay",
+            position: [4, 4],
+            bounds: [92, 92],
+            scripts: {
+                width: {
+                    script: "mock_chat:fit_width"
+                },
+                height: {
+                    script: "mock_chat:fit_height"
+                }
+            },
+
+            sprites: {
+                "main": "moondust:frame_in"
+            },
+            current_sprite: "main",
+            z_index: -0.01
+        }
+    ]
+}

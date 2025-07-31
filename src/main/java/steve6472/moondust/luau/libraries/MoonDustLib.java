@@ -1,7 +1,5 @@
 package steve6472.moondust.luau.libraries;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.DataResult;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.flare.registry.FlareRegistries;
@@ -18,12 +16,12 @@ import steve6472.moondust.luau.global.LuaWidget;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.MDText;
+import steve6472.moondust.widget.component.event.OnInit;
 import steve6472.radiant.LuaTableOps;
 import steve6472.radiant.LuauLib;
 import steve6472.radiant.LuauTable;
 import steve6472.radiant.LuauUtil;
 
-import javax.swing.text.Segment;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;

@@ -1,0 +1,31 @@
+{
+    children: [
+        {
+            widget: "mock_chat:status_bar",
+            name: "top_status_bar",
+            position: {
+                type: "anchored",
+                anchor: "top_left"
+            },
+            bounds: [0, 17]
+        },
+        {
+            widget: "mock_chat:message_box",
+            name: "message_box",
+            position: {
+                type: "anchored",
+                anchor: "bottom_left"
+            },
+            bounds: [30, 30]
+        },
+        {
+            widget: "mock_chat:friends_box",
+            name: "friends_box",
+            position: {
+                type: "anchored",
+                anchor: "bottom_right"
+            },
+            bounds: [30, 30]
+        }
+    ]
+}

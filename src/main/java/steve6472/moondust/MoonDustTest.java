@@ -64,6 +64,7 @@ public class MoonDustTest extends FlareApp
     @Override
     public void postInit()
     {
+        MoonDust.getInstance().setWindow(window());
         Panel testPanel = Panel.create(Key.withNamespace("moondust_test", "panel"));
         testPanel.clearFocus();
         MoonDust.getInstance().addPanel(testPanel);

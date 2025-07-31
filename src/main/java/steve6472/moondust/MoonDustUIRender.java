@@ -19,9 +19,6 @@ import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -67,15 +64,6 @@ public class MoonDustUIRender extends UIRenderImpl
         if (DEBUG_CURSOR)
         {
             sprite(mousePos.x, mousePos.y, 0, 1, 1, new Vector3f(0, 1, 0), Key.withNamespace("moondust","sprites/pixel"));
-            moonDust.iterate((depth, widget) -> {
-                if (depth != 0)
-                    return;
-
-//                widget.getChild("debug_label").ifPresent(label -> {
-//                    label.getComponent(MDText.class)
-//                        .ifPresent(mdTextLine -> label.addComponent(new MDText(new UITextLine("Cursor: " + mousePos, mdTextLine.line().size(), mdTextLine.line().style(), mdTextLine.line().anchor()), mdTextLine.offset())));
-//                });
-            });
         }
 
         long window = this.window.window();

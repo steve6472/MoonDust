@@ -8,6 +8,7 @@ import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.Bounds;
 import steve6472.moondust.widget.component.MDText;
+import steve6472.moondust.widget.component.event.OnInit;
 
 import java.util.Map;
 
@@ -51,6 +52,7 @@ public class MoonDustUIFontRender extends UIFontRenderImpl
 
                 Vector2i pos = new Vector2i();
 
+                // TODO: This has to be reworked
                 // Need a little ugly hack so Position is calculated from the immediate parent widget
                 // Position was made for widgets, not components lol
                 Widget dummy = Widget.withParent(EMPTY_BLUEPRINT, widget);

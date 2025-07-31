@@ -47,7 +47,7 @@ public class LuaWidget
             Optional<?> component = widget.getComponent(componentEntry.clazz());
             if (component.isEmpty())
             {
-                LOGGER.warning("Failed to get component %s".formatted(typeKey));
+                LOGGER.warning("Failed to get component '%s' from widget '%s'".formatted(typeKey, widget.getPath()));
                 state.pushNil();
                 return 1;
             }

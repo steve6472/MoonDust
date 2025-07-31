@@ -1,0 +1,106 @@
+{
+    scripts: {
+        "width": "mock_chat:fit_width"
+    },
+
+    sprites: {
+        "main": "moondust:generic_dark_pixel/button/generic/square/disabled"
+    },
+
+    current_sprite: "main",
+    z_index: -1,
+
+    children: [
+        {
+            widget: "moondust:button",
+            name: "close_button",
+            bounds: [13, 13],
+
+            button: {
+                on_press: "moondust:button/exit_app"
+            },
+
+            position: {
+                type: "anchored",
+                anchor: "top_right",
+                offset: [-2, 2]
+            },
+
+            sprites: {
+                normal: "moondust:generic_dark_pixel/button/close_red/normal",
+                disabled: "moondust:generic_dark_pixel/button/close_red/disabled",
+                hover: "moondust:generic_dark_pixel/button/close_red/hover",
+                pressed: "moondust:generic_dark_pixel/button/close_red/pressed"
+            }
+        },
+        {
+            widget: "moondust:button",
+            name: "maximize_button",
+            bounds: [13, 13],
+
+            button: {
+                on_press: "moondust:button/maximize_window"
+            },
+
+            position: {
+                type: "anchored",
+                anchor: "top_right",
+                offset: [-16, 2]
+            },
+
+            sprites: {
+                normal: "moondust:generic_dark_pixel/button/maximize/normal",
+                disabled: "moondust:generic_dark_pixel/button/maximize/disabled",
+                hover: "moondust:generic_dark_pixel/button/maximize/hover",
+                pressed: "moondust:generic_dark_pixel/button/maximize/pressed"
+            }
+        },
+        {
+            widget: "moondust:button",
+            name: "minimize_button",
+            bounds: [13, 13],
+
+            button: {
+                on_press: "moondust:button/minimize_window"
+            },
+
+            position: {
+                type: "anchored",
+                anchor: "top_right",
+                offset: [-30, 2]
+            },
+
+            sprites: {
+                normal: "moondust:generic_dark_pixel/button/minimize/normal",
+                disabled: "moondust:generic_dark_pixel/button/minimize/disabled",
+                hover: "moondust:generic_dark_pixel/button/minimize/hover",
+                pressed: "moondust:generic_dark_pixel/button/minimize/pressed"
+            }
+        },
+        {
+            widget: "moondust:button",
+            name: "navigate_back",
+            bounds: [32, 13],
+            button: {
+                on_press: {
+                    script: "moondust_test:navigate/back"
+                },
+                label: "<--"
+            },
+
+            sprites: {
+                normal: "moondust:generic_dark_pixel/button/generic/square/normal",
+                disabled: "moondust:generic_dark_pixel/button/generic/square/disabled",
+                hover: "moondust:generic_dark_pixel/button/generic/square/hover",
+                pressed: "moondust:generic_dark_pixel/button/generic/square/pressed"
+            },
+            focused_sprite: "moondust:generic_dark_pixel/generic/focus/square",
+
+            position: {
+                type: "anchored",
+                anchor: "top_left",
+                offset: [2, 2]
+            }
+        }
+    ]
+}

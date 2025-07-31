@@ -1,0 +1,9 @@
+{
+    name: "Chat Mock Panel",
+    description: [
+        "Test for View"
+    ],
+    authors: "steve6472",
+    version: 1,
+    depend: ["moondust", "moondust_test"]
+}

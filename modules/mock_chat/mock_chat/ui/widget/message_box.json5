@@ -1,0 +1,42 @@
+{
+    scripts: {
+        width: {
+            script: "mock_chat:fit_width",
+            input: 70
+        },
+        height: {
+            script: "mock_chat:fit_height",
+            input: 17
+        }
+    },
+
+    bounds: [10, 10],
+
+    sprites: {
+        "main": "moondust:generic_dark_pixel/button/generic/square/disabled"
+    },
+
+    current_sprite: "main",
+    z_index: -1,
+
+    children: [
+        {
+            widget: "mock_chat:tab_view",
+            name: "tabs",
+            position: {
+                type: "anchored",
+                anchor: "bottom_left"
+            },
+            bounds: [100, 100]
+        }
+//        {
+//            widget: "moondust:text_field",
+//            name: "text_input",
+//            bounds: [8, 13],
+//            position: {
+//                type: "anchored",
+//                anchor: "bottom_left"
+//            }
+//        }
+    ]
+}

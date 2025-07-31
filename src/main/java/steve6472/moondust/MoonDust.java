@@ -6,12 +6,14 @@ import org.joml.Vector2i;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.core.util.JarExport;
+import steve6472.flare.Window;
 import steve6472.moondust.core.MoonDustKeybinds;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.ClickboxOffset;
 import steve6472.moondust.widget.component.ClickboxSize;
 import steve6472.moondust.widget.component.event.*;
+import steve6472.moondust.widget.component.event.global.OnGlobalPixelScaleChange;
 import steve6472.radiant.LuaTableOps;
 import steve6472.radiant.LuauTable;
 
@@ -71,6 +73,7 @@ public class MoonDust
      *
      * Bugs:
      *  [ ] Tab navigation after changing panels does not work
+     *  [ ] Font Rendering is relying on a hack
      */
     private static final Logger LOGGER = Log.getLogger(MoonDust.class);
     private static final MoonDust INSTANCE = new MoonDust();
@@ -79,6 +82,7 @@ public class MoonDust
     public static final Key ERROR_FOCUSED = Key.withNamespace("moondust", "widget/error/focused");
 
     private final List<Panel> panels = new ArrayList<>(2);
+    private Window window;
     private float pixelScale = 4;
     private Panel focusedPanel;
 
@@ -93,6 +97,16 @@ public class MoonDust
         Object value = dyn.convert(LuaTableOps.INSTANCE).getValue();
         return DataResult.success(value);
     }, object -> DataResult.error(() -> "Do not know how to serialize " + object));
+
+    public void setWindow(Window window)
+    {
+        this.window = window;
+    }
+
+    public Window window()
+    {
+        return window;
+    }
 
     public void addPanel(Panel panel)
     {
@@ -113,6 +127,15 @@ public class MoonDust
     public void setPixelScale(float pixelScale)
     {
         this.pixelScale = pixelScale;
+
+        iterate((depth, widget) ->
+        {
+            if (depth == 0 && widget instanceof Panel panel)
+            {
+                panel.setBounds((int) (window.getWidth() / pixelScale), (int) (window.getHeight() / pixelScale));
+            }
+        });
+        runGlobalEvent(new OnGlobalPixelScaleChange((int) pixelScale));
     }
 
     public float getPixelScale()

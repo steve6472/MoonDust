@@ -9,6 +9,6 @@ import java.util.List;
  * Date: 1/7/2025
  * Project: MoonDust <br>
  */
-public record OnDataChange(List<Key> floats, List<Key> ints, List<Key> strings, List<Key> flags) implements UIEvent
+public record OnDataChange(List<Key> doubles, List<Key> ints, List<Key> strings, List<Key> flags) implements UIEvent
 {
 }

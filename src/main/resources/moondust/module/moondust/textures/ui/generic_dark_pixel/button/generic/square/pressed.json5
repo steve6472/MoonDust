@@ -1,0 +1,11 @@
+{
+	ui: {
+        type: "nine_slice",
+        border: {
+			left: 3,
+			right: 4,
+			top: 4,
+			bottom: 3
+		}
+    }
+}

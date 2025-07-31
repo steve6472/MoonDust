@@ -1,6 +1,7 @@
 package steve6472.moondust.builtin;
 
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.flare.FlareConstants;
@@ -34,6 +35,23 @@ public class JavaFunctions
         {
             LOGGER.info("Closing app with input: " + input);
             app.window().closeWindow();
+        });
+
+        register("button/minimize", input ->
+        {
+            GLFW.glfwIconifyWindow(app.window().window());
+        });
+
+        register("button/maximize", input ->
+        {
+            int maximized = GLFW.glfwGetWindowAttrib(app.window().window(), GLFW.GLFW_MAXIMIZED);
+            if (maximized == GLFW.GLFW_TRUE)
+            {
+                GLFW.glfwRestoreWindow(app.window().window());
+            } else
+            {
+                GLFW.glfwMaximizeWindow(app.window().window());
+            }
         });
 
         register("button/random_toggle_enabled", input ->
