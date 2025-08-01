@@ -340,20 +340,75 @@ public class Widget implements WidgetComponentGetter
         return store;
     }
 
-    public Optional<? extends IBounds> getClickboxSize()
+    public Optional<Size> getBounds()
     {
-        Optional<ClickboxSize> clickboxSize = getComponent(ClickboxSize.class);
-        if (clickboxSize.isPresent())
-            return clickboxSize;
-        return getComponent(Bounds.class);
+        Optional<Bounds> boundsComponent = getComponent(Bounds.class);
+        if (boundsComponent.isEmpty())
+            return Optional.empty();
+        Bounds bounds = boundsComponent.get();
+        Size vec = new Size(0, 0);
+        parent().ifPresentOrElse(parent -> {
+            Optional<Size> parentBounds = parent.getBounds();
+            parentBounds.ifPresentOrElse(parentBoundsVec -> {
+                vec.set(bounds.width().calc(parentBoundsVec.width()), bounds.height().calc(parentBoundsVec.height()));
+            }, () -> {
+                vec.set(bounds.width().calc(0), bounds.height().calc(0));
+            });
+        }, () -> {
+            vec.set(bounds.width().calc(0), bounds.height().calc(0));
+        });
+
+        return Optional.of(vec);
     }
 
-    public Optional<? extends IBounds> getSpriteSize()
+    public Optional<Size> getClickboxSize()
     {
-        Optional<SpriteSize> spriteSize = getComponent(SpriteSize.class);
-        if (spriteSize.isPresent())
-            return spriteSize;
-        return getComponent(Bounds.class);
+        Size vec = new Size(0, 0);
+        Optional<ClickboxSize> clickboxSizeComponent = getComponent(ClickboxSize.class);
+
+        clickboxSizeComponent.ifPresentOrElse(clickboxSize -> {
+            parent().ifPresentOrElse(parent -> {
+                Optional<Size> parentBounds = parent.getBounds();
+                parentBounds.ifPresentOrElse(parentBoundsVec -> {
+                    vec.set(clickboxSize.width().calc(parentBoundsVec.width()), clickboxSize.height().calc(parentBoundsVec.height()));
+                }, () -> {
+                    vec.set(clickboxSize.width().calc(0), clickboxSize.height().calc(0));
+                });
+            }, () -> {
+                vec.set(clickboxSize.width().calc(0), clickboxSize.height().calc(0));
+            });
+        }, () -> {
+            getBounds().ifPresent(boundsSize -> {
+                vec.set(boundsSize.width(), boundsSize.height());
+            });
+        });
+
+        return Optional.of(vec);
+    }
+
+    public Optional<Size> getSpriteSize()
+    {
+        Size vec = new Size(0, 0);
+        Optional<SpriteSize> spriteSizeComponent = getComponent(SpriteSize.class);
+
+        spriteSizeComponent.ifPresentOrElse(spriteSize -> {
+            parent().ifPresentOrElse(parent -> {
+                Optional<Size> parentBounds = parent.getBounds();
+                parentBounds.ifPresentOrElse(parentBoundsVec -> {
+                    vec.set(spriteSize.width().calc(parentBoundsVec.width()), spriteSize.height().calc(parentBoundsVec.height()));
+                }, () -> {
+                    vec.set(spriteSize.width().calc(0), spriteSize.height().calc(0));
+                });
+            }, () -> {
+                vec.set(spriteSize.width().calc(0), spriteSize.height().calc(0));
+            });
+        }, () -> {
+            getBounds().ifPresent(boundsSize -> {
+                vec.set(boundsSize.width(), boundsSize.height());
+            });
+        });
+
+        return Optional.of(vec);
     }
 
     public InternalStates internalStates()
@@ -413,6 +468,11 @@ public class Widget implements WidgetComponentGetter
     }
 
     public void setBounds(int width, int height)
+    {
+        setBounds(new IBounds.Con(width), new IBounds.Con(height));
+    }
+
+    public void setBounds(IBounds.Val width, IBounds.Val height)
     {
         getComponent(Bounds.class).ifPresentOrElse(b -> {
             b.width = width;

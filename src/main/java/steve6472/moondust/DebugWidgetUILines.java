@@ -56,10 +56,10 @@ public class DebugWidgetUILines extends UILineRenderImpl
 
             if (bounds)
             {
-                widget.getComponent(Bounds.class).ifPresent(bounds ->
+                widget.getBounds().ifPresent(bounds ->
                 {
                     Vector2i position = widget.getPosition();
-                    rectangleScaled(position.x, position.y, bounds.width, bounds.height, BOUNDS);
+                    rectangleScaled(position.x, position.y, bounds.width(), bounds.height(), BOUNDS);
                 });
             }
         });

@@ -1,5 +1,6 @@
 package steve6472.moondust.luau.global;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import net.hollowcube.luau.LuaType;
@@ -13,6 +14,7 @@ import steve6472.moondust.core.JavaFunc;
 import steve6472.moondust.widget.MoonDustComponents;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.CustomData;
+import steve6472.moondust.widget.component.IBounds;
 import steve6472.moondust.widget.component.InternalStates;
 import steve6472.radiant.*;
 import steve6472.radiant.func.OverloadFuncArgs;
@@ -181,42 +183,6 @@ public class LuaWidget
         });
 
         // Setters
-        /*META.addFunction("setCustomData", state -> {
-            LOGGER.warning("setCustomData has to be reworked");
-            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
-            LuauTable table = new LuauTable();
-            table.readTable(state, 2);
-
-            Codec<?> codec = MoonDustComponents.byType(CustomData.class).codec();
-            var decode = codec.decode(LuaTableOps.INSTANCE, table);
-            CustomData newData = (CustomData) decode.getOrThrow().getFirst();
-            CustomData data = widget.customData();
-            data.doubles.forEach((k, v) -> {
-                if (!newData.doubles.containsKey(k))
-                    data.removeDouble(k);
-                else
-                    data.putDouble(k, newData.doubles.getDouble(k));
-            });
-            data.ints.forEach((k, v) -> {
-                if (!newData.ints.containsKey(k))
-                    data.removeInt(k);
-                else
-                    data.putInt(k, newData.ints.getInt(k));
-            });
-            data.strings.forEach((k, v) -> {
-                if (!newData.strings.containsKey(k))
-                    data.removeString(k);
-                else
-                    data.putString(k, newData.strings.get(k));
-            });
-            data.flags.forEach((k, v) -> {
-                if (!newData.flags.containsKey(k))
-                    data.removeFlag(k);
-                else
-                    data.putFlag(k, newData.flags.getBoolean(k));
-            });
-            return 1;
-        });*/
         META.addFunction("setVisible", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
             widget.setVisible(state.checkBooleanArg(2));
@@ -239,7 +205,11 @@ public class LuaWidget
         });
         META.addFunction("setBounds", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
-            widget.setBounds(state.checkIntegerArg(2), state.checkIntegerArg(3));
+            Object javaWidth = LuauUtil.toJava(state, 2);
+            Object javaHeight = LuauUtil.toJava(state, 3);
+            DataResult<Pair<IBounds.Val, Object>> width = IBounds.VAL_CODEC.decode(LuaTableOps.INSTANCE, javaWidth);
+            DataResult<Pair<IBounds.Val, Object>> height = IBounds.VAL_CODEC.decode(LuaTableOps.INSTANCE, javaHeight);
+            widget.setBounds(width.getOrThrow().getFirst(), height.getOrThrow().getFirst());
             return 0;
         });
 

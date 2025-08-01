@@ -71,6 +71,8 @@ public class MoonDust
      *
      * [ ] Bridge parameters - changing value in lua should reflect value change in java and vice versa
      *
+     * [ ] Consider similar system to Bounds % size but with position?
+     *
      * Bugs:
      *  [ ] Tab navigation after changing panels does not work
      *  [ ] Font Rendering is relying on a hack
@@ -192,11 +194,11 @@ public class MoonDust
             if (!widget.isVisible() || !widget.isClickable())
                 return;
 
-            widget.getComponent(ClickboxSize.class).ifPresent(clickboxSize ->
+            widget.getClickboxSize().ifPresent(clickboxSize ->
             {
                 Vector2i clickboxPosition = widget.getPosition();
                 widget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
-                boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width, clickboxPosition.y + clickboxSize.height, mx, my);
+                boolean hovered = isInRectangle(clickboxPosition.x, clickboxPosition.y, clickboxPosition.x + clickboxSize.width(), clickboxPosition.y + clickboxSize.height(), mx, my);
 
                 if (hovered)
                     ret[0] = widget;

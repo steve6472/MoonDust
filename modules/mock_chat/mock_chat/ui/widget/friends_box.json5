@@ -1,15 +1,4 @@
 {
-    scripts: {
-        width: {
-            script: "mock_chat:fit_width",
-            input: 30
-        },
-        height: {
-            script: "mock_chat:fit_height",
-            input: 17
-        }
-    },
-
     sprites: {
         "main": "moondust:generic_dark_pixel/button/generic/square/disabled"
     },

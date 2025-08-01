@@ -7,7 +7,7 @@
                 type: "anchored",
                 anchor: "top_left"
             },
-            bounds: [0, 17]
+            bounds: ["100%", 17]
         },
         {
             widget: "mock_chat:message_box",
@@ -16,7 +16,7 @@
                 type: "anchored",
                 anchor: "bottom_left"
             },
-            bounds: [30, 30]
+            bounds: ["70%", "100% - 17"]
         },
         {
             widget: "mock_chat:friends_box",
@@ -25,7 +25,7 @@
                 type: "anchored",
                 anchor: "bottom_right"
             },
-            bounds: [30, 30]
+            bounds: ["30%", "100% - 17"]
         }
     ]
 }

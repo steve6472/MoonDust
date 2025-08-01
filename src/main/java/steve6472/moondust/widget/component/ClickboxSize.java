@@ -11,13 +11,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 public class ClickboxSize implements IBounds
 {
     public static final Codec<ClickboxSize> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.INT.fieldOf("width").forGetter(o -> o.width),
-        Codec.INT.fieldOf("height").forGetter(o -> o.height)
+        VAL_CODEC.fieldOf("width").forGetter(o -> o.width),
+        VAL_CODEC.fieldOf("height").forGetter(o -> o.height)
     ).apply(instance, ClickboxSize::new));
 
-    public int width, height;
+    public Val width, height;
 
-    public ClickboxSize(int width, int height)
+    public ClickboxSize(Val width, Val height)
     {
         this.width = width;
         this.height = height;
@@ -30,13 +30,13 @@ public class ClickboxSize implements IBounds
     }
 
     @Override
-    public int width()
+    public Val width()
     {
         return width;
     }
 
     @Override
-    public int height()
+    public Val height()
     {
         return height;
     }

@@ -1,13 +1,13 @@
 {
     scripts: {
-        width: {
-            script: "mock_chat:fit_width",
-            input: 70
-        },
-        height: {
-            script: "mock_chat:fit_height",
-            input: 17
-        }
+//        width: {
+//            script: "mock_chat:fit_width",
+//            input: 70
+//        },
+//        height: {
+//            script: "mock_chat:fit_height",
+//            input: 17
+//        }
     },
 
     bounds: [10, 10],
@@ -25,18 +25,20 @@
             name: "tabs",
             position: {
                 type: "anchored",
-                anchor: "bottom_left"
+                anchor: "top_left",
+                offset: [20, 20]
             },
-            bounds: [100, 100]
+            bounds: [30, 30]
+        },
+        {
+            widget: "moondust:text_field",
+            name: "text_input",
+            bounds: ["100% - 4", 13],
+            position: {
+                type: "anchored",
+                anchor: "bottom_left",
+                offset: [2, -2]
+            }
         }
-//        {
-//            widget: "moondust:text_field",
-//            name: "text_input",
-//            bounds: [8, 13],
-//            position: {
-//                type: "anchored",
-//                anchor: "bottom_left"
-//            }
-//        }
     ]
 }
