@@ -1,6 +1,7 @@
 package steve6472.moondust;
 
 import steve6472.flare.core.Flare;
+import steve6472.flare.util.PackerUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,8 @@ public class MoonDustTestMain
 {
     public static void main(String[] args) throws IOException, URISyntaxException
     {
+        PackerUtil.PADDING = 0;
+        PackerUtil.DUPLICATE_BORDER = false;
         System.setProperty("joml.format", "false");
         deleteDevModule("moondust");
         MoonDust.getInstance().init();

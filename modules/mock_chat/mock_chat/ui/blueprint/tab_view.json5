@@ -1,0 +1,18 @@
+{
+    script: "mock_chat:blueprint/tab_view",
+    fields: {
+        labels: {
+            type: "string_array",
+            required: true
+        },
+        views: {
+            type: "string_array",
+            required: true
+        },
+        default: {
+            type: "int",
+            min: 0,
+            default: 0
+        }
+    }
+}

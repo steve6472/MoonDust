@@ -12,11 +12,12 @@ import steve6472.moondust.widget.blueprint.position.RelativePosBlueprint;
  * Date: 12/1/2024
  * Project: MoonDust <br>
  */
-public record RelativePos(Vector2i offset, String parent) implements Position
+public record RelativePos(Vector2i offset, String parent, boolean isRight) implements Position
 {
     public static final Codec<RelativePos> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ExtraCodecs.VEC_2I.optionalFieldOf("offset", new Vector2i()).forGetter(RelativePos::offset),
-        Codec.STRING.fieldOf("parent").forGetter(RelativePos::parent)
+        Codec.STRING.fieldOf("parent").forGetter(RelativePos::parent),
+        Codec.BOOL.optionalFieldOf("is_right", false).forGetter(RelativePos::isRight)
     ).apply(instance, RelativePos::new));
 
     @Override
@@ -26,6 +27,8 @@ public record RelativePos(Vector2i offset, String parent) implements Position
             parentWidget.getChild(parent).ifPresent(child -> {
                 Vector2i position = child.getPosition();
                 store.set(position).add(offset);
+                if (isRight)
+                    child.getBounds().ifPresent(s -> store.add(s.width(), 0));
             });
         });
     }

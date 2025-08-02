@@ -1,6 +1,6 @@
 {
     sprites: {
-        "main": "moondust:generic_dark_pixel/button/generic/square/disabled"
+        "main": "moondust:generic_dark_pixel/frame/flat/background_frame"
     },
 
     current_sprite: "main",

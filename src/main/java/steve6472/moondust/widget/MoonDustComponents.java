@@ -37,6 +37,8 @@ public final class MoonDustComponents
         register("text", MDText.CODEC, MDText.class);
         register("scripts", Scripts.CODEC, Scripts.class);
         register("sprite_size", SpriteSize.CODEC, SpriteSize.class);
+        register("children", Children.CODEC, Children.class);
+        register("z_index", ZIndex.CODEC, ZIndex.class);
         // no worky 'cause typed... uhhh annoying
 //        register("position", Position.CODEC, Position.class);
     }

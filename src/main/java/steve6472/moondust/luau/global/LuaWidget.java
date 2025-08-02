@@ -11,8 +11,10 @@ import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.core.InputWithWidget;
 import steve6472.moondust.core.JavaFunc;
+import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.widget.MoonDustComponents;
 import steve6472.moondust.widget.Widget;
+import steve6472.moondust.widget.component.Children;
 import steve6472.moondust.widget.component.CustomData;
 import steve6472.moondust.widget.component.IBounds;
 import steve6472.moondust.widget.component.InternalStates;
@@ -107,6 +109,25 @@ public class LuaWidget
                 state.pushNil();
             }
             return 1;
+        });
+        META.addFunction("addChildren", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+
+            Object table = LuauUtil.toJava(state, 2);
+            var width = Children.CODEC.decode(LuaTableOps.INSTANCE, table);
+            Children first = width.getOrThrow().getFirst();
+
+            for (BlueprintFactory child : first.children())
+            {
+                Widget childWidget = Widget.withParent(child, widget);
+                widget.addChild(childWidget);
+            }
+            return 0;
+        });
+        META.addFunction("removeChild", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            widget.removeChild(state.checkStringArg(2));
+            return 0;
         });
         META.addFunction("getChildrenNames", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");

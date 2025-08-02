@@ -3,8 +3,8 @@
         {
             widget: "moondust:empty",
             name: "outer_frame",
-            position: [0, 0],
-            bounds: ["100%", "100%"],
+            position: [0, 11],
+            bounds: ["100%", "100% - 11"],
 
             sprites: {
                 "main": "moondust:generic_dark_pixel/button/generic/round/normal"
@@ -15,8 +15,8 @@
         {
             widget: "moondust:empty",
             name: "inner_frame",
-            position: [4, 4],
-            bounds: ["100% - 8", "100% - 8"],
+            position: [4, 15],
+            bounds: ["100% - 8", "100% - 19"],
 
             sprites: {
                 "main": "moondust:generic_dark_pixel/button/generic/round/pressed"
@@ -27,14 +27,22 @@
         {
             widget: "moondust:empty",
             name: "inner_frame_overlay",
-            position: [4, 4],
-            bounds: ["100% - 8", "100% - 8"],
+            position: [4, 15],
+            bounds: ["100% - 8", "100% - 19"],
 
             sprites: {
                 "main": "moondust:frame_in"
             },
             current_sprite: "main",
             z_index: -0.01
+        },
+        {
+            widget: "moondust:empty",
+            name: "content",
+            position: [7, 19],
+            bounds: ["100% - 15", "100% - 26"],
+
+            z_index: 0
         }
     ]
 }

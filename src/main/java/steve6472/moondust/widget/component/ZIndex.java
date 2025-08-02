@@ -1,5 +1,7 @@
 package steve6472.moondust.widget.component;
 
+import com.mojang.serialization.Codec;
+
 /**
  * Created by steve6472
  * Date: 12/19/2024
@@ -8,6 +10,8 @@ package steve6472.moondust.widget.component;
 public class ZIndex
 {
     public float zIndex;
+
+    public static final Codec<ZIndex> CODEC = Codec.DOUBLE.xmap(d -> new ZIndex(d.floatValue()), z -> (double) z.zIndex);
 
     public ZIndex(float zIndex)
     {

@@ -108,7 +108,7 @@ public interface IBounds
         @Override
         public int calc(int parentSize)
         {
-            return (int) (parentSize * (percentage / 100d));
+            return (int) Math.round(parentSize * (percentage / 100d));
         }
 
         @Override
@@ -182,7 +182,7 @@ public interface IBounds
         @Override
         public int calc(int parentSize)
         {
-            return (int) (parentSize * (percentage / 100d)) + (sign == Sign.ADD ? num : -num);
+            return (int) Math.round(parentSize * (percentage / 100d)) + (sign == Sign.ADD ? num : -num);
         }
 
         @Override

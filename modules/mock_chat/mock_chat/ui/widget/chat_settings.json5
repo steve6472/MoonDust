@@ -1,0 +1,7 @@
+{
+    sprites: {
+        "main": "moondust:generic_dark_pixel/frame/flat/dark_frame/light_inside/style_1"
+    },
+
+    current_sprite: "main"
+}
