@@ -41,7 +41,7 @@ public class WidgetBlueprints
     public static final BlueprintEntry<SpriteOffsetBlueprint> SPRITE_OFFSET = register(SpriteOffsetBlueprint.KEY, SpriteOffsetBlueprint.CODEC);
     public static final BlueprintEntry<FocusedSpriteBlueprint> FOCUSED_SPRITE = register(FocusedSpriteBlueprint.KEY, FocusedSpriteBlueprint.CODEC);
     public static final BlueprintEntry<TextBlueprint> TEXT_LINE = register(TextBlueprint.KEY, TextBlueprint.CODEC);
-    public static final BlueprintEntry<ZIndexBlueprint> Z_INDEX = register(ZIndexBlueprint.KEY, ZIndexBlueprint.CODEC);
+    public static final BlueprintEntry<RenderOrderBlueprint> RENDER_ORDER = register(RenderOrderBlueprint.KEY, RenderOrderBlueprint.CODEC);
     public static final BlueprintEntry<StylesBlueprint> STYLES = register(StylesBlueprint.KEY, StylesBlueprint.CODEC);
 
     // Clickbox

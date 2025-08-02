@@ -1,5 +1,6 @@
-package steve6472.moondust;
+package steve6472.moondust.render;
 
+import com.mojang.datafixers.util.Pair;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector2i;
@@ -14,11 +15,14 @@ import steve6472.flare.core.FlareApp;
 import steve6472.flare.input.UserInput;
 import steve6472.flare.render.impl.UIRenderImpl;
 import steve6472.flare.ui.textures.SpriteEntry;
+import steve6472.moondust.MoonDust;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
+import steve6472.moondust.widget.blueprint.RenderOrderBlueprint;
 import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.*;
 
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -34,6 +38,7 @@ public class MoonDustUIRender extends UIRenderImpl
     private final Window window;
     private final UserInput input;
 
+    private final List<SpritePrimitive> primitives = new ArrayList<>();
     Widget pressedWidget = null;
     boolean canInteract = true;
 
@@ -108,6 +113,10 @@ public class MoonDustUIRender extends UIRenderImpl
 
         if (leftPress)
             canInteract = false;
+
+        sortAndRenderPrimitives();
+
+        primitives.clear();
     }
 
     private static boolean isInRectangle(int rminx, int rminy, int rmaxx, int rmaxy, int px, int py)
@@ -175,27 +184,6 @@ public class MoonDustUIRender extends UIRenderImpl
         widget.handleEvents(OnRender.class);
         widget.handleEvents(OnRandomTick.class, event -> RandomUtil.decide(event.probability()));
 
-        if (widget.isFocusable() && widget.internalStates().focused)
-        {
-            widget.getSpriteSize().ifPresent(spriteSize ->
-            {
-                Vector2i position = widget.getPosition();
-                widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
-                widget.getComponent(FocusedSprite.class).ifPresentOrElse(focusedSprite ->
-                {
-                    float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(0f);
-                    SpriteEntry textureEntry = getTextureEntry(focusedSprite.sprite());
-                    if (textureEntry == null)
-                        sprite(position.x, position.y, index, spriteSize.width(), spriteSize.height(), MoonDust.ERROR_FOCUSED);
-                    else
-                        sprite(position.x, position.y, index, spriteSize.width(), spriteSize.height(), focusedSprite.sprite());
-                }, () -> {
-                    float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(0f);
-                    sprite(position.x, position.y, index, spriteSize.width(), spriteSize.height(), MoonDust.ERROR_FOCUSED);
-                });
-            });
-        }
-
         widget.getComponents(CurrentSprite.class, Sprites.class).ifPresent(result ->
         {
             Key sprite = getSprite(result.comp1(), result.comp2());
@@ -204,10 +192,94 @@ public class MoonDustUIRender extends UIRenderImpl
             {
                 Vector2i position = widget.getPosition();
                 widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
-                float index = widget.getComponent(ZIndex.class).map(comp -> comp.zIndex).orElse(-0.1f);
-                sprite(position.x, position.y, index, spriteSize.width(), spriteSize.height(), sprite);
+                sprite(position.x, position.y, spriteSize.width(), spriteSize.height(), sprite, widget);
             });
         });
+
+        if (widget.isFocusable() && widget.internalStates().focused)
+        {
+            widget.getSpriteSize().ifPresent(spriteSize ->
+            {
+                Vector2i position = widget.getPosition();
+                widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
+                widget.getComponent(FocusedSprite.class).ifPresentOrElse(focusedSprite ->
+                {
+                    SpriteEntry textureEntry = getTextureEntry(focusedSprite.sprite());
+                    if (textureEntry == null)
+                        sprite(position.x, position.y, spriteSize.width(), spriteSize.height(), MoonDust.ERROR_FOCUSED, widget);
+                    else
+                        sprite(position.x, position.y, spriteSize.width(), spriteSize.height(), focusedSprite.sprite(), widget);
+                }, () -> {
+                    sprite(position.x, position.y, spriteSize.width(), spriteSize.height(), MoonDust.ERROR_FOCUSED, widget);
+                });
+            });
+        }
+    }
+
+    protected final void sortAndRenderPrimitives()
+    {
+        float pixelScale = MoonDust.getInstance().getPixelScale();
+        float zIndex = 0;
+        final float delta = 1f / 2560f;
+
+        Map<Widget, Pair<RenderOrder, SpritePrimitive>> orders = new HashMap<>();
+
+        for (SpritePrimitive primitive : primitives)
+        {
+            primitive.widget().getComponent(RenderOrder.class).ifPresent(ro -> {
+                orders.put(primitive.widget(), Pair.of(ro, primitive));
+            });
+        }
+
+        orders.forEach((widget, order) ->
+        {
+            // Remove the widget
+            primitives.removeIf(primitive -> primitive.widget() == widget);
+
+            // Find the widget to be ordered by
+            List<SpritePrimitive> orderByList = primitives.stream()
+                // Verify they are both in the same widget
+                .filter(primitive ->
+                {
+                    Optional<Widget> primitiveParent = primitive.widget().parent();
+                    Optional<Widget> orderParent = widget.parent();
+                    if (primitiveParent.isEmpty() && orderParent.isEmpty())
+                        return true;
+                    if (primitiveParent.isEmpty() ^ orderParent.isEmpty())
+                        return false;
+
+                    return primitiveParent.get() == orderParent.get();
+                })
+                // Filter widget by name
+                .filter(primitive -> primitive.widget().getName().equals(order.getFirst().widget()))
+                .toList();
+
+            if (orderByList.size() != 1)
+                throw new RuntimeException("orderByList size is not 1, it is " + orderByList.size());
+
+            SpritePrimitive orderByPrimitive = orderByList.getFirst();
+            int primitiveIndex = primitives.indexOf(orderByPrimitive);
+            primitives.add(primitiveIndex + (order.getFirst().order() == RenderOrderBlueprint.Order.BELOW ? 0 : 1), order.getSecond());
+        });
+
+        // Reverse the order because sprite z index is weird lul
+        Collections.reverse(primitives);
+
+        for (SpritePrimitive primitive : primitives)
+        {
+            createSprite(
+                (int) (primitive.x() * pixelScale),
+                (int) (primitive.y() * pixelScale),
+                zIndex,
+                (int) (primitive.w() * pixelScale),
+                (int) (primitive.h() * pixelScale),
+                primitive.w(),
+                primitive.h(),
+                NO_TINT,
+                getTextureEntry(primitive.texture()));
+
+            zIndex -= delta;
+        }
     }
 
     protected Key getSprite(CurrentSprite currentSprite, Sprites sprites)
@@ -223,12 +295,13 @@ public class MoonDustUIRender extends UIRenderImpl
     }
 
     protected final void sprite(
-        int x, int y, float zIndex,
+        int x, int y,
         int width, int height,
-        Key textureKey)
+        Key textureKey, Widget widget)
     {
         float pixelScale = MoonDust.getInstance().getPixelScale();
-        createSprite((int) (x * pixelScale), (int) (y * pixelScale), zIndex, (int) (width * pixelScale), (int) (height * pixelScale), width, height, NO_TINT, getTextureEntry(textureKey));
+//        createSprite((int) (x * pixelScale), (int) (y * pixelScale), zIndex, (int) (width * pixelScale), (int) (height * pixelScale), width, height, NO_TINT, getTextureEntry(textureKey));
+        primitives.add(new SpritePrimitive(x, y, width, height, textureKey, widget));
     }
 
     protected final void sprite(
@@ -237,7 +310,7 @@ public class MoonDustUIRender extends UIRenderImpl
         Vector3f tint, Key textureKey)
     {
         float pixelScale = MoonDust.getInstance().getPixelScale();
-        createSprite((int) (x * pixelScale), (int) (y * pixelScale), zIndex, (int) (width * pixelScale), (int) (height * pixelScale), width, height, tint, getTextureEntry(textureKey));
+//        createSprite((int) (x * pixelScale), (int) (y * pixelScale), zIndex, (int) (width * pixelScale), (int) (height * pixelScale), width, height, tint, getTextureEntry(textureKey));
     }
 
     // TODO: this (rotation) won't work with parented widgets

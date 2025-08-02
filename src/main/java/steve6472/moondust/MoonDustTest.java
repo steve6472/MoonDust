@@ -12,6 +12,8 @@ import steve6472.flare.render.UILineRender;
 import steve6472.flare.render.UIRenderSystem;
 import steve6472.moondust.builtin.BuiltinEventCalls;
 import steve6472.moondust.builtin.JavaFunctions;
+import steve6472.moondust.render.MoonDustUIFontRender;
+import steve6472.moondust.render.MoonDustUIRender;
 import steve6472.moondust.widget.Panel;
 import steve6472.test.DebugUILines;
 

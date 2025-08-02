@@ -20,11 +20,17 @@ local function pickSprite(enabled, checked)
     end
 end
 
-local function pickZIndex(checked)
+local function pickRenderOrder(checked)
     if checked then
-        return 0
+        return {
+            widget = "outer_frame",
+            order = "above"
+        }
     else
-        return -0.04
+        return {
+            widget = "outer_frame",
+            order = "below"
+        }
     end
 end
 
@@ -80,7 +86,7 @@ local function init(widget)
 
     --print("Picking style '"..pickSprite(widget:isEnabled(), group.selected).."' Because widget enabled: "..tostring(widget:isEnabled()).." and group selected: "..tostring(group.selected))
     widget:addComponent(currentSprite, pickSprite(widget:isEnabled(), group.selected))
-    widget:addComponent("z_index", pickZIndex(group.selected))
+    widget:addComponent("render_order", pickRenderOrder(group.selected))
 
     -- do what button_change_content does
     if group.selected then
@@ -89,12 +95,11 @@ local function init(widget)
             widget = group.label,
             name = "view_content",
             position = {0, 0},
-            bounds = {"100%", "100%"},
-            z_index = 0
+            bounds = {"100%", "100%"}
         }
         local content = widget:getParent():getChild("content")
 
-        for k, v in ipairs(content:getChildrenNames()) do
+        for _, v in ipairs(content:getChildrenNames()) do
             content:removeChild(v)
         end
 
@@ -118,14 +123,14 @@ local function dataChanged(widget, changed)
         -- Simply change sprite of the widget, its selected value was already updated (the widget that triggered the change)
         if child:getName() == widget:getName() then
             widget:addComponent(currentSprite, pickSprite(widget:isEnabled(), group.selected))
-            widget:addComponent("z_index", pickZIndex(group.selected))
+            widget:addComponent("render_order", pickRenderOrder(group.selected))
         -- Update sprite & selected value (all other widgets in the group)
         else
             local childGroup = child:getTable(compKey)
             childGroup.selected = false
             child:setTable(compKey, childGroup)
             child:addComponent(currentSprite, pickSprite(child:isEnabled(), childGroup.selected))
-            child:addComponent("z_index", pickZIndex(childGroup.selected))
+            child:addComponent("render_order", pickRenderOrder(childGroup.selected))
         end
     end
 end

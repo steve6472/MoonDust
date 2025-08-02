@@ -1,15 +1,16 @@
-package steve6472.moondust;
+package steve6472.moondust.render;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2i;
 import steve6472.flare.render.impl.UIFontRenderImpl;
 import steve6472.flare.ui.font.render.*;
+import steve6472.moondust.MoonDust;
+import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.Bounds;
 import steve6472.moondust.widget.component.IBounds;
 import steve6472.moondust.widget.component.MDText;
-import steve6472.moondust.widget.component.event.OnInit;
 
 import java.util.Map;
 

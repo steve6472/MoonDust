@@ -42,6 +42,10 @@ local function createButton(lastButton, label, view, selected)
                 input = view
             }
         },
+        render_order = {
+            widget = "outer_frame",
+            order = "below"
+        },
         radio_group = {
             group = RADIO_BUTTON_GROUP,
             selected = selected,

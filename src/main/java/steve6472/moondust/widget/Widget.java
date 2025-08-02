@@ -505,6 +505,9 @@ public class Widget implements WidgetComponentGetter
 
     public String getPath()
     {
+        if (parent == null && this instanceof Panel)
+            return key.toString();
+
         if (parent == null)
             return "-root-";
 

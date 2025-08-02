@@ -73,6 +73,8 @@ public class MoonDust
      *
      * [ ] Consider similar system to Bounds % size but with position?
      *
+     * [ ] Font render order (take inspiration from MoonDustUIRender sortAndRenderPrimitives)
+     *
      * Bugs:
      *  [ ] Tab navigation after changing panels does not work
      *  [ ] Font Rendering is relying on a hack

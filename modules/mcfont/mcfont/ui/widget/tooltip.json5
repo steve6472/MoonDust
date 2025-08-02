@@ -7,17 +7,17 @@
     children: [
         {
             widget: "moondust:empty",
-            name: "tooltip/frame",
+            name: "tooltip/background",
             position: [0, 0],
-            sprites: {normal: "mcfont:tooltip/frame"},
-            // TODO: current_sprite should through all parents until it finds a sprite (or fails)
+            sprites: {normal: "mcfont:tooltip/background"},
             current_sprite: "normal"
         },
         {
             widget: "moondust:empty",
-            name: "tooltip/background",
+            name: "tooltip/frame",
             position: [0, 0],
-            sprites: {normal: "mcfont:tooltip/background"},
+            sprites: {normal: "mcfont:tooltip/frame"},
+            // TODO: current_sprite should through all parents until it finds a sprite (or fails)
             current_sprite: "normal"
         },
         {

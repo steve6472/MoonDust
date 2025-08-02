@@ -16,7 +16,6 @@
             sprites: { "left": "moondust:sprites/mouse/left" },
             bounds: [13, 19],
             position: [0, 0],
-            z_index: -0.05,
             current_sprite: "left",
             states: {
                 visible: false
@@ -28,7 +27,6 @@
             sprites: { "right": "moondust:sprites/mouse/right" },
             bounds: [13, 19],
             position: [0, 0],
-            z_index: -0.05,
             current_sprite: "right",
             states: {
                 visible: false
@@ -46,7 +44,6 @@
             },
             bounds: [13, 19],
             position: [0, 0],
-            z_index: -0.05,
             current_sprite: "middle",
             states: {
                 visible: false
@@ -58,7 +55,6 @@
             sprites: { "scroll_up": "moondust:sprites/mouse/scroll_up" },
             bounds: [13, 19],
             position: [0, 0],
-            z_index: -0.05,
             current_sprite: "scroll_up",
             states: {
                 visible: false
@@ -70,7 +66,6 @@
             sprites: { "scroll_down": "moondust:sprites/mouse/scroll_down" },
             bounds: [13, 19],
             position: [0, 0],
-            z_index: -0.05,
             current_sprite: "scroll_down",
             states: {
                 visible: false

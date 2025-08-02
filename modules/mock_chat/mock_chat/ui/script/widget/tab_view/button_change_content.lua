@@ -14,8 +14,7 @@ local function action(widget)
         widget = inputArgs,
         name = "view_content",
         position = {0, 0},
-        bounds = {"100%", "100%"},
-        z_index = 0
+        bounds = {"100%", "100%"}
     }
 
     local content = widget:getParent():getChild("content")

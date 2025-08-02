@@ -3,8 +3,7 @@
         "main": "moondust:generic_dark_pixel/frame/flat/background_frame"
     },
 
-    current_sprite: "main",
-    z_index: -1
+    current_sprite: "main"
 
 //    children: [
 //        {

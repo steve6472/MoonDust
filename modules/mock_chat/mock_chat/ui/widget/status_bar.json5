@@ -4,7 +4,6 @@
     },
 
     current_sprite: "main",
-    z_index: -1,
 
     children: [
         {

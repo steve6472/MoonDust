@@ -9,8 +9,7 @@
             sprites: {
                 "main": "moondust:generic_dark_pixel/button/generic/round/normal"
             },
-            current_sprite: "main",
-            z_index: -0.03
+            current_sprite: "main"
         },
         {
             widget: "moondust:empty",
@@ -21,8 +20,7 @@
             sprites: {
                 "main": "moondust:generic_dark_pixel/button/generic/round/pressed"
             },
-            current_sprite: "main",
-            z_index: -0.02
+            current_sprite: "main"
         },
         {
             widget: "moondust:empty",
@@ -33,16 +31,13 @@
             sprites: {
                 "main": "moondust:frame_in"
             },
-            current_sprite: "main",
-            z_index: -0.01
+            current_sprite: "main"
         },
         {
             widget: "moondust:empty",
             name: "content",
             position: [7, 19],
-            bounds: ["100% - 15", "100% - 26"],
-
-            z_index: 0
+            bounds: ["100% - 15", "100% - 26"]
         }
     ]
 }
