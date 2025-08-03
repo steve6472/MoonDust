@@ -11,11 +11,12 @@ import steve6472.moondust.widget.component.position.Position;
  * Date: 12/11/2024
  * Project: MoonDust <br>
  */
-public record MDText(Text text, Position position)
+public record MDText(Text text, Position position, boolean inheritWidth)
 {
     public static final Codec<MDText> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Text.CODEC.fieldOf("text").forGetter(MDText::text),
-        Position.CODEC.fieldOf("position").forGetter(MDText::position)
+        Position.CODEC.fieldOf("position").forGetter(MDText::position),
+        Codec.BOOL.optionalFieldOf("inherit_width", false).forGetter(MDText::inheritWidth)
     ).apply(instance, MDText::new));
 
     public void replaceText(TextPart part, int index)

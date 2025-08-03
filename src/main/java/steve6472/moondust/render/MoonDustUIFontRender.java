@@ -11,8 +11,10 @@ import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.Bounds;
 import steve6472.moondust.widget.component.IBounds;
 import steve6472.moondust.widget.component.MDText;
+import steve6472.moondust.widget.component.Size;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by steve6472
@@ -45,10 +47,21 @@ public class MoonDustUIFontRender extends UIFontRenderImpl
                 if (text.parts().isEmpty())
                     return;
 
+                float width = 0;
+                if (mdText.inheritWidth())
+                {
+                    Optional<Size> bounds = widget.getBounds();
+                    if (bounds.isPresent())
+                        width = bounds.get().width() * pixelScale;
+                } else
+                {
+                    width = text.maxWidth() * pixelScale;
+                }
+
                 Text message = text
                     // Adjust to pixel scale
                     .withTextSize(text.textSize() * pixelScale)
-                    .withMaxWidth(text.maxWidth() * pixelScale)
+                    .withMaxWidth(width)
                     .withMaxHeight(text.maxHeight() * pixelScale)
                     .withLineGapOffset(text.lineGapOffset() * pixelScale);
 
@@ -58,7 +71,7 @@ public class MoonDustUIFontRender extends UIFontRenderImpl
                 // Need a little ugly hack so Position is calculated from the immediate parent widget
                 // Position was made for widgets, not components lol
                 Widget dummy = Widget.withParent(EMPTY_BLUEPRINT, widget);
-                dummy.addComponent(new Bounds(new IBounds.Con((int) text.maxWidth()), new IBounds.Con((int) text.maxHeight())));
+                dummy.addComponent(new Bounds(new IBounds.Con(mdText.inheritWidth() ? (int) width : (int) text.maxWidth()), new IBounds.Con((int) text.maxHeight())));
                 mdText.position().evaluatePosition(pos, dummy);
 
                 renderText(message, new Matrix4f().translate(pos.x * pixelScale, pos.y * pixelScale, 1));

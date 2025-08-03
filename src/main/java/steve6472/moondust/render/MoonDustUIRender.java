@@ -38,7 +38,7 @@ public class MoonDustUIRender extends UIRenderImpl
     private final Window window;
     private final UserInput input;
 
-    private final List<SpritePrimitive> primitives = new ArrayList<>();
+    private final List<WidgetSpritePrimitive> primitives = new ArrayList<>();
     Widget pressedWidget = null;
     boolean canInteract = true;
 
@@ -216,56 +216,76 @@ public class MoonDustUIRender extends UIRenderImpl
         }
     }
 
+    private int findIndexOf(Widget widget, Pair<RenderOrder, WidgetSpritePrimitive> order)
+    {
+        // Find the widget to be ordered by
+        List<WidgetSpritePrimitive> orderByList = primitives.stream()
+            // Verify they are both in the same widget
+            .filter(primitive ->
+            {
+                Optional<Widget> primitiveParent = primitive.widget().parent();
+                Optional<Widget> orderParent = widget.parent();
+                if (primitiveParent.isEmpty() && orderParent.isEmpty())
+                    return true;
+                if (primitiveParent.isEmpty() ^ orderParent.isEmpty())
+                    return false;
+
+                return primitiveParent.get() == orderParent.get();
+            })
+            // Filter widget by name
+            .filter(primitive -> primitive.widget().getName().equals(order.getFirst().widget()))
+            .toList();
+
+        if (orderByList.size() != 1)
+            throw new RuntimeException("orderByList size is not 1, it is " + orderByList.size());
+
+        WidgetSpritePrimitive orderByPrimitive = orderByList.getFirst();
+        return primitives.indexOf(orderByPrimitive);
+    }
+
     protected final void sortAndRenderPrimitives()
     {
         float pixelScale = MoonDust.getInstance().getPixelScale();
         float zIndex = 0;
         final float delta = 1f / 2560f;
 
-        Map<Widget, Pair<RenderOrder, SpritePrimitive>> orders = new HashMap<>();
+        // Has to be a list because focus sprite exists...
+        Map<Widget, List<Pair<RenderOrder, WidgetSpritePrimitive>>> orders = new LinkedHashMap<>();
 
-        for (SpritePrimitive primitive : primitives)
+        for (WidgetSpritePrimitive primitive : primitives)
         {
             primitive.widget().getComponent(RenderOrder.class).ifPresent(ro -> {
-                orders.put(primitive.widget(), Pair.of(ro, primitive));
+                orders.computeIfAbsent(primitive.widget(), _ -> new ArrayList<>()).add(Pair.of(ro, primitive));
             });
         }
 
-        orders.forEach((widget, order) ->
+        orders.forEach((widget, orderList) ->
         {
             // Remove the widget
             primitives.removeIf(primitive -> primitive.widget() == widget);
 
-            // Find the widget to be ordered by
-            List<SpritePrimitive> orderByList = primitives.stream()
-                // Verify they are both in the same widget
-                .filter(primitive ->
+            // Some ugly hack because focus exists
+            // (in case one widget can render multiple sprites)
+            int lastIndex = -1;
+
+            for (Pair<RenderOrder, WidgetSpritePrimitive> order : orderList)
+            {
+                if (lastIndex == -1)
                 {
-                    Optional<Widget> primitiveParent = primitive.widget().parent();
-                    Optional<Widget> orderParent = widget.parent();
-                    if (primitiveParent.isEmpty() && orderParent.isEmpty())
-                        return true;
-                    if (primitiveParent.isEmpty() ^ orderParent.isEmpty())
-                        return false;
-
-                    return primitiveParent.get() == orderParent.get();
-                })
-                // Filter widget by name
-                .filter(primitive -> primitive.widget().getName().equals(order.getFirst().widget()))
-                .toList();
-
-            if (orderByList.size() != 1)
-                throw new RuntimeException("orderByList size is not 1, it is " + orderByList.size());
-
-            SpritePrimitive orderByPrimitive = orderByList.getFirst();
-            int primitiveIndex = primitives.indexOf(orderByPrimitive);
-            primitives.add(primitiveIndex + (order.getFirst().order() == RenderOrderBlueprint.Order.BELOW ? 0 : 1), order.getSecond());
+                    lastIndex = findIndexOf(widget, order);
+                    lastIndex += (order.getFirst().order() == RenderOrderBlueprint.Order.BELOW ? 0 : 1);
+                } else
+                {
+                    lastIndex++;
+                }
+                primitives.add(lastIndex, order.getSecond());
+            }
         });
 
         // Reverse the order because sprite z index is weird lul
         Collections.reverse(primitives);
 
-        for (SpritePrimitive primitive : primitives)
+        for (WidgetSpritePrimitive primitive : primitives)
         {
             createSprite(
                 (int) (primitive.x() * pixelScale),
@@ -301,7 +321,7 @@ public class MoonDustUIRender extends UIRenderImpl
     {
         float pixelScale = MoonDust.getInstance().getPixelScale();
 //        createSprite((int) (x * pixelScale), (int) (y * pixelScale), zIndex, (int) (width * pixelScale), (int) (height * pixelScale), width, height, NO_TINT, getTextureEntry(textureKey));
-        primitives.add(new SpritePrimitive(x, y, width, height, textureKey, widget));
+        primitives.add(new WidgetSpritePrimitive(x, y, width, height, textureKey, widget));
     }
 
     protected final void sprite(
@@ -310,7 +330,7 @@ public class MoonDustUIRender extends UIRenderImpl
         Vector3f tint, Key textureKey)
     {
         float pixelScale = MoonDust.getInstance().getPixelScale();
-//        createSprite((int) (x * pixelScale), (int) (y * pixelScale), zIndex, (int) (width * pixelScale), (int) (height * pixelScale), width, height, tint, getTextureEntry(textureKey));
+        createSprite((int) (x * pixelScale), (int) (y * pixelScale), zIndex, (int) (width * pixelScale), (int) (height * pixelScale), width, height, tint, getTextureEntry(textureKey));
     }
 
     // TODO: this (rotation) won't work with parented widgets

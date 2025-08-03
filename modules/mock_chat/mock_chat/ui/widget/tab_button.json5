@@ -12,7 +12,7 @@
         hover: "moondust:button/hover"
     },
 
-    focused_sprite: "moondust:generic_dark_pixel/generic/focus/sharper",
+    focused_sprite: "moondust:generic_dark_pixel/button/tab/top/focus",
 
     states: {
         clickable: true,

@@ -15,9 +15,9 @@
                 offset: [2, 2]
             },
             "mock_chat:tab_view": {
-                labels: ["Chat", "Chat Settings"],
-                views: ["mock_chat:chat", "mock_chat:chat_settings"],
-                default: 0
+                labels: ["Chat", "Chat Settings", "Font"],
+                views: ["mock_chat:chat", "mock_chat:chat_settings", "moondust:debug/outlines"],
+                default: 1
             },
             bounds: ["100% - 4", "100% - 18"]
         },

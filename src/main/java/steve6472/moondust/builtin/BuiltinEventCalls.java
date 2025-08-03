@@ -62,7 +62,7 @@ public class BuiltinEventCalls
                     return;
                 }
                 mdLine.replaceText(label, 0);
-                widget.addComponent(new MDText(mdLine.text(), mdLine.position()));
+                widget.addComponent(new MDText(mdLine.text(), mdLine.position(), false));
             });
             replaceStyle(widget, pickStyle(widget, (widget.internalStates().hovered || widget.internalStates().directHover) ? Tristate.TRUE : Tristate.FALSE));
         });

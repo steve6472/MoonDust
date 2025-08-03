@@ -8,7 +8,7 @@ import steve6472.moondust.widget.Widget;
  * Date: 8/2/2025
  * Project: MoonDust <br>
  */
-public record SpritePrimitive(int x, int y, int w, int h, Key texture, Widget widget)
+public record WidgetSpritePrimitive(int x, int y, int w, int h, Key texture, Widget widget)
 {
 
 }
