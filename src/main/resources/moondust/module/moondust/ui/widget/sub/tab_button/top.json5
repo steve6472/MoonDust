@@ -20,8 +20,8 @@
     },
 
     scripts: {
-        button_init: "mock_chat:widget/tab_view/button_init",
-        button_icon: "mock_chat:widget/tab_view/button_icon"
+        button_init: "moondust:widget/tab_view/button_init",
+        button_icon: "moondust:widget/tab_view/button_icon"
     },
 
     text: {

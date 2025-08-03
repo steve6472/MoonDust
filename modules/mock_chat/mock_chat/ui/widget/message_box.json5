@@ -7,17 +7,18 @@
 
     children: [
         {
-            widget: "mock_chat:tab_view",
+            widget: "moondust:tab_view",
             name: "tabs",
             position: {
                 type: "anchored",
                 anchor: "top_left",
                 offset: [2, 2]
             },
-            "mock_chat:tab_view": {
+            tab_view: {
                 labels: ["Chat", "Chat Settings", "Font"],
                 views: ["mock_chat:chat", "mock_chat:chat_settings", "moondust:debug/outlines"],
-                default: 1
+                default: 1,
+                side: "top"
             },
             bounds: ["100% - 4", "100% - 18"]
         },

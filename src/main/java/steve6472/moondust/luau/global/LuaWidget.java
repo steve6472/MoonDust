@@ -18,6 +18,7 @@ import steve6472.moondust.widget.component.Children;
 import steve6472.moondust.widget.component.CustomData;
 import steve6472.moondust.widget.component.IBounds;
 import steve6472.moondust.widget.component.InternalStates;
+import steve6472.moondust.widget.component.position.Position;
 import steve6472.radiant.*;
 import steve6472.radiant.func.OverloadFuncArgs;
 
@@ -227,10 +228,33 @@ public class LuaWidget
         META.addFunction("setBounds", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
             Object javaWidth = LuauUtil.toJava(state, 2);
-            Object javaHeight = LuauUtil.toJava(state, 3);
-            DataResult<Pair<IBounds.Val, Object>> width = IBounds.VAL_CODEC.decode(LuaTableOps.INSTANCE, javaWidth);
-            DataResult<Pair<IBounds.Val, Object>> height = IBounds.VAL_CODEC.decode(LuaTableOps.INSTANCE, javaHeight);
-            widget.setBounds(width.getOrThrow().getFirst(), height.getOrThrow().getFirst());
+
+            // setBounds(array)
+            // array = {0, 1}
+            if (javaWidth instanceof LuauTable arr)
+            {
+                DataResult<Pair<IBounds.Val, Object>> width = IBounds.VAL_CODEC.decode(LuaTableOps.INSTANCE, arr.get(1.0));
+                DataResult<Pair<IBounds.Val, Object>> height = IBounds.VAL_CODEC.decode(LuaTableOps.INSTANCE, arr.get(2.0));
+                widget.setBounds(width.getOrThrow().getFirst(), height.getOrThrow().getFirst());
+            }
+            // setBounds(width, height)
+            // width = 6, height = 9
+            else
+            {
+                Object javaHeight = LuauUtil.toJava(state, 3);
+                DataResult<Pair<IBounds.Val, Object>> width = IBounds.VAL_CODEC.decode(LuaTableOps.INSTANCE, javaWidth);
+                DataResult<Pair<IBounds.Val, Object>> height = IBounds.VAL_CODEC.decode(LuaTableOps.INSTANCE, javaHeight);
+                widget.setBounds(width.getOrThrow().getFirst(), height.getOrThrow().getFirst());
+            }
+            return 0;
+        });
+        META.addFunction("setPosition", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            Object javaObj = LuauUtil.toJava(state, 2);
+
+            var res = Position.CODEC.decode(LuaTableOps.INSTANCE, javaObj);
+            Position pos = res.getOrThrow().getFirst();
+            widget.addComponent(pos);
             return 0;
         });
 

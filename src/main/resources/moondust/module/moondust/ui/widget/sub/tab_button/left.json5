@@ -1,0 +1,46 @@
+{
+    sprites: {
+        disabled: "moondust:generic_dark_pixel/button/tab/left/disabled",
+        selected: "moondust:generic_dark_pixel/button/tab/left/selected",
+        unselected: "moondust:generic_dark_pixel/button/tab/left/unselected"
+    },
+    current_sprite: "unselected",
+
+    styles: {
+        normal: "moondust:button/normal",
+        disabled: "moondust:button/disabled",
+        hover: "moondust:button/hover"
+    },
+
+    focused_sprite: "moondust:generic_dark_pixel/button/tab/left/focus",
+
+    states: {
+        clickable: true,
+        focusable: true
+    },
+
+    scripts: {
+        button_init: "moondust:widget/tab_view/button_init",
+        button_icon: "moondust:widget/tab_view/button_icon"
+    },
+
+    text: {
+        text: {
+            parts: [
+                {
+                    text: "",
+                    style: "moondust:button/normal"
+                }
+            ],
+            anchor: "top_left",
+            align: "center",
+            text_size: 6,
+            vertical_anchor: "max_height"
+        },
+        position: {
+            type: "anchored",
+            anchor: "center",
+            offset: [0, 0]
+        }
+    }
+}

@@ -1,7 +1,18 @@
-local BUTTON_LEFT_PADDING = 4
-local BUTTON_OFFSET = 1
-local BUTTON_HEIGHT = 13
-local BUTTON_CLICKBOX_HEIGHT = 11
+local sides = {
+    top = {
+        padding = {4, 0},
+        offset = {1, 0},
+        height = 13,
+        clickboxHeight = 11,
+    },
+    left = {
+        padding = {0, 4},
+        offset = {0, 14},
+        height = 13,
+        clickboxHeight = 11,
+    }
+}
+
 local RADIO_BUTTON_GROUP = "tab_buttons"
 
 local function transformString(str)
@@ -14,31 +25,31 @@ local function transformString(str)
     return str
 end
 
-local function createButton(lastButton, label, view, selected)
+local function createButton(lastButton, label, view, selected, buttonType)
 
     local position;
     if lastButton == nil then
-        position = {BUTTON_LEFT_PADDING, 0}
+        position = sides[buttonType].padding
     else
         position = {
             type = "relative",
             parent = lastButton.name,
-            offset = {BUTTON_OFFSET, 0},
-            is_right = true
+            offset = {sides[buttonType].offset[1], sides[buttonType].offset[2]},
+            is_right = buttonType == "top" or buttonType == "bottom"
         }
     end
 
     local button =
     {
-        widget = "mock_chat:tab_button",
+        widget = "moondust:sub/tab_button/"..buttonType,
         name = transformString(label),
         position = position,
-        bounds = {0, BUTTON_HEIGHT},
-        clickbox_size = {0, BUTTON_CLICKBOX_HEIGHT},
+        bounds = {0, sides[buttonType].height},
+        clickbox_size = {0, sides[buttonType].clickboxHeight},
         button = {
             label = label,
             on_press = {
-                script = "mock_chat:widget/tab_view/button_change_content",
+                script = "moondust:widget/tab_view/button_change_content",
                 input = view
             }
         },
@@ -58,17 +69,17 @@ local function createButton(lastButton, label, view, selected)
 end
 
 function init(input)
-    --print(core.dump(input))
+    print(core.dump(input))
 
     local childs = {}
 
     for i = 0, #input.labels, 1 do
-        childs[i + 1] = createButton(childs[i], input.labels[i], input.views[i], i == input.default)
+        childs[i + 1] = createButton(childs[i], input.labels[i], input.views[i], i == input.default, input.side)
     end
 
     return {
         tables = {
-            ["mock_chat:tab_view"] = input
+            ["moondust:tab_view"] = input
         },
         children = childs
     }

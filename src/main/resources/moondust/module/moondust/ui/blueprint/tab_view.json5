@@ -1,5 +1,5 @@
 {
-    script: "mock_chat:blueprint/tab_view",
+    script: "moondust:blueprint/tab_view",
     fields: {
         labels: {
             type: "string_array",
@@ -13,6 +13,12 @@
             type: "int",
             min: 0,
             default: 0
+        },
+        side: {
+            type: "string",
+            // TODO: pattern: "^(?:top|bottom|left|right)$",
+            pattern: "^(?:top|left)$",
+            default: "top"
         }
     }
 }

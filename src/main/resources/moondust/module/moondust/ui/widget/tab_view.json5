@@ -1,10 +1,13 @@
 {
+    scripts: {
+        init: "moondust:widget/tab_view/init_size"
+    },
+
     children: [
         {
             widget: "moondust:empty",
             name: "outer_frame",
-            position: [0, 11],
-            bounds: ["100%", "100% - 11"],
+            position: [0, 0],
 
             sprites: {
                 "main": "moondust:generic_dark_pixel/frame/compound"
@@ -14,8 +17,7 @@
         {
             widget: "moondust:empty",
             name: "content",
-            position: [6, 18],
-            bounds: ["100% - 13", "100% - 24"]
+            position: [0, 0]
         }
     ]
 }

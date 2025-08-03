@@ -3,6 +3,7 @@
 
 local compKey = "moondust:radio_group"
 local currentSprite = "moondust:current_sprite"
+local renderOrder = "moondust:render_order"
 
 local function pickSprite(enabled, checked)
     if checked then
@@ -78,7 +79,7 @@ local function init(widget)
             group.selected = false
             widget:setTable(compKey, group)
             if not warningLogged then
-                warning("Found multiple by-default selected radio widgets in group '"..group.group.."'")
+                warning("Found multiple by-default selected tab button widgets in group '"..group.group.."'")
                 warningLogged = true
             end
         end
@@ -86,7 +87,7 @@ local function init(widget)
 
     --print("Picking style '"..pickSprite(widget:isEnabled(), group.selected).."' Because widget enabled: "..tostring(widget:isEnabled()).." and group selected: "..tostring(group.selected))
     widget:addComponent(currentSprite, pickSprite(widget:isEnabled(), group.selected))
-    widget:addComponent("render_order", pickRenderOrder(group.selected))
+    widget:addComponent(renderOrder, pickRenderOrder(group.selected))
 
     -- do what button_change_content does
     if group.selected then
@@ -123,14 +124,14 @@ local function dataChanged(widget, changed)
         -- Simply change sprite of the widget, its selected value was already updated (the widget that triggered the change)
         if child:getName() == widget:getName() then
             widget:addComponent(currentSprite, pickSprite(widget:isEnabled(), group.selected))
-            widget:addComponent("render_order", pickRenderOrder(group.selected))
+            widget:addComponent(renderOrder, pickRenderOrder(group.selected))
         -- Update sprite & selected value (all other widgets in the group)
         else
             local childGroup = child:getTable(compKey)
             childGroup.selected = false
             child:setTable(compKey, childGroup)
             child:addComponent(currentSprite, pickSprite(child:isEnabled(), childGroup.selected))
-            child:addComponent("render_order", pickRenderOrder(childGroup.selected))
+            child:addComponent(renderOrder, pickRenderOrder(childGroup.selected))
         end
     end
 end
