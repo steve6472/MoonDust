@@ -32,7 +32,6 @@ local function findGroupMembers(container, group)
     for _, childName in ipairs(childrenNames) do
         local child = container:getChild(childName)
         local childRadio = child:getTable("moondust:radio_group")
-        print(core.dump(childRadio))
         if not (childRadio == nil) and childRadio.group == group then
             groupMembers[#groupMembers+1] = child
         end
@@ -64,7 +63,6 @@ local function init(widget)
     local left = 0
     if (side == "left") then
         local buttons = findGroupMembers(widget, RADIO_BUTTON_GROUP)
-        print(core.dump(buttons))
         for _, v in pairs(buttons) do
             left = math.max(left, v:getComponent("moondust:bounds").width)
         end
@@ -77,8 +75,6 @@ local function init(widget)
             v:addComponent("moondust:clickbox_size", vBounds)
         end
     end
-
-    print("Left: "..tostring(left))
 
     local outerFrame = widget:getChild("outer_frame")
     outerFrame:setBounds(adjustValues(sides.outer_frame[side].bounds, left, 1))

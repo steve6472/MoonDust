@@ -69,7 +69,7 @@ local function createButton(lastButton, label, view, selected, buttonType)
 end
 
 function init(input)
-    print(core.dump(input))
+    --print(core.dump(input))
 
     local childs = {}
 
