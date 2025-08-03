@@ -9,4 +9,8 @@ import steve6472.core.registry.Key;
  */
 public record Command(Key key, Object value)
 {
+    public Command(Key key)
+    {
+        this(key, null);
+    }
 }

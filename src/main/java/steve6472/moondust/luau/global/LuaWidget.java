@@ -6,18 +6,19 @@ import com.mojang.serialization.DataResult;
 import net.hollowcube.luau.LuaType;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
+import steve6472.flare.util.Obj;
 import steve6472.moondust.ComponentEntry;
 import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.core.InputWithWidget;
 import steve6472.moondust.core.JavaFunc;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
+import steve6472.moondust.view.Command;
+import steve6472.moondust.view.PanelView;
+import steve6472.moondust.view.property.Property;
 import steve6472.moondust.widget.MoonDustComponents;
 import steve6472.moondust.widget.Widget;
-import steve6472.moondust.widget.component.Children;
-import steve6472.moondust.widget.component.CustomData;
-import steve6472.moondust.widget.component.IBounds;
-import steve6472.moondust.widget.component.InternalStates;
+import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.position.Position;
 import steve6472.radiant.*;
 import steve6472.radiant.func.OverloadFuncArgs;
@@ -183,6 +184,11 @@ public class LuaWidget
             state.pushString(widget.getPath());
             return 1;
         });
+        META.addFunction("getKey", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            state.pushString(widget.getKey().toString());
+            return 1;
+        });
         META.addFunction("isVisible", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
             state.pushBoolean(widget.isVisible());
@@ -275,6 +281,52 @@ public class LuaWidget
             Object o = javaFunc.runFunction(new InputWithWidget(widget, input));
             LuauUtil.push(state, o);
             return 1;
+        });
+
+        /*
+         * View Control
+         */
+        META.addFunction("sendCommand", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            widget.panel().ifPresent(panel -> {
+                panel.getComponent(ViewController.class).ifPresent(viewComp -> {
+                    String key = state.checkStringArg(2);
+                    Object input = LuauUtil.toJava(state, 3);
+                    PanelView view = viewComp.panelView();
+                    Command command = new Command(Key.parse(key), input);
+                    view.sendCommand(command);
+                });
+            });
+            return 0;
+        });
+        META.addFunction("changeProperty", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            String propertyName = state.checkStringArg(2);
+            Object value = LuauUtil.toJava(state, 3);
+
+            widget.getComponent(Properties.class).ifPresent(properties -> {
+                //noinspection rawtypes
+                Property property = properties.properties().get(propertyName);
+                //noinspection unchecked
+                property.set(value);
+            });
+            return 0;
+        });
+        META.addFunction("getPropertyValue", state -> {
+            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
+            String propertyName = state.checkStringArg(2);
+
+            Obj<Integer> ret = Obj.of(0);
+            widget.getComponent(Properties.class).ifPresent(properties -> {
+                Property<?> property = properties.properties().get(propertyName);
+                if (property != null)
+                {
+                    Object o = property.get();
+                    LuauUtil.push(state, o);
+                    ret.set(1);
+                }
+            });
+            return ret.get();
         });
 
         META.processOverloadedFunctions();

@@ -6,6 +6,7 @@ import steve6472.core.registry.ObjectRegistry;
 import steve6472.core.registry.Registry;
 import steve6472.flare.input.Keybind;
 import steve6472.flare.registry.RegistryCreators;
+import steve6472.mock_chat.ChatView;
 import steve6472.moondust.blueprints.BlueprintValueType;
 import steve6472.moondust.blueprints.CustomBlueprintLoader;
 import steve6472.moondust.builtin.BuiltinBlueprints;
@@ -14,6 +15,7 @@ import steve6472.moondust.core.JavaFunc;
 import steve6472.moondust.core.MoonDustKeybinds;
 import steve6472.moondust.luau.LuaScriptLoader;
 import steve6472.moondust.luau.ProfiledScript;
+import steve6472.moondust.view.PanelViewEntry;
 import steve6472.moondust.widget.BlueprintOverrides;
 import steve6472.moondust.widget.MoonDustComponents;
 import steve6472.moondust.widget.blueprint.layout.LayoutType;
@@ -59,6 +61,7 @@ public class MoonDustRegistries extends RegistryCreators
 
     public static final Registry<UIEventType<?>> EVENT_TYPE = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("event_type"), () -> UIEventType.ON_RANDOM_TICK);
 
+    // TODO: remove overrides ?
     public static final Registry<OverrideEntry<?>> OVERRIDE = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("override"), () -> BlueprintOverrides.EVENTS);
     public static final Registry<BlueprintEntry<?>> WIDGET_BLUEPRINT = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("widget_blueprint"), () ->
     {
@@ -67,6 +70,15 @@ public class MoonDustRegistries extends RegistryCreators
         LOGGER.finest("Bootstrapping '%s'".formatted("Custom Blueprints"));
         CustomBlueprintLoader.load();
     });
+    public static final ObjectRegistry<PanelViewEntry> PANEL_VIEW = createObjectRegistry(key("panel_view"), () -> {
+        LOGGER.info("Panel View registry is not properly hooked up");
+        tempPanelViewReg();
+    });
+
+    private static void tempPanelViewReg()
+    {
+        PANEL_VIEW.register(new PanelViewEntry(Key.withNamespace(ChatView.NAMESPACE, "chat"), ChatView::new));
+    }
 
     public static final ObjectRegistry<BlueprintFactory> WIDGET_FACTORY = createObjectRegistry(key("widget_factory"), WidgetLoader::load);
 

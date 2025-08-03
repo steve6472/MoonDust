@@ -1,8 +1,9 @@
 package steve6472.moondust.widget.component;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import steve6472.moondust.core.Mergeable;
+import steve6472.moondust.view.property.BooleanProperty;
+
+import java.util.Map;
 
 /**
  * Created by steve6472
@@ -16,24 +17,29 @@ public class WidgetStates implements Mergeable<WidgetStates>
     public static final boolean DEFAULT_CLICKABLE = false;
     public static final boolean DEFAULT_FOCUSABLE = false;
 
-    public static final Codec<WidgetStates> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.BOOL.optionalFieldOf("enabled", DEFAULT_ENABLED).forGetter(o -> o.enabled),
-        Codec.BOOL.optionalFieldOf("visible", DEFAULT_VISIBLE).forGetter(o -> o.visible),
-        Codec.BOOL.optionalFieldOf("clickable", DEFAULT_CLICKABLE).forGetter(o -> o.clickable),
-        Codec.BOOL.optionalFieldOf("focusable", DEFAULT_FOCUSABLE).forGetter(o -> o.focusable)
-    ).apply(instance, WidgetStates::new));
+//    public static final Codec<WidgetStates> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+//        Codec.BOOL.optionalFieldOf("enabled", DEFAULT_ENABLED).forGetter(o -> o.enabled.get()),
+//        Codec.BOOL.optionalFieldOf("visible", DEFAULT_VISIBLE).forGetter(o -> o.visible.get()),
+//        Codec.BOOL.optionalFieldOf("clickable", DEFAULT_CLICKABLE).forGetter(o -> o.clickable.get()),
+//        Codec.BOOL.optionalFieldOf("focusable", DEFAULT_FOCUSABLE).forGetter(o -> o.focusable.get())
+//    ).apply(instance, WidgetStates::new));
 
-    public Boolean enabled;
-    public Boolean visible;
-    public Boolean clickable;
-    public Boolean focusable;
+    public BooleanProperty enabled;
+    public BooleanProperty visible;
+    public BooleanProperty clickable;
+    public BooleanProperty focusable;
 
     public WidgetStates(Boolean enabled, Boolean visible, Boolean clickable, Boolean focusable)
     {
-        this.enabled = enabled;
-        this.visible = visible;
-        this.clickable = clickable;
-        this.focusable = focusable;
+        this.enabled = enabled == null ? null : new BooleanProperty(enabled);
+        this.visible = visible == null ? null : new BooleanProperty(visible);
+        this.clickable = clickable == null ? null : new BooleanProperty(clickable);
+        this.focusable = focusable == null ? null : new BooleanProperty(focusable);
+
+        if (this.enabled != null) this.enabled.setDebugName("enabled");
+        if (this.visible != null) this.visible.setDebugName("visible");
+        if (this.clickable != null) this.clickable.setDebugName("clickable");
+        if (this.focusable != null) this.focusable.setDebugName("focusable");
     }
 
     public WidgetStates()
@@ -61,10 +67,10 @@ public class WidgetStates implements Mergeable<WidgetStates>
         return new WidgetStates(null, null, null, focusable);
     }
 
-    private Boolean select(Boolean left, Boolean right)
+    private Boolean select(BooleanProperty left, BooleanProperty right)
     {
-        if (right == null) return left;
-        return right;
+        if (right == null) return left.get();
+        return right.get();
     }
 
     @Override
@@ -84,6 +90,16 @@ public class WidgetStates implements Mergeable<WidgetStates>
         if (visible == null) throw new IllegalStateException("Widget States have an unspecified value: visible");
         if (clickable == null) throw new IllegalStateException("Widget States have an unspecified value: clickable");
         if (focusable == null) throw new IllegalStateException("Widget States have an unspecified value: focusable");
+    }
+
+    public Properties toProperties()
+    {
+        return new Properties(Map.of(
+            "enabled", enabled,
+            "visible", visible,
+            "clickable", clickable,
+            "focusable", focusable)
+        );
     }
 
     public void setFrom(WidgetStates states)

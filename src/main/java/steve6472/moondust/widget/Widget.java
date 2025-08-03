@@ -16,6 +16,7 @@ import steve6472.moondust.luau.ProfiledScript;
 import steve6472.moondust.luau.global.LuaWidget;
 import steve6472.moondust.widget.blueprint.ScriptEntry;
 import steve6472.moondust.widget.component.*;
+import steve6472.moondust.widget.component.Properties;
 import steve6472.moondust.widget.component.event.*;
 import steve6472.moondust.widget.component.event.global.OnGlobalMouseButton;
 import steve6472.moondust.widget.component.event.global.OnGlobalPixelScaleChange;
@@ -141,6 +142,15 @@ public class Widget implements WidgetComponentGetter
             }
         });
 
+        addComponent(states.toProperties());
+
+        getComponent(ViewController.class).ifPresent(viewController -> {
+            if (!(this instanceof Panel panel))
+                throw new RuntimeException("ViewController can only be used on a panel (for now?)");
+            viewController.panelView().init(panel);
+            viewController.panelView().bind();
+        });
+
         postCreateValidation();
         handleEvents(OnInit.class);
     }
@@ -149,7 +159,7 @@ public class Widget implements WidgetComponentGetter
     {
         states.validate();
 
-        if (states.focusable)
+        if (states.focusable.get())
         {
             getComponent(FocusedSprite.class).ifPresentOrElse(_ -> {}, () -> LOGGER.warning(String.format("Widget '%s' is focusable, but lacks '%s' blueprint!", key, WidgetBlueprints.FOCUSED_SPRITE.key())));
         }
@@ -180,11 +190,26 @@ public class Widget implements WidgetComponentGetter
         if (children.containsKey(name.value()))
             throw new IllegalStateException("Child widget with name '" + name.value() + "' already exists!");
         children.put(name.value(), widget);
+
+        // TODO: probably remove this
+        panel().ifPresent(panel -> {
+            panel.getComponent(ViewController.class).ifPresent(viewController -> {
+                viewController.panelView().update();
+            });
+        });
     }
 
     public boolean removeChild(String name)
     {
-        return children.remove(name) != null;
+        boolean ret = children.remove(name) != null;
+
+        // TODO: probably remove this
+        panel().ifPresent(panel -> {
+            panel.getComponent(ViewController.class).ifPresent(viewController -> {
+                viewController.panelView().update();
+            });
+        });
+        return ret;
     }
 
     public <T extends UIEvent> void handleEvents(Class<T> eventType)
@@ -315,6 +340,10 @@ public class Widget implements WidgetComponentGetter
         {
             //noinspection unchecked, rawtypes
             return ((Codec) OnGlobalPixelScaleChange.CODEC).encodeStart(LuaTableOps.INSTANCE, e).getOrThrow();
+        } else if (e instanceof OnPropertyChange)
+        {
+            //noinspection unchecked, rawtypes
+            return ((Codec) OnPropertyChange.CODEC).encodeStart(LuaTableOps.INSTANCE, e).getOrThrow();
         }
         else
             throw new RuntimeException("Event to user object not done for " + e);
@@ -428,43 +457,43 @@ public class Widget implements WidgetComponentGetter
 
     public boolean isVisible()
     {
-        return states.visible;
+        return states.visible.get();
     }
 
     public boolean isEnabled()
     {
-        return states.enabled;
+        return states.enabled.get();
     }
 
     public boolean isClickable()
     {
-        return states.clickable;
+        return states.clickable.get();
     }
 
     public boolean isFocusable()
     {
-        return states.focusable;
+        return states.focusable.get();
     }
 
     public void setVisible(boolean visible)
     {
-        states.visible = visible;
+        states.visible.set(visible);
     }
 
     public void setEnabled(boolean enabled)
     {
-        states.enabled = enabled;
+        states.enabled.set(enabled);
         handleEvents(OnEnableStateChange.class, event -> event.enabled().test(enabled));
     }
 
     public void setClickable(boolean clickable)
     {
-        states.clickable = clickable;
+        states.clickable.set(clickable);
     }
 
     public void setFocusable(boolean focusable)
     {
-        states.focusable = focusable;
+        states.focusable.set(focusable);
     }
 
     public void setBounds(int width, int height)
@@ -503,6 +532,23 @@ public class Widget implements WidgetComponentGetter
         return Optional.ofNullable(parent);
     }
 
+    public Optional<Widget> panel()
+    {
+        Optional<Widget> current = parent();
+
+        while (current.isPresent())
+        {
+            Widget widget = current.get();
+            if (widget instanceof Panel)
+            {
+                return Optional.of(widget);
+            }
+            current = widget.parent();
+        }
+
+        return Optional.empty();
+    }
+
     public String getPath()
     {
         if (parent == null && this instanceof Panel)
@@ -512,6 +558,17 @@ public class Widget implements WidgetComponentGetter
             return "-root-";
 
         return parent.getPath() + "." + getName();
+    }
+
+    public String getPathWithoutPanel()
+    {
+        if (parent == null || this instanceof Panel)
+            return null;
+
+        String pathWithoutPanel = parent.getPathWithoutPanel();
+        if (pathWithoutPanel == null)
+            return getName();
+        return pathWithoutPanel + "." + getName();
     }
 
     public Key getKey()
@@ -570,7 +627,14 @@ public class Widget implements WidgetComponentGetter
                 this.components.put(component.getClass(), merged);
                 if (component.getClass() == WidgetStates.class)
                     states.setFrom((WidgetStates) merged);
-            }, () -> this.components.put(component.getClass(), component));
+                if (merged instanceof Properties properties)
+                    properties.bindToWidget(this);
+            }, () ->
+            {
+                if (component instanceof Properties properties)
+                    properties.bindToWidget(this);
+                this.components.put(component.getClass(), component);
+            });
 
         } else
         {

@@ -6,12 +6,10 @@ import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustConstants;
 import steve6472.moondust.builtin.BuiltinEventCalls;
 import steve6472.moondust.core.blueprint.Blueprint;
+import steve6472.moondust.view.property.BooleanProperty;
 import steve6472.moondust.widget.blueprint.ScriptEntry;
 import steve6472.moondust.widget.blueprint.event.condition.EventCondition;
-import steve6472.moondust.widget.component.CustomData;
-import steve6472.moondust.widget.component.Scripts;
-import steve6472.moondust.widget.component.Styles;
-import steve6472.moondust.widget.component.WidgetStates;
+import steve6472.moondust.widget.component.*;
 import steve6472.moondust.widget.component.event.OnDataChange;
 import steve6472.moondust.widget.component.event.UIEventCallEntry;
 import steve6472.moondust.widget.component.event.UIEvents;
@@ -55,7 +53,7 @@ public record CheckBoxBlueprint(Key pressCall, Key pressScript, String label, bo
         }
 
         CustomData data = new CustomData();
-        data.putFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED, checked);
+//        data.putFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED, checked);
 
         if (!label.isBlank())
         {
@@ -69,6 +67,11 @@ public record CheckBoxBlueprint(Key pressCall, Key pressScript, String label, bo
             components.add(styles);
         }
 
+        BooleanProperty checkedProperty = new BooleanProperty(checked);
+        checkedProperty.setDebugName("checked");
+        Properties properties = new Properties(Map.of("checked", checkedProperty));
+
+        components.add(properties);
         components.add(data);
         components.add(WidgetStates.clickable(true));
 

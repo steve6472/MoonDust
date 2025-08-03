@@ -1,6 +1,7 @@
 package steve6472.moondust.view.property;
 
 import steve6472.moondust.view.ChangeListener;
+import steve6472.moondust.view.DependencyChecker;
 import steve6472.moondust.view.exp.Exp;
 import steve6472.moondust.view.exp.Expression;
 import steve6472.moondust.view.exp.ConstantProperty;
@@ -20,6 +21,8 @@ public abstract class Property<T>
     private final List<ChangeListener<T>> changeListeners = new ArrayList<>();
     private String debugName = UUID.randomUUID().toString();
 
+    // Used when clearing
+    private final List<ChangeListener<T>> binderListeners = new ArrayList<>();
     private Expression<T> binder;
     private T value;
 
@@ -77,6 +80,8 @@ public abstract class Property<T>
 
     public void bind(Exp<T> exp, Property<?>... dependencies)
     {
+        if (dependencies == null || dependencies.length == 0)
+            throw new RuntimeException("At least one dependency must exist!");
         bind(new Expression<>(exp, dependencies));
     }
 
@@ -92,11 +97,43 @@ public abstract class Property<T>
             if (dependency instanceof ConstantProperty<?>)
                 continue;
 
-            dependency.addListener((_, _, _) ->
+            //noinspection rawtypes
+            ChangeListener changeListener = (_, _, _) ->
             {
                 T calculated = binder.getExp().calculate();
                 setInternal(calculated);
-            });
+            };
+            //noinspection unchecked
+            binderListeners.add(changeListener);
+            //noinspection unchecked
+            dependency.addListener(changeListener);
         }
+
+        DependencyChecker dependencyChecker = new DependencyChecker();
+        dependencyChecker.check(this);
+
+        setInternal(binder.getExp().calculate());
+    }
+
+    public void clear()
+    {
+        if (binder == null)
+            return;
+
+        for (Property<?> dependency : this.binder.getDependencies())
+        {
+            for (ChangeListener<T> binderListener : binderListeners)
+            {
+                dependency.changeListeners.remove(binderListener);
+            }
+        }
+        binderListeners.clear();
+        binder = null;
+    }
+
+    @Override
+    public String toString()
+    {
+        return getClass().getSimpleName() + "{" + "debugName='" + debugName + '\'' + '}';
     }
 }

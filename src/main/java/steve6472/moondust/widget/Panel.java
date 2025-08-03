@@ -3,6 +3,7 @@ package steve6472.moondust.widget;
 import steve6472.core.registry.Key;
 import steve6472.moondust.MoonDustRegistries;
 import steve6472.moondust.core.blueprint.BlueprintFactory;
+import steve6472.moondust.view.PanelView;
 import steve6472.moondust.widget.component.layout.AbsoluteLayout;
 import steve6472.moondust.widget.component.layout.Layout;
 
@@ -35,6 +36,7 @@ public class Panel extends Widget
             return false;
         });
         this.focusOrder = List.copyOf(focusOrder);
+
     }
 
     public static Panel create(BlueprintFactory blueprint)

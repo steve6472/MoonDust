@@ -17,7 +17,7 @@
             tab_view: {
                 labels: ["Chat", "Chat Settings", "Font"],
                 views: ["mock_chat:chat", "mock_chat:chat_settings", "moondust:debug/outlines"],
-                default: 1,
+                default: 0,
                 side: "top"
             },
             bounds: ["100% - 4", "100% - 18"]
@@ -36,7 +36,14 @@
             widget: "moondust:button",
             name: "send_button",
             bounds: [10, 13],
-            button: {},
+            button: {
+                on_press: {
+                    script: "moondust:button_send_command",
+                    input: {
+                        key: "mock_chat:send_message"
+                    }
+                }
+            },
             sprites: {
                 normal: "moondust:generic_dark_pixel/arrow/style_2_odd/dark",
                 disabled: "moondust:generic_dark_pixel/arrow/style_2_odd/darkest",

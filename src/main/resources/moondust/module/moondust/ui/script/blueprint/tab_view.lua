@@ -42,7 +42,7 @@ local function createButton(lastButton, label, view, selected, buttonType)
     local button =
     {
         widget = "moondust:sub/tab_button/"..buttonType,
-        name = transformString(label),
+        name = "tab_button_"..transformString(label),
         position = position,
         bounds = {0, sides[buttonType].height},
         clickbox_size = {0, sides[buttonType].clickboxHeight},

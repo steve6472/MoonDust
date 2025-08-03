@@ -26,8 +26,13 @@
     ],
 
     scripts: {
-        "script": "moondust:widget/checkbox"
+        script: "moondust:widget/checkbox"
     },
+
+    // TODO: this is currently added from java checkbox blueprint
+//    properties: {
+//        checked: "boolean"
+//    },
 
     text: {
         text: {

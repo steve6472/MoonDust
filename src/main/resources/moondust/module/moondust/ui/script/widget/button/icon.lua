@@ -29,9 +29,11 @@ local function mouseRelease(widget)
     end
 end
 
-local function enableChange(widget)
-    if widget:isEnabled() then
-        if widget:internalStates().hovered then
+local function propertyChange(widget, changed)
+    if (changed.property ~= "enabled") then return end
+
+    if (changed.new_value) then
+        if (widget:internalStates().hovered) then
             changeCurrentSprite(widget, ids.sprite.hover)
         else
             changeCurrentSprite(widget, ids.sprite.normal)
@@ -45,4 +47,4 @@ events.onMouseEnter:register(mouseEnter)
 events.onMouseLeave:register(mouseLeave)
 events.onMousePress:register(mousePress)
 events.onMouseRelease:register(mouseRelease)
-events.onEnableChange:register(enableChange)
+events.onPropertyChange:register(propertyChange)

@@ -6,16 +6,17 @@ local function init(widget)
     local property = data:getString("moondust:debug/text_lines")
     if property == nil then return end
     local val = MoonDustDebug.getTextLines(property)
-    data:setFlag(checkbox.checked, val)
+    widget:changeProperty("checked", val)
 end
 
-local function press(widget, changed)
-    if not changed.key == checkbox.checked then return end
-    local data = widget:customData()
-    local property = data:getString("moondust:debug/text_lines")
-    if property == nil then return end
-    MoonDustDebug.setTextLines(property, changed.new)
+local function propertyChange(widget, changed)
+    if (changed.property == "checked") then
+        local data = widget:customData()
+        local property = data:getString("moondust:debug/text_lines")
+        if property == nil then return end
+        MoonDustDebug.setTextLines(property, changed.new_value)
+    end
 end
 
 events.onInit:register(init)
-events.onDataChanged:register(press)
+events.onPropertyChange:register(propertyChange)

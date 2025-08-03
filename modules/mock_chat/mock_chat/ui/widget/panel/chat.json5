@@ -1,4 +1,6 @@
 {
+    view_controller: "mock_chat:chat",
+
     children: [
         {
             widget: "mock_chat:status_bar",

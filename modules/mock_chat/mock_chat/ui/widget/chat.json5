@@ -1,7 +1,14 @@
 {
-    sprites: {
-        "main": "moondust:generic_dark_pixel/frame/flat/background_frame"
-    },
+    children: [
+        {
+            widget: "moondust:checkbox",
+            name: "escape_chat_enable",
+            position: [4, 4],
 
-    current_sprite: "main"
+            checkbox: {
+                label: "Can Escape Chat",
+                checked: false
+            }
+        }
+    ]
 }

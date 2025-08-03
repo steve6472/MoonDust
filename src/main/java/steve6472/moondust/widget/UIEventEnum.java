@@ -29,6 +29,8 @@ public enum UIEventEnum implements StringValue
     ON_RANDOM_TICK("onRandomTick", OnRandomTick.class),
 
     // LUA Only
+    ON_PROPERTY_CHANGE("onPropertyChange", OnPropertyChange.class),
+
     // Globals
     ON_GLOBAL_WINDOW_SIZE_CHANGE("onGlobalWindowSizeChange", OnGlobalWindowSizeChange.class),
     ON_GLOBAL_PIXEL_SCALE_CHANGE("onGlobalPixelScaleChange", OnGlobalPixelScaleChange.class),

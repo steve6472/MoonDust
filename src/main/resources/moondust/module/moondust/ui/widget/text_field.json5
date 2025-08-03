@@ -18,12 +18,14 @@
     },
     bounds: [8, 8],
     events: [
-        { call: "moondust:icon/change_enabled",   event: { type: "on_enable_change" } },
-        { call: "moondust:text/change_enabled",   event: { type: "on_enable_change" } },
-        { call: "moondust:grab_focus/release",    event: { type: "on_mouse_release" } },
         { call: "moondust:text_field/char_input", event: { type: "on_char_input" } },
         { call: "moondust:text_field/key_input",  event: { type: "on_key_input" } }
     ],
+
+    scripts: {
+        main: "moondust:widget/text_field",
+        focus: "moondust:widget/grab_focus"
+    },
 
     text: {
         text: {

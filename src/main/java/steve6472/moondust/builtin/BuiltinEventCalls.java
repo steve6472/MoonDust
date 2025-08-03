@@ -30,27 +30,11 @@ public class BuiltinEventCalls
 
     public static void init()
     {
-        create(key("grab_focus/release"), (Widget widget, OnMouseRelease _) -> {
-            if (!widget.isFocusable())
-            {
-                LOGGER.warning("Tried to grab focus on unfocusable widget " + widget.getPath());
-                return;
-            }
-
-            MoonDust.getInstance().focus(widget);
-        });
-
-        /*
-         * Icons
-         */
-        create(key("icon/change_enabled"), (Widget widget, OnEnableStateChange _) -> setCurrentSprite(widget, widget.isEnabled() ? (widget.internalStates().hovered ? ID.SPRITE_HOVER : ID.SPRITE_NORMAL) : ID.SPRITE_DISABLED));
-
         /*
          * Text
          */
         create(key("text/hover/on"),  (Widget widget, OnMouseEnter _) -> replaceStyleText(widget, pickStyle(widget)));
         create(key("text/hover/off"), (Widget widget, OnMouseLeave _) -> replaceStyleText(widget, pickStyle(widget)));
-        create(key("text/change_enabled"), (Widget widget, OnEnableStateChange _) -> replaceStyleText(widget, pickStyle(widget)));
         create(key("text/init"), (Widget widget, OnInit _) -> {
             Optional<MDText> component = widget.getComponent(MDText.class);
             component.ifPresent(mdLine -> {
@@ -71,6 +55,8 @@ public class BuiltinEventCalls
          * Text field
          */
         create(key("text_field/char_input"), (Widget widget, OnCharInput charInput) -> {
+            if (!widget.isEnabled() || !widget.isVisible())
+                return;
             widget.getComponent(MDText.class).ifPresent(label -> {
                 String text = label.text().parts().getFirst().text();
                 text = text + Character.toString(charInput.codepoint());
@@ -79,6 +65,8 @@ public class BuiltinEventCalls
         });
 
         create(key("text_field/key_input"), (Widget widget, OnKeyInput keyInput) -> {
+            if (!widget.isEnabled() || !widget.isVisible())
+                return;
             widget.getComponent(MDText.class).ifPresent(label -> {
                 String text = label.text().parts().getFirst().text();
 

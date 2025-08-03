@@ -2,6 +2,8 @@ package steve6472.moondust;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.JavaOps;
 import org.joml.Vector2i;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
@@ -100,7 +102,7 @@ public class MoonDust
     public static final Codec<Object> CODEC_LUA_VALUE = Codec.PASSTHROUGH.flatXmap(dyn -> {
         Object value = dyn.convert(LuaTableOps.INSTANCE).getValue();
         return DataResult.success(value);
-    }, object -> DataResult.error(() -> "Do not know how to serialize " + object));
+    }, object -> DataResult.success(new Dynamic<>(JavaOps.INSTANCE, object)));
 
     public void setWindow(Window window)
     {

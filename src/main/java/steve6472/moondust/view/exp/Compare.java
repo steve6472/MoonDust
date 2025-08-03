@@ -37,5 +37,6 @@ public interface Compare extends Exp<Boolean>
     {
         static Compare equal(Property<Boolean> left, Property<Boolean> right) { return () -> Objects.equals(left.get(), right.get()); }
         static Compare notEqual(Property<Boolean> left, Property<Boolean> right) { return () -> !Objects.equals(left.get(), right.get()); }
+        static Compare from(Property<Boolean> property) { return property::get; }
     }
 }

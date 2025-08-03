@@ -58,6 +58,10 @@ public class WidgetBlueprints
     public static final BlueprintEntry<RadioGroupBlueprint> RADIO_GROUP = register(RadioGroupBlueprint.KEY, RadioGroupBlueprint.CODEC);
     public static final BlueprintEntry<WidgetStatesBl> WIDGET_STATES = register(WidgetStatesBl.KEY, WidgetStatesBl.CODEC);
 
+    // View
+    public static final BlueprintEntry<PropertiesBlueprint> PROPERTIES = register(PropertiesBlueprint.KEY, PropertiesBlueprint.CODEC);
+    public static final BlueprintEntry<ViewControllerBlueprint> VIEW_CONTROLLER = register(ViewControllerBlueprint.KEY, ViewControllerBlueprint.CODEC);
+
     // Children specific
     public static final BlueprintEntry<WidgetReferenceBlueprint> WIDGET = register(WidgetReferenceBlueprint.KEY, WidgetReferenceBlueprint.CODEC);
     public static final BlueprintEntry<NameBlueprint> NAME = register(NameBlueprint.KEY, NameBlueprint.CODEC);
