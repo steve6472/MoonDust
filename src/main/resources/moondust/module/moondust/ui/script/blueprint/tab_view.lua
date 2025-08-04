@@ -19,7 +19,7 @@ local function transformString(str)
     -- Replace spaces with underscores
     str = string.gsub(str, " ", "_")
     -- Remove all non-alphabetic and non-underscore characters
-    str = string.gsub(str, "[^a-zA-Z_]", "")
+    str = string.gsub(str, "[^a-zA-Z_]", ".")
     -- Convert to lowercase
     str = string.lower(str)
     return str
@@ -50,7 +50,7 @@ local function createButton(lastButton, label, view, selected, buttonType)
             label = label,
             on_press = {
                 script = "moondust:widget/tab_view/button_change_content",
-                input = view
+                input = "view_content_"..transformString(view)
             }
         },
         render_order = {
@@ -61,26 +61,57 @@ local function createButton(lastButton, label, view, selected, buttonType)
             group = RADIO_BUTTON_GROUP,
             selected = selected,
             -- hijack label 'cause I'm lazy
-            label = view
+            label = "view_content_"..transformString(view)
         }
     }
 
     return button
 end
 
+local function createContent(widget)
+
+    local child =
+    {
+        widget = widget,
+        name = "view_content_"..transformString(widget),
+        position = {0, 0},
+        bounds = {"100%", "100%"}
+    }
+
+    return child
+end
+
 function init(input)
     --print(core.dump(input))
 
-    local childs = {}
+    local tabs = {}
+    local contents = {}
 
     for i = 0, #input.labels, 1 do
-        childs[i + 1] = createButton(childs[i], input.labels[i], input.views[i], i == input.default, input.side)
+        tabs[i + 1] = createButton(tabs[i], input.labels[i], input.views[i], i == input.default, input.side)
+        contents[i + 1] = createContent(input.views[i])
     end
+
+    local children =
+    {
+        {
+            widget = "moondust:empty",
+            name = "content",
+            position = {0, 0},
+            children = contents
+        }
+    }
+
+    for _, v in pairs(tabs) do
+        table.insert(children, v)
+    end
+
+    --print(core.dump(children))
 
     return {
         tables = {
             ["moondust:tab_view"] = input
         },
-        children = childs
+        children = children
     }
 end

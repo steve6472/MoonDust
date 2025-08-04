@@ -13,11 +13,6 @@
                 "main": "moondust:generic_dark_pixel/frame/compound"
             },
             current_sprite: "main"
-        },
-        {
-            widget: "moondust:empty",
-            name: "content",
-            position: [0, 0]
         }
     ]
 }

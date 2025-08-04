@@ -91,20 +91,17 @@ local function init(widget)
 
     -- do what button_change_content does
     if group.selected then
-        local child =
-        {
-            widget = group.label,
-            name = "view_content",
-            position = {0, 0},
-            bounds = {"100%", "100%"}
-        }
         local content = widget:getParent():getChild("content")
 
         for _, v in ipairs(content:getChildrenNames()) do
-            content:removeChild(v)
-        end
+            local child = content:getChild(v)
+            local visible = false;
+            if (child:getName() == group.label) then
+                visible = true
+            end
 
-        content:addChildren({child})
+            child:setVisible(visible)
+        end
     end
 end
 

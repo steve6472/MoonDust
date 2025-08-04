@@ -4,7 +4,6 @@ import steve6472.core.registry.Key;
 import steve6472.moondust.view.PanelView;
 import steve6472.moondust.view.exp.Compare;
 import steve6472.moondust.view.property.BooleanProperty;
-import steve6472.moondust.view.property.Property;
 
 /**
  * Created by steve6472

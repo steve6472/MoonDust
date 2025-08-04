@@ -13,7 +13,6 @@ import steve6472.moondust.core.MoonDustKeybinds;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.ClickboxOffset;
-import steve6472.moondust.widget.component.ClickboxSize;
 import steve6472.moondust.widget.component.event.*;
 import steve6472.moondust.widget.component.event.global.OnGlobalPixelScaleChange;
 import steve6472.radiant.LuaTableOps;

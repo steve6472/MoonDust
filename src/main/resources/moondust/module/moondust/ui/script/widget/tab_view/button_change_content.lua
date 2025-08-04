@@ -9,21 +9,17 @@ local function action(widget)
         return
     end
 
-    local child =
-    {
-        widget = inputArgs,
-        name = "view_content",
-        position = {0, 0},
-        bounds = {"100%", "100%"}
-    }
-
     local content = widget:getParent():getChild("content")
 
-    for k, v in ipairs(content:getChildrenNames()) do
-        content:removeChild(v)
-    end
+    for _, v in ipairs(content:getChildrenNames()) do
+        local child = content:getChild(v)
+        local visible = false;
+        if (child:getName() == inputArgs) then
+            visible = true
+        end
 
-    content:addChildren({child})
+        child:setVisible(visible)
+    end
 end
 
 events.onMouseRelease:register(action)

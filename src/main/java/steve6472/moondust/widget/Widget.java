@@ -457,7 +457,10 @@ public class Widget implements WidgetComponentGetter
 
     public boolean isVisible()
     {
-        return states.visible.get();
+        boolean b = states.visible.get();
+        if (!b) return false;
+        Optional<Widget> parent = parent();
+        return parent.map(Widget::isVisible).orElse(true);
     }
 
     public boolean isEnabled()
