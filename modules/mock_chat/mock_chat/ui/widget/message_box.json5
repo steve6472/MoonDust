@@ -15,7 +15,7 @@
                 offset: [2, 2]
             },
             tab_view: {
-                labels: ["Chat", "Chat Settings", "Font"],
+                labels: ["Chat", "Settings", "Debug"],
                 views: ["mock_chat:chat", "mock_chat:chat_settings", "moondust:debug/outlines"],
                 default: 1,
                 side: "top"

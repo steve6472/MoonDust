@@ -1,14 +1,7 @@
 package steve6472.moondust.luau.libraries;
 
 import steve6472.core.log.Log;
-import steve6472.core.registry.Key;
-import steve6472.flare.registry.FlareRegistries;
-import steve6472.flare.ui.font.render.TextPart;
-import steve6472.flare.ui.font.style.FontStyleEntry;
-import steve6472.moondust.DebugWidgetUILines;
-import steve6472.moondust.MoonDust;
-import steve6472.moondust.widget.Widget;
-import steve6472.moondust.widget.component.MDText;
+import steve6472.moondust.render.DebugWidgetUILines;
 import steve6472.radiant.LuauLib;
 import steve6472.test.DebugUILines;
 

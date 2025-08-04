@@ -148,7 +148,6 @@ public class Widget implements WidgetComponentGetter
             if (!(this instanceof Panel panel))
                 throw new RuntimeException("ViewController can only be used on a panel (for now?)");
             viewController.panelView().init(panel);
-            viewController.panelView().bind();
         });
 
         postCreateValidation();
@@ -190,26 +189,11 @@ public class Widget implements WidgetComponentGetter
         if (children.containsKey(name.value()))
             throw new IllegalStateException("Child widget with name '" + name.value() + "' already exists!");
         children.put(name.value(), widget);
-
-        // TODO: probably remove this
-        panel().ifPresent(panel -> {
-            panel.getComponent(ViewController.class).ifPresent(viewController -> {
-                viewController.panelView().update();
-            });
-        });
     }
 
     public boolean removeChild(String name)
     {
-        boolean ret = children.remove(name) != null;
-
-        // TODO: probably remove this
-        panel().ifPresent(panel -> {
-            panel.getComponent(ViewController.class).ifPresent(viewController -> {
-                viewController.panelView().update();
-            });
-        });
-        return ret;
+        return children.remove(name) != null;
     }
 
     public <T extends UIEvent> void handleEvents(Class<T> eventType)

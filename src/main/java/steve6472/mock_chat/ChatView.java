@@ -2,8 +2,11 @@ package steve6472.mock_chat;
 
 import steve6472.core.registry.Key;
 import steve6472.moondust.view.PanelView;
-import steve6472.moondust.view.exp.Compare;
 import steve6472.moondust.view.property.BooleanProperty;
+
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 
 /**
  * Created by steve6472
@@ -13,9 +16,6 @@ import steve6472.moondust.view.property.BooleanProperty;
 public class ChatView extends PanelView
 {
     /* Notes
-     *
-     * Widget addChild, removeChild have view update functions, possibly remove them
-     * Change tab_view to change widget visibility instead of removing/adding children
      *
      * Going further, before view init, all widgets should be already created.
      * No widgets that are meant to be controlled from view should be added/removed, only visibility change can happen.
@@ -36,16 +36,21 @@ public class ChatView extends PanelView
         // Properties can be set from global values if needed here
 //        escapeChatEnable.set(true);
 
-        navigateBackEnabled.bind(Compare.Bool.from(escapeChatEnable), escapeChatEnable);
+        navigateBackEnabled.bind(escapeChatEnable.copyFrom());
     }
 
     @Override
     protected void createCommandListeners()
     {
-        addCommandListener(key("send_message"), input -> {
+        addCommandListener(key("copy_panel"), input -> {
             // TODO: use
 //            inputText.get();
 //            inputText.set("");
+            String myString = panel.toString();
+            myString = myString.replaceAll("\\R", "\\\\n");
+            StringSelection stringSelection = new StringSelection(myString);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
         });
     }
 

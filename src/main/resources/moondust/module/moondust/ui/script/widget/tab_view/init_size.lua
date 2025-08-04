@@ -41,20 +41,25 @@ local function findGroupMembers(container, group)
 end
 
 local function adjustValues(inputTable, addition, indexToModify)
-    local value = inputTable[indexToModify]
+    -- Create a shallow copy of the input table
+    local newTable = {}
+    for k, v in pairs(inputTable) do
+        newTable[k] = v
+    end
+
+    local value = newTable[indexToModify]
 
     if type(value) == "string" then
-        -- Extract everything up to the last number and the number itself
         local prefix, num = string.match(value, "^(.-)(%-?%d+)$")
         if num then
             local newNum = tonumber(num) + addition
-            inputTable[indexToModify] = prefix .. newNum
+            newTable[indexToModify] = prefix .. newNum
         end
     elseif type(value) == "number" then
-        inputTable[indexToModify] = value + addition
+        newTable[indexToModify] = value + addition
     end
 
-    return inputTable
+    return newTable
 end
 
 local function init(widget)

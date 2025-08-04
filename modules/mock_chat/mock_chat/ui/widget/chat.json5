@@ -1,14 +1,4 @@
 {
     children: [
-        {
-            widget: "moondust:checkbox",
-            name: "escape_chat_enable",
-            position: [4, 4],
-
-            checkbox: {
-                label: "Can Escape Chat",
-                checked: false
-            }
-        }
     ]
 }

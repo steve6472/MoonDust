@@ -1,24 +1,60 @@
 {
-    text: {
-        text: {
-            parts: [
-                {
-                    text: "Access Denied!\n\nContacting local authorities...",
-                    style: "moondust:button/normal"
-                }
-            ],
-            anchor: "top_left",
-            align: "left",
-            text_size: 6,
-            vertical_anchor: "max_height",
-            max_width: 128,
-            max_height: 20
+    children: [
+        {
+            widget: "moondust:checkbox",
+            name: "escape_chat_enable",
+            position: [1, 1],
+
+            checkbox: {
+                label: "Can Escape Chat",
+                checked: true
+            }
         },
-        position: {
-            type: "anchored",
-            anchor: "left",
-            offset: [0, 0]
+        {
+            widget: "moondust:button",
+            name: "debug_copy_panel_java",
+            position: [1, 11],
+            bounds: [96, 13],
+            button: {
+                on_press: {
+                    script: "moondust:button_send_command",
+                    input: {
+                        key: "mock_chat:copy_panel"
+                    }
+                },
+                label: "Debug Panel Copy"
+            }
         },
-        inherit_width: true
-    }
+        {
+            widget: "moondust:empty",
+            name: "funny_text_reference",
+            position: {
+                type: "anchored",
+                anchor: "bottom_left"
+            },
+            bounds: ["100%", 20],
+
+            text: {
+                text: {
+                    parts: [
+                        {
+                            text: "Access Denied!\n\nContacting local authorities...",
+                            style: "moondust:button/normal"
+                        }
+                    ],
+                    anchor: "top_left",
+                    align: "left",
+                    text_size: 6,
+                    vertical_anchor: "max_height",
+                    max_height: 20
+                },
+                position: {
+                    type: "anchored",
+                    anchor: "left",
+                    offset: [0, 0]
+                },
+                inherit_width: true
+            }
+        }
+    ]
 }

@@ -1,10 +1,11 @@
-package steve6472.moondust;
+package steve6472.moondust.render;
 
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import steve6472.flare.render.debug.DebugRender;
 import steve6472.flare.render.impl.UILineRenderImpl;
+import steve6472.moondust.MoonDust;
 import steve6472.moondust.widget.component.*;
 
 /**
@@ -32,6 +33,8 @@ public class DebugWidgetUILines extends UILineRenderImpl
                 widget.getSpriteSize().ifPresent(spriteSize -> {
                     if (widget.getComponent(CurrentSprite.class).isEmpty())
                         return;
+                    if (!widget.isVisible())
+                        return;
 
                     Vector2i position = widget.getPosition();
                     widget.getComponent(SpriteOffset.class).ifPresent(offset -> position.add(offset.x, offset.y));
@@ -46,6 +49,8 @@ public class DebugWidgetUILines extends UILineRenderImpl
                 {
                     if (!widget.isClickable())
                         return;
+                    if (!widget.isVisible())
+                        return;
 
                     Vector2i clickboxPosition = widget.getPosition();
                     widget.getComponent(ClickboxOffset.class).ifPresent(offset -> clickboxPosition.add(offset.x, offset.y));
@@ -58,6 +63,9 @@ public class DebugWidgetUILines extends UILineRenderImpl
             {
                 widget.getBounds().ifPresent(bounds ->
                 {
+                    if (!widget.isVisible())
+                        return;
+
                     Vector2i position = widget.getPosition();
                     rectangleScaled(position.x, position.y, bounds.width(), bounds.height(), BOUNDS);
                 });

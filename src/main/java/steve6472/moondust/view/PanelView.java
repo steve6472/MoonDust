@@ -50,13 +50,6 @@ public abstract class PanelView
         if (this.panel != null)
             throw new IllegalStateException("Can not init, Panel already set!");
         this.panel = panel;
-        update();
-    }
-
-    public void update()
-    {
-        if (panel == null)
-            return;
 
         properties.clear();
         commandListeners.clear();
@@ -73,23 +66,21 @@ public abstract class PanelView
 
         createProperties();
         createCommandListeners();
+        bind();
     }
 
-    public void bind()
+    private void bind()
     {
         properties.forEach((key, property) ->
         {
-            property.addListener((_, oldVal, newVal) ->
+            Pair<Widget, Property<?>> byProperty = findByProperty(key);
+            if (byProperty == null)
             {
-                Pair<Widget, Property<?>> byProperty = findByProperty(key);
-                if (byProperty == null)
-                {
-                    Log.warningOnce(viewLog, "Could not find widget for property '%s'".formatted(key));
-                    return;
-                }
+                Log.warningOnce(viewLog, "Could not find widget for property '%s'".formatted(key));
+                return;
+            }
 
-                byProperty.getFirst().handleEvents(OnPropertyChange.class, _ -> true, new OnPropertyChange(key.split("\\.")[0], oldVal, newVal));
-            });
+            property.addListener((_, oldVal, newVal) -> byProperty.getFirst().handleEvents(OnPropertyChange.class, _ -> true, new OnPropertyChange(key.split("\\.")[0], oldVal, newVal)));
         });
     }
 
