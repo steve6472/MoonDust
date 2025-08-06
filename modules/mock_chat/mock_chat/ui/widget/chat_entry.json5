@@ -11,6 +11,10 @@
         init: "mock_chat:widget/chat_entry"
     },
 
+    states: {
+        clickable: true
+    },
+
     children: [
         {
             widget: "moondust:empty",
@@ -20,7 +24,7 @@
                 anchor: "top_left",
                 offset: [20, 3]
             },
-            bounds: ["100% - 20", 6],
+            bounds: ["100% - 50", 6],
 
             text: {
                 text: {
@@ -52,7 +56,7 @@
                 anchor: "top_left",
                 offset: [20, 12]
             },
-            bounds: ["100% - 20", 6],
+            bounds: ["100% - 29", 6],
 
             text: {
                 text: {
@@ -74,6 +78,41 @@
                     offset: [0, 0]
                 },
                 inherit_width: true
+            }
+        },
+        {
+            widget: "moondust:button",
+            name: "hamnurger",
+            position: {
+                type: "anchored",
+                anchor: "top_right",
+                offset: [-1, 2]
+            },
+            bounds: [7, 7],
+            sprites: {
+                normal: "moondust:generic_dark_pixel/button/tiny/hamburger/white",
+                hover: "moondust:generic_dark_pixel/button/tiny/hamburger/white",
+                pressed: "moondust:generic_dark_pixel/button/tiny/hamburger/white"
+            },
+            focused_sprite: "moondust:generic_dark_pixel/button/tiny/hamburger/white"
+        },
+        {
+            widget: "moondust:button",
+            name: "delete_entry",
+            position: {
+                type: "anchored",
+                anchor: "top_right",
+                offset: [-9, 2]
+            },
+            bounds: [7, 7],
+            sprites: {
+                normal: "moondust:generic_dark_pixel/button/tiny/cross/normal",
+                hover: "moondust:generic_dark_pixel/button/tiny/cross/white",
+                pressed: "moondust:generic_dark_pixel/button/tiny/cross/white"
+            },
+            focused_sprite: "moondust:generic_dark_pixel/button/tiny/cross/black",
+            "moondust:button": {
+                on_press: "mock_chat:widget/chat_entry_remove"
             }
         }
     ]

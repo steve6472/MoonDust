@@ -155,11 +155,6 @@ public class LuaWidget
             }
             return 1;
         });
-        META.addFunction("getKey", state -> {
-            Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
-            state.pushString(widget.getKey().toString());
-            return 1;
-        });
         META.addFunction("internalStates", state -> {
             Widget widget = (Widget) state.checkUserDataArg(1, "Widget");
 

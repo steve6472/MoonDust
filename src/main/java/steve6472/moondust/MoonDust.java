@@ -3,7 +3,6 @@ package steve6472.moondust;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.JavaOps;
 import org.joml.Vector2i;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
@@ -78,6 +77,7 @@ public class MoonDust
      *
      * Bugs:
      *  [ ] Tab navigation after changing panels does not work
+     *  [ ] Tab navigation navigates to invisible/disabled widgets
      *  [ ] Font Rendering is relying on a hack
      */
     private static final Logger LOGGER = Log.getLogger(MoonDust.class);
@@ -90,13 +90,6 @@ public class MoonDust
     private Window window;
     private float pixelScale = 4;
     private Panel focusedPanel;
-
-    public static final Codec<LuauTable> CODEC_TABLE = Codec.PASSTHROUGH.flatXmap(dyn -> {
-        Object value = dyn.convert(LuaTableOps.INSTANCE).getValue();
-        if (!(value instanceof LuauTable table))
-            return DataResult.error(() -> "Not a lua table!");
-        return DataResult.success(table);
-    }, table -> DataResult.error(() -> "Do not know how to serialize " + table));
 
     public static final Codec<Object> CODEC_LUA_VALUE = Codec.PASSTHROUGH.flatXmap(dyn -> {
         Object value = dyn.convert(LuaTableOps.INSTANCE).getValue();
@@ -182,6 +175,7 @@ public class MoonDust
         iterate(widget -> widget.handleEvents(aClass, _ -> true, event));
     }
 
+    /// Warning: this method may not work
     public Optional<Widget> getTopWidgetAt(int x, int y)
     {
         Widget[] ret = {null};

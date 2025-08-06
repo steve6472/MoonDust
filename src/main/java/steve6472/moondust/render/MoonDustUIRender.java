@@ -105,11 +105,18 @@ public class MoonDustUIRender extends UIRenderImpl
         if (!leftPress)
             canInteract = true;
 
-        moonDust.iterate(widget ->
+        List<Widget> widgets = new ArrayList<>();
+
+        moonDust.iterate(widget -> widgets.add(widget));
+
+        for (int i = 0; i < widgets.size(); i++)
         {
-            processEvents(widget);
-            renderWidget(widget);
-        });
+            Widget left = widgets.get(i);
+            Widget right = widgets.get(widgets.size() - i - 1);
+
+            processEvents(right);
+            renderWidget(left);
+        }
 
         if (leftPress)
             canInteract = false;
