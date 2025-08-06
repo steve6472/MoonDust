@@ -1,4 +1,9 @@
 {
-    children: [
-    ]
+    properties: {
+        entries: "table"
+    },
+
+    scripts: {
+        updater : "mock_chat:widget/chat"
+    }
 }

@@ -53,7 +53,6 @@ public record CheckBoxBlueprint(Key pressCall, Key pressScript, String label, bo
         }
 
         CustomData data = new CustomData();
-//        data.putFlag(BuiltinEventCalls.Keys.CHECKBOX_CHECKED, checked);
 
         if (!label.isBlank())
         {

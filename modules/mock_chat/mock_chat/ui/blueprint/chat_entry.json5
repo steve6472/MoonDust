@@ -1,0 +1,17 @@
+{
+    script: "mock_chat:blueprint/chat_entry",
+    fields: {
+        icon_path: {
+            type: "string",
+            required: true
+        },
+        username: {
+            type: "string",
+            required: true
+        },
+        message_body: {
+            type: "string",
+            required: true
+        }
+    }
+}

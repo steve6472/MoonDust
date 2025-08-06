@@ -70,7 +70,7 @@ public class MoonDust
      *
      * [ ] Canvas - abilty to render arbitary graphics
      *
-     * [ ] Bridge parameters - changing value in lua should reflect value change in java and vice versa
+     * [x] Bridge parameters - changing value in lua should reflect value change in java and vice versa
      *
      * [ ] Consider similar system to Bounds % size but with position?
      *
@@ -101,7 +101,7 @@ public class MoonDust
     public static final Codec<Object> CODEC_LUA_VALUE = Codec.PASSTHROUGH.flatXmap(dyn -> {
         Object value = dyn.convert(LuaTableOps.INSTANCE).getValue();
         return DataResult.success(value);
-    }, object -> DataResult.success(new Dynamic<>(JavaOps.INSTANCE, object)));
+    }, object -> DataResult.success(new Dynamic<>(LuaTableOps.INSTANCE, object)));
 
     public void setWindow(Window window)
     {

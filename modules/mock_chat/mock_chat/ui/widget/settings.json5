@@ -26,6 +26,25 @@
             }
         },
         {
+            widget: "moondust:button",
+            name: "reset_chat",
+            position: {
+                type: "relative",
+                parent: "debug_copy_panel_java",
+                offset: [0, 14]
+            },
+            bounds: [96, 13],
+            button: {
+                on_press: {
+                    script: "moondust:button_send_command",
+                    input: {
+                        key: "mock_chat:reset_chat"
+                    }
+                },
+                label: "Reset Chat"
+            }
+        },
+        {
             widget: "moondust:empty",
             name: "funny_text_reference",
             position: {

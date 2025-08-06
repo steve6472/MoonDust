@@ -171,7 +171,7 @@ public abstract class PanelView
         Consumer<Object> objectConsumer = commandListeners.get(key);
         if (objectConsumer == null)
         {
-            LOGGER.warning("Recieved unknown Command '%s' (no command listener exists)".formatted(key));
+            viewLog.warning("Recieved unknown Command '%s' (no command listener exists)".formatted(key));
             return;
         }
         finer("Command '%s' recieved%s".formatted(key, command.value() == null ? "" : " with input: " + command.value()));

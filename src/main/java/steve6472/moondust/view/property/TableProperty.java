@@ -18,4 +18,13 @@ public class TableProperty extends Property<LuauTable>
     {
         set(value);
     }
+
+    @Override
+    public LuauTable get()
+    {
+        LuauTable oldTable = super.get();
+        LuauTable newTable = new LuauTable();
+        oldTable.table().forEach(newTable::add);
+        return newTable;
+    }
 }

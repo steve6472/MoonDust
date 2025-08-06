@@ -16,8 +16,8 @@
             },
             tab_view: {
                 labels: ["Chat", "Settings", "Debug"],
-                views: ["mock_chat:chat", "mock_chat:chat_settings", "moondust:debug/outlines"],
-                default: 1,
+                views: ["mock_chat:chat_container", "mock_chat:settings", "moondust:debug/outlines"],
+                default: 0,
                 side: "top"
             },
             bounds: ["100% - 4", "100% - 18"]

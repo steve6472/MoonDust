@@ -1,0 +1,80 @@
+{
+    sprites: {
+        icon: ""
+    },
+
+    current_sprite: "icon",
+    sprite_size: [16, 16],
+    sprite_offset: [2, 2],
+
+    scripts: {
+        init: "mock_chat:widget/chat_entry"
+    },
+
+    children: [
+        {
+            widget: "moondust:empty",
+            name: "username",
+            position: {
+                type: "anchored",
+                anchor: "top_left",
+                offset: [20, 3]
+            },
+            bounds: ["100% - 20", 6],
+
+            text: {
+                text: {
+                    parts: [
+                        {
+                            text: "",
+                            style: "moondust:button/normal"
+                        }
+                    ],
+                    anchor: "top_left",
+                    align: "left",
+                    text_size: 6,
+                    vertical_anchor: "max_height",
+                    max_height: 6
+                },
+                position: {
+                    type: "anchored",
+                    anchor: "left",
+                    offset: [0, 0]
+                },
+                inherit_width: true
+            }
+        },
+        {
+            widget: "moondust:empty",
+            name: "message",
+            position: {
+                type: "anchored",
+                anchor: "top_left",
+                offset: [20, 12]
+            },
+            bounds: ["100% - 20", 6],
+
+            text: {
+                text: {
+                    parts: [
+                        {
+                            text: "",
+                            style: "moondust:button/normal"
+                        }
+                    ],
+                    anchor: "top_left",
+                    align: "left",
+                    text_size: 6,
+                    vertical_anchor: "max_height",
+                    max_height: 6
+                },
+                position: {
+                    type: "anchored",
+                    anchor: "left",
+                    offset: [0, 0]
+                },
+                inherit_width: true
+            }
+        }
+    ]
+}
