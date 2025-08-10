@@ -89,6 +89,16 @@ public class MoonDustGlobal
             String replacement = state.checkStringArg(3);
             state.pushString(value.replace(target, replacement));
             return 1;
+        }, "substring", state -> {
+            String str = state.checkStringArg(1);
+            int start = state.checkIntegerArg(2);
+            int end = state.checkIntegerArg(3);
+            state.pushString(str.substring(start, end));
+            return 1;
+        }, "length", state -> {
+            String str = state.checkStringArg(1);
+            state.pushInteger(str.length());
+            return 1;
         }));
 
         return global;

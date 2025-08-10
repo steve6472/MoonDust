@@ -50,38 +50,6 @@ public class BuiltinEventCalls
             });
             replaceStyle(widget, pickStyle(widget, (widget.internalStates().hovered || widget.internalStates().directHover) ? Tristate.TRUE : Tristate.FALSE));
         });
-
-        /*
-         * Text field
-         */
-        create(key("text_field/char_input"), (Widget widget, OnCharInput charInput) -> {
-            if (!widget.isEnabled() || !widget.isVisible())
-                return;
-            widget.getComponent(MDText.class).ifPresent(label -> {
-                String text = label.text().parts().getFirst().text();
-                text = text + Character.toString(charInput.codepoint());
-                label.replaceText(text, 0);
-            });
-        });
-
-        create(key("text_field/key_input"), (Widget widget, OnKeyInput keyInput) -> {
-            if (!widget.isEnabled() || !widget.isVisible())
-                return;
-            widget.getComponent(MDText.class).ifPresent(label -> {
-                String text = label.text().parts().getFirst().text();
-
-                if (keyInput.action() == GLFW.GLFW_RELEASE)
-                    return;
-
-                if (keyInput.key() == GLFW.GLFW_KEY_BACKSPACE)
-                {
-                    if (!text.isEmpty())
-                        text = text.substring(0, text.length() - 1);
-                }
-
-                label.replaceText(text, 0);
-            });
-        });
     }
 
     private static <T extends UIEvent> void create(Key key, UIEventCall<T> eventCall)

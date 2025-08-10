@@ -17,10 +17,6 @@
         clickable: true
     },
     bounds: [8, 8],
-    events: [
-        { call: "moondust:text_field/char_input", event: { type: "on_char_input" } },
-        { call: "moondust:text_field/key_input",  event: { type: "on_key_input" } }
-    ],
 
     scripts: {
         main: "moondust:widget/text_field",
