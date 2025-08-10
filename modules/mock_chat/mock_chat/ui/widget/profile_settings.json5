@@ -1,0 +1,135 @@
+{
+    children: [
+        {
+            widget: "moondust:empty",
+            name: "bg_frame",
+            bounds: ["100%", "100% - 8"],
+            position: {
+                type: "anchored",
+                anchor: "bottom_left"
+            },
+            sprites: {
+                "main": "moondust:generic_dark_pixel/frame/flat/light_frame/light_inside/style_5"
+            },
+
+            current_sprite: "main"
+        },
+        {
+            widget: "moondust:empty",
+            name: "name_notch",
+            bounds: [32, 10],
+            position: {
+                type: "anchored",
+                anchor: "top_left",
+                offset: [5, 0]
+            },
+            sprites: {
+                "main": "moondust:generic_dark_pixel/frame/title_notch/light/normal/style_5"
+            },
+
+            current_sprite: "main",
+
+            text: {
+                text: {
+                    parts: [
+                        {
+                            text: "Profile",
+                            style: "moondust:tiny_pixie2_dark"
+                        }
+                    ],
+                    anchor: "top_left",
+                    align: "left",
+                    text_size: 6,
+                    vertical_anchor: "max_height"
+                },
+                position: {
+                    type: "anchored",
+                    anchor: "top_left",
+                    offset: [4, 3]
+                }
+            }
+        },
+        {
+            widget: "moondust:empty",
+            name: "content",
+            bounds: ["100% - 11", "100% - 19"],
+            position: [5, 14],
+            children: [
+                {
+                    widget: "moondust:empty",
+                    name: "label_name",
+                    bounds: ["100%", 6],
+                    position: [1, 4],
+
+                    text: {
+                        text: {
+                            parts: [
+                                {
+                                    text: "Name:",
+                                    style: "moondust:tiny_pixie2"
+                                }
+                            ],
+                            anchor: "top_left",
+                            align: "left",
+                            text_size: 6,
+                            vertical_anchor: "max_height"
+                        },
+                        position: {
+                            type: "anchored",
+                            anchor: "top_left",
+                            offset: [0, 0]
+                        }
+                    }
+                },
+                {
+                    widget: "moondust:text_field",
+                    name: "username",
+                    bounds: ["100% - 26", 13],
+                    position: [24, 0],
+
+                    text_field: {
+                        ghost_text: "Username",
+                        initial_text: "Eksuvia"
+                    }
+                },
+                {
+                    widget: "moondust:empty",
+                    name: "label_pfp",
+                    bounds: ["100%", 6],
+                    position: [1, 18],
+
+                    text: {
+                        text: {
+                            parts: [
+                                {
+                                    text: "Pfp:",
+                                    style: "moondust:tiny_pixie2"
+                                }
+                            ],
+                            anchor: "top_left",
+                            align: "left",
+                            text_size: 6,
+                            vertical_anchor: "max_height"
+                        },
+                        position: {
+                            type: "anchored",
+                            anchor: "top_left",
+                            offset: [0, 0]
+                        }
+                    }
+                },
+                {
+                    widget: "moondust:text_field",
+                    name: "pfp",
+                    bounds: ["100% - 26", 13],
+                    position: [24, 14],
+
+                    text_field: {
+                        ghost_text: "Profile Picture",
+                        initial_text: "no_git:users/eksuvia"
+                    }
+                }
+            ]
+        }
+    ]
+}

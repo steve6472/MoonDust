@@ -4,6 +4,7 @@ import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
 import steve6472.core.registry.ObjectRegistry;
 import steve6472.core.registry.Registry;
+import steve6472.core.setting.Setting;
 import steve6472.flare.input.Keybind;
 import steve6472.flare.registry.RegistryCreators;
 import steve6472.mock_chat.ChatView;
@@ -47,6 +48,7 @@ public class MoonDustRegistries extends RegistryCreators
         LOADERS.put(MoonDustConstants.key("moondust_components"), MoonDustComponents::init);
     }
 
+    public static final ObjectRegistry<Setting<?, ?>> SETTINGS = createNamespacedObjectRegistry(MoonDustConstants.NAMESPACE, "settings", () -> MoonDustSettings.DEBUG_CURSOR);
     public static final ObjectRegistry<ProfiledScript> LUA_SCRIPT = createObjectRegistry(key("lua_script"), LuaScriptLoader::load);
     public static final ObjectRegistry<JavaFunc> JAVA_FUNC = createObjectRegistry(key("java_func"), () -> {
 //        JavaFunctions.init();

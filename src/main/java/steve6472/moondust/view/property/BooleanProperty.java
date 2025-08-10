@@ -1,6 +1,6 @@
 package steve6472.moondust.view.property;
 
-import steve6472.moondust.view.exp.Compare;
+import steve6472.core.setting.BoolSetting;
 import steve6472.moondust.view.exp.Expression;
 
 /**
@@ -20,8 +20,15 @@ public class BooleanProperty extends Property<Boolean>
         set(value);
     }
 
+    public static BooleanProperty fromSetting(BoolSetting setting)
+    {
+        BooleanProperty property = new BooleanProperty(setting.get());
+        property.addListener((_, _, nVal) -> setting.set(nVal));
+        return property;
+    }
+
     public Expression<Boolean> copyFrom()
     {
-        return new Expression<>(Compare.Bool.from(this), this);
+        return new Expression<>(this::get, this);
     }
 }

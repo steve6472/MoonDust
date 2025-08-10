@@ -30,6 +30,10 @@
                 type: "anchored",
                 anchor: "bottom_left",
                 offset: [2, -2]
+            },
+            text_field: {
+                ghost_text: "Message",
+                password: false
             }
         },
         {

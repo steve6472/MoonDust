@@ -68,7 +68,7 @@ public record CheckBoxBlueprint(Key pressCall, Key pressScript, String label, bo
 
         BooleanProperty checkedProperty = new BooleanProperty(checked);
         checkedProperty.setDebugName("checked");
-        Properties properties = new Properties(Map.of("checked", checkedProperty));
+        Properties properties = Properties.ofProperties(Map.of("checked", checkedProperty));
 
         components.add(properties);
         components.add(data);

@@ -80,6 +80,10 @@ public class LuaWidget
 
             Codec<?> codec = MoonDustComponents.byKey(typeKey).codec();
             var decode = codec.decode(LuaTableOps.INSTANCE, java);
+            if (decode.isError())
+            {
+                LOGGER.severe("Error while decoding " + java);
+            }
             Object first = decode.getOrThrow().getFirst();
             widget.addComponent(first);
             return 0;

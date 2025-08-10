@@ -94,7 +94,7 @@ public class WidgetStates implements Mergeable<WidgetStates>
 
     public Properties toProperties()
     {
-        return new Properties(Map.of(
+        return Properties.ofProperties(Map.of(
             "enabled", enabled,
             "visible", visible,
             "clickable", clickable,

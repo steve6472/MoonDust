@@ -3,13 +3,16 @@ package steve6472.moondust.view;
 import com.mojang.datafixers.util.Pair;
 import steve6472.core.log.Log;
 import steve6472.core.registry.Key;
+import steve6472.core.setting.BoolSetting;
+import steve6472.core.setting.FloatSetting;
+import steve6472.core.setting.IntSetting;
+import steve6472.core.setting.StringSetting;
 import steve6472.flare.util.Obj;
+import steve6472.moondust.MoonDustSettings;
 import steve6472.moondust.view.exp.Arithmetic;
 import steve6472.moondust.view.exp.Compare;
 import steve6472.moondust.view.exp.Const;
-import steve6472.moondust.view.property.BooleanProperty;
-import steve6472.moondust.view.property.IntegerProperty;
-import steve6472.moondust.view.property.Property;
+import steve6472.moondust.view.property.*;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.component.Properties;
@@ -211,6 +214,48 @@ public abstract class PanelView
     protected void fine(String message) { viewLog.fine(message); }
     protected void finer(String message) { viewLog.finer(message); }
     protected void finest(String message) { viewLog.finest(message); }
+
+    /*
+     * Helper methods
+     */
+
+    // Setting binding
+
+    protected BooleanProperty bindSetting(BoolSetting setting, BooleanProperty dest)
+    {
+        BooleanProperty settingProperty = BooleanProperty.fromSetting(setting);
+        settingProperty.setDebugName("setting/" + setting.key().toString());
+        dest.set(settingProperty.get());
+        settingProperty.bind(dest.copyFrom());
+        return settingProperty;
+    }
+
+    protected IntegerProperty bindSetting(IntSetting setting, IntegerProperty dest)
+    {
+        IntegerProperty settingProperty = IntegerProperty.fromSetting(setting);
+        settingProperty.setDebugName("setting/" + setting.key().toString());
+        dest.set(settingProperty.get());
+        settingProperty.bind(dest.copyFrom());
+        return settingProperty;
+    }
+
+    protected StringProperty bindSetting(StringSetting setting, StringProperty dest)
+    {
+        StringProperty settingProperty = StringProperty.fromSetting(setting);
+        settingProperty.setDebugName("setting/" + setting.key().toString());
+        dest.set(settingProperty.get());
+        settingProperty.bind(dest.copyFrom());
+        return settingProperty;
+    }
+
+    protected NumberProperty bindSetting(FloatSetting setting, NumberProperty dest)
+    {
+        NumberProperty settingProperty = NumberProperty.fromSetting(setting);
+        settingProperty.setDebugName("setting/" + setting.key().toString());
+        dest.set(settingProperty.get());
+        settingProperty.bind(dest.copyFrom());
+        return settingProperty;
+    }
 
     /*
      *

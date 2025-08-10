@@ -45,19 +45,35 @@
             }
         },
         {
+            widget: "moondust:checkbox",
+            name: "enable_debug_cursor",
+            position: [99, 1],
+
+            checkbox: {
+                label: "Debug Cursor",
+                checked: false
+            }
+        },
+        {
+            widget: "mock_chat:profile_settings",
+            name: "profile_settings",
+            position: [1, 40],
+            bounds: ["100% - 2", 46]
+        },
+        {
             widget: "moondust:empty",
             name: "funny_text_reference",
             position: {
                 type: "anchored",
                 anchor: "bottom_left"
             },
-            bounds: ["100%", 20],
+            bounds: ["100%", 14],
 
             text: {
                 text: {
                     parts: [
                         {
-                            text: "Access Denied!\n\nContacting local authorities...",
+                            text: "Access Denied!\nContacting local authorities...",
                             style: "moondust:button/normal"
                         }
                     ],
@@ -65,7 +81,7 @@
                     align: "left",
                     text_size: 6,
                     vertical_anchor: "max_height",
-                    max_height: 20
+                    max_height: 11
                 },
                 position: {
                     type: "anchored",

@@ -1,0 +1,15 @@
+{
+    script: "moondust:blueprint/text_field",
+    fields: {
+        initial_text: {
+            type: "string"
+        },
+        ghost_text: {
+            type: "string"
+        },
+        password: {
+            type: "bool",
+            default: false
+        }
+    }
+}

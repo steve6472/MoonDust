@@ -24,7 +24,7 @@ public class MoonDustTestMain
 {
     public static void main(String[] args) throws IOException, URISyntaxException
     {
-        if (System.getProperty("os.name").startsWith("Windows"))
+        if (System.getProperty("os.name").startsWith("Windows 10"))
             enableWinConsoleColors();
 
         PackerUtil.PADDING = 0;

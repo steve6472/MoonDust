@@ -96,6 +96,35 @@
                 anchor: "top_left",
                 offset: [2, 2]
             }
+        },
+        {
+            widget: "moondust:button",
+            name: "fake_message",
+            bounds: [70, 13],
+            button: {
+                on_press: {
+                    script: "moondust:button_send_command",
+                    input: {
+                        key: "mock_chat:add_fake_message"
+                    }
+                },
+                label: "Add Fake Message"
+            },
+
+            sprites: {
+                normal: "moondust:generic_dark_pixel/button/generic/square/normal",
+                disabled: "moondust:generic_dark_pixel/button/generic/square/disabled",
+                hover: "moondust:generic_dark_pixel/button/generic/square/hover",
+                pressed: "moondust:generic_dark_pixel/button/generic/square/pressed"
+            },
+            focused_sprite: "moondust:generic_dark_pixel/generic/focus/square",
+
+            position: {
+                type: "relative",
+                parent: "navigate_back",
+                offset: [2, 0],
+                is_right: true
+            }
         }
     ]
 }

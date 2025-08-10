@@ -58,10 +58,10 @@ public record PropertiesBlueprint(Map<String, PropertyEntry> properties) impleme
             propertyMap.put(k, property);
         });
 
-        return List.of(new Properties(propertyMap));
+        return List.of(Properties.ofProperties(propertyMap));
     }
 
-    private record PropertyEntry(String type, Optional<Object> defaultValue)
+    public record PropertyEntry(String type, Optional<Object> defaultValue)
     {
         private static final Codec<PropertyEntry> CODEC_DEFAULT = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.fieldOf("type").forGetter(PropertyEntry::type),

@@ -210,11 +210,11 @@
                 on_press: {
                     script: "moondust_test:navigate/to_panel",
                     input: {
-                        to_open: "moondust_test:panel/font_settings",
+                        to_open: "moondust_test:panel/settings",
                         to_close: "moondust_test:panel"
                     }
                 },
-                label: "Font Settings"
+                label: "Settings"
             },
 
             styles: {

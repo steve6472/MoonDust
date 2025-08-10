@@ -39,3 +39,5 @@ modules/flare/
 modules/moondust/
 generated/
 latest.log
+
+/modules/no_git/

@@ -16,6 +16,7 @@ import steve6472.flare.input.UserInput;
 import steve6472.flare.render.impl.UIRenderImpl;
 import steve6472.flare.ui.textures.SpriteEntry;
 import steve6472.moondust.MoonDust;
+import steve6472.moondust.MoonDustSettings;
 import steve6472.moondust.widget.Panel;
 import steve6472.moondust.widget.Widget;
 import steve6472.moondust.widget.blueprint.RenderOrderBlueprint;
@@ -33,7 +34,6 @@ import java.util.logging.Logger;
 public class MoonDustUIRender extends UIRenderImpl
 {
     private static final Logger LOGGER = Log.getLogger(MoonDustUIRender.class);
-    private static final boolean DEBUG_CURSOR = true;
 
     private final Window window;
     private final UserInput input;
@@ -66,7 +66,7 @@ public class MoonDustUIRender extends UIRenderImpl
         Vector2i mousePos = input.getMousePositionRelativeToTopLeftOfTheWindow();
         mousePos.div(pixelScale);
 
-        if (DEBUG_CURSOR)
+        if (MoonDustSettings.DEBUG_CURSOR.get())
         {
             sprite(mousePos.x, mousePos.y, 0, 1, 1, new Vector3f(0, 1, 0), Key.withNamespace("moondust","sprites/pixel"));
         }

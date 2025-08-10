@@ -2,11 +2,14 @@ package steve6472.moondust;
 
 import org.lwjgl.system.MemoryStack;
 import steve6472.core.registry.Key;
+import steve6472.core.setting.SettingsLoader;
 import steve6472.flare.Camera;
+import steve6472.flare.FlareConstants;
 import steve6472.flare.core.Flare;
 import steve6472.flare.core.FlareApp;
 import steve6472.flare.core.FrameInfo;
 import steve6472.flare.input.KeybindUpdater;
+import steve6472.flare.registry.FlareRegistries;
 import steve6472.flare.render.UIFontRender;
 import steve6472.flare.render.UILineRender;
 import steve6472.flare.render.UIRenderSystem;
@@ -51,6 +54,7 @@ public class MoonDustTest extends FlareApp
     @Override
     public void loadSettings()
     {
+        SettingsLoader.loadFromJsonFile(MoonDustRegistries.SETTINGS, MoonDustConstants.SETTINGS_FILE);
     }
 
     @Override
@@ -85,6 +89,7 @@ public class MoonDustTest extends FlareApp
     @Override
     public void saveSettings()
     {
+        SettingsLoader.saveToJsonFile(MoonDustRegistries.SETTINGS, MoonDustConstants.SETTINGS_FILE);
     }
 
     @Override

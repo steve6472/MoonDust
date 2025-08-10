@@ -7,6 +7,7 @@
 
     styles: {
         normal: "moondust:button/normal",
+        ghost: "moondust:text_field/ghost",
         disabled: "moondust:button/disabled"
     },
 

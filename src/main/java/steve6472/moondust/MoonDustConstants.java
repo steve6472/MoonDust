@@ -18,6 +18,8 @@ public class MoonDustConstants
     /// Root folder for generated resources
     public static final File GENERATED_MOONDUST = new File(FlareConstants.GENERATED_FOLDER, NAMESPACE);
 
+    public static final File SETTINGS_FILE = new File("settings" + File.separator + "moondust_settings.json");
+
     public static final File MOONDUST_MODULE = new File(SteveCore.MODULES, NAMESPACE);
 
     public static Key key(String id)

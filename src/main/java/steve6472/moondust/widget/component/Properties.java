@@ -1,8 +1,11 @@
 package steve6472.moondust.widget.component;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import steve6472.moondust.core.Mergeable;
 import steve6472.moondust.view.property.Property;
 import steve6472.moondust.widget.Widget;
+import steve6472.moondust.widget.blueprint.PropertiesBlueprint;
 import steve6472.moondust.widget.component.event.OnPropertyChange;
 
 import java.util.HashMap;
@@ -22,9 +25,21 @@ public final class Properties implements Mergeable<Properties>
     private final Map<String, Property<?>> properties;
     private final Set<String> widgetBound = new HashSet<>();
 
-    public Properties(Map<String, Property<?>> properties)
+    public static final Codec<Properties> CODEC = Codec.unboundedMap(Codec.STRING, PropertiesBlueprint.PropertyEntry.CODEC).flatComapMap(Properties::ofEntries, _ -> DataResult.error(() -> "Properties are not decodable, use widget property functions instead"));
+
+    private Properties(Map<String, Property<?>> properties)
     {
         this.properties = properties;
+    }
+
+    public static Properties ofEntries(Map<String, PropertiesBlueprint.PropertyEntry> entries)
+    {
+        return (Properties) new PropertiesBlueprint(entries).createComponents().getFirst();
+    }
+
+    public static Properties ofProperties(Map<String, Property<?>> properties)
+    {
+        return new Properties(properties);
     }
 
     // Forbids overriding properties
