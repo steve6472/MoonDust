@@ -11,7 +11,6 @@
 
     children: [
         {
-            widget: "moondust:empty",
             name: "lmb",
             sprites: { "left": "moondust:sprites/mouse/left" },
             bounds: [13, 19],
@@ -22,7 +21,6 @@
             }
         },
         {
-            widget: "moondust:empty",
             name: "rmb",
             sprites: { "right": "moondust:sprites/mouse/right" },
             bounds: [13, 19],
@@ -33,7 +31,6 @@
             }
         },
         {
-            widget: "moondust:empty",
             name: "mmb",
             sprites: {
                 "left": "moondust:sprites/mouse/left",
@@ -50,7 +47,6 @@
             }
         },
         {
-            widget: "moondust:empty",
             name: "scroll_up",
             sprites: { "scroll_up": "moondust:sprites/mouse/scroll_up" },
             bounds: [13, 19],
@@ -61,7 +57,6 @@
             }
         },
         {
-            widget: "moondust:empty",
             name: "scroll_down",
             sprites: { "scroll_down": "moondust:sprites/mouse/scroll_down" },
             bounds: [13, 19],

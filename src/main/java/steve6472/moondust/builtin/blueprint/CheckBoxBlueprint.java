@@ -72,7 +72,6 @@ public record CheckBoxBlueprint(Key pressCall, Key pressScript, String label, bo
 
         components.add(properties);
         components.add(data);
-        components.add(WidgetStates.clickable(true));
 
         return components;
     }

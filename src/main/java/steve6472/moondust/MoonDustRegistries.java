@@ -11,13 +11,11 @@ import steve6472.mock_chat.ChatView;
 import steve6472.moondust.blueprints.BlueprintValueType;
 import steve6472.moondust.blueprints.CustomBlueprintLoader;
 import steve6472.moondust.builtin.BuiltinBlueprints;
-import steve6472.moondust.builtin.JavaFunctions;
 import steve6472.moondust.core.JavaFunc;
 import steve6472.moondust.core.MoonDustKeybinds;
 import steve6472.moondust.luau.LuaScriptLoader;
 import steve6472.moondust.luau.ProfiledScript;
 import steve6472.moondust.view.PanelViewEntry;
-import steve6472.moondust.widget.BlueprintOverrides;
 import steve6472.moondust.widget.MoonDustComponents;
 import steve6472.moondust.widget.blueprint.layout.LayoutType;
 import steve6472.moondust.widget.blueprint.event.UIEventType;
@@ -28,7 +26,6 @@ import steve6472.moondust.widget.WidgetBlueprints;
 import steve6472.moondust.widget.WidgetLoader;
 import steve6472.moondust.widget.component.event.UIEventCall;
 import steve6472.moondust.widget.component.position.PositionType;
-import steve6472.moondust.widget.override.OverrideEntry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,8 +60,6 @@ public class MoonDustRegistries extends RegistryCreators
 
     public static final Registry<UIEventType<?>> EVENT_TYPE = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("event_type"), () -> UIEventType.ON_RANDOM_TICK);
 
-    // TODO: remove overrides ?
-    public static final Registry<OverrideEntry<?>> OVERRIDE = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("override"), () -> BlueprintOverrides.EVENTS);
     public static final Registry<BlueprintEntry<?>> WIDGET_BLUEPRINT = createNamespacedRegistry(MoonDustConstants.NAMESPACE, key("widget_blueprint"), () ->
     {
         LOGGER.finest("Bootstrapping '%s'".formatted(WidgetBlueprints.SPRITES.key()));

@@ -1,5 +1,6 @@
 package steve6472.moondust.widget.component;
 
+import com.mojang.serialization.Codec;
 import steve6472.core.registry.Key;
 
 /**
@@ -9,4 +10,5 @@ import steve6472.core.registry.Key;
  */
 public record WidgetReference(Key reference)
 {
+    public static final Codec<WidgetReference> CODEC = Key.CODEC.xmap(WidgetReference::new, WidgetReference::reference);
 }

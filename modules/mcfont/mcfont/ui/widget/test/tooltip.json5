@@ -45,21 +45,19 @@
             }
         },
         {
-            widget: "moondust:button",
             name: "navigate_back",
             bounds: [32, 13],
+            position: {
+                type: "anchored",
+                anchor: "bottom_left",
+                offset: [0, 0]
+            },
 
             button: {
                 on_press: {
                     script: "moondust_test:navigate/back"
                 },
                 label: "<--"
-            },
-
-            position: {
-                type: "anchored",
-                anchor: "bottom_left",
-                offset: [0, 0]
             }
         }
     ]

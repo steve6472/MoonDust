@@ -6,14 +6,12 @@
     },
     children: [
         {
-            widget: "moondust:empty",
             name: "tooltip/background",
             position: [0, 0],
             sprites: {normal: "mcfont:tooltip/background"},
             current_sprite: "normal"
         },
         {
-            widget: "moondust:empty",
             name: "tooltip/frame",
             position: [0, 0],
             sprites: {normal: "mcfont:tooltip/frame"},
@@ -21,7 +19,6 @@
             current_sprite: "normal"
         },
         {
-            widget: "moondust:empty",
             name: "title",
             position: [4, 3],
 
@@ -41,7 +38,6 @@
             }
         },
         {
-            widget: "moondust:empty",
             name: "lore",
             position: [4, 15],
 

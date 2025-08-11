@@ -71,10 +71,46 @@ public class Widget implements WidgetComponentGetter
             panel.setBounds((int) (window.getWidth() / pixelScale), (int) (window.getHeight() / pixelScale));
         }
 
-        Object temp = blueprint.blueprints().get(WidgetBlueprints.WIDGET.key());
-        if (temp instanceof Blueprint bp)
-            temp = bp.createComponents().getFirst();
-        if (temp instanceof WidgetReference ref)
+        // Create the actual components
+        List<Object> componentsToAdd = new ArrayList<>();
+        blueprint.blueprints().forEach((key, prnt) ->
+        {
+            if (WidgetBlueprints.WIDGET.key().equals(key))
+            {
+                if (LOG_WIDGET_CREATION)
+                    LOGGER.finer("Creating from Blueprint: " + key + " (ignored!)");
+            } else
+            {
+                if (LOG_WIDGET_CREATION)
+                    LOGGER.finer("Creating from Blueprint: " + key);
+
+                componentsToAdd.addAll(prnt.createComponents());
+            }
+        });
+
+        // Get the widget reference for parent
+        Object refObj = blueprint.blueprints().get(WidgetBlueprints.WIDGET.key());
+        if (refObj instanceof Blueprint bp)
+            refObj = bp.createComponents().getFirst();
+
+        // If reference from widget definition blueprint is null, check for reference from blueprints
+        if (refObj == null)
+        {
+            Optional<WidgetReference> widgetReference = componentsToAdd
+                .stream()
+                .filter(o -> o instanceof WidgetReference)
+                .findFirst()
+                .map(o -> (WidgetReference) o);
+
+            if (widgetReference.isPresent())
+            {
+                refObj = widgetReference.get();
+            }
+        }
+
+        // If reference was found, create components
+        // Otherwise, if reference is still null, assume empty reference (nothing gets added)
+        if (refObj instanceof WidgetReference ref)
         {
             BlueprintFactory widgetItself = MoonDustRegistries.WIDGET_FACTORY.get(ref.reference());
             Objects.requireNonNull(widgetItself, "Could not find " + ref.reference());
@@ -90,41 +126,10 @@ public class Widget implements WidgetComponentGetter
             });
         }
 
-        // Create the actual components
-        blueprint.blueprints().forEach((key, prnt) ->
+        // Finally add components from widget definition last for overrides
+        for (Object component : componentsToAdd)
         {
-            if (WidgetBlueprints.WIDGET.key().equals(key))
-            {
-                if (LOG_WIDGET_CREATION)
-                    LOGGER.finer("Creating from Blueprint: " + key + " (ignored!)");
-            } else
-            {
-                if (LOG_WIDGET_CREATION)
-                    LOGGER.finer("Creating from Blueprint: " + key);
-                for (Object component : prnt.createComponents())
-                {
-                    addComponent(component);
-                }
-            }
-        });
-
-        temp = components.remove(Overrides.class);
-        if (temp instanceof Overrides overrides)
-        {
-            //noinspection rawtypes
-            for (BlueprintOverride override : overrides.overrides())
-            {
-                //noinspection unchecked
-                Optional<?> component = getComponent(override.target());
-                if (component.isEmpty())
-                {
-                    throw new RuntimeException("Override present, but component for type %s not found".formatted(override.target().getSimpleName()));
-                }
-                //noinspection unchecked
-                Object overriden = override.override(component.get());
-                components.remove(override.target());
-                addComponent(overriden);
-            }
+            addComponent(component);
         }
 
         // If custom data was not created via blueprints, add a default empty one

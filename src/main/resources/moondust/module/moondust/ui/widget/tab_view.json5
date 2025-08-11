@@ -5,7 +5,6 @@
 
     children: [
         {
-            widget: "moondust:empty",
             name: "outer_frame",
             position: [0, 0],
 

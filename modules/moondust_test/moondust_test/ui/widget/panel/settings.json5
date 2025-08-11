@@ -10,36 +10,32 @@
             }
         },
         {
-            widget: "moondust:button",
             name: "navigate_back",
             bounds: [32, 13],
-
-            "moondust:button": {
-                on_press: {
-                    script: "moondust_test:navigate/back"
-                },
-                label: "<--"
-            },
-
             position: {
                 type: "anchored",
                 anchor: "bottom_left",
                 offset: [0, 0]
+            },
+
+            button: {
+                on_press: {
+                    script: "moondust_test:navigate/back"
+                },
+                label: "<--"
             }
         },
         {
-            widget: "moondust:button",
             name: "test",
             bounds: [32, 32],
-
-            button: {
-                label: "TEST THE BUTTON TEXT"
-            },
-
             position: {
                 type: "anchored",
                 anchor: "center",
                 offset: [0, 0]
+            },
+
+            button: {
+                label: "TEST THE BUTTON TEXT"
             }
         }
     ]

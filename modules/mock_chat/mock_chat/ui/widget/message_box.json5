@@ -9,21 +9,21 @@
         {
             widget: "moondust:tab_view",
             name: "tabs",
+            bounds: ["100% - 4", "100% - 18"],
             position: {
                 type: "anchored",
                 anchor: "top_left",
                 offset: [2, 2]
             },
+
             tab_view: {
                 labels: ["Chat", "Settings", "Debug"],
                 views: ["mock_chat:chat_container", "mock_chat:settings", "moondust:debug/outlines"],
                 default: 0,
                 side: "top"
-            },
-            bounds: ["100% - 4", "100% - 18"]
+            }
         },
         {
-            widget: "moondust:text_field",
             name: "text_input",
             bounds: ["100% - 15", 13],
             position: {
@@ -31,15 +31,21 @@
                 anchor: "bottom_left",
                 offset: [2, -2]
             },
+
             text_field: {
                 ghost_text: "Message",
                 password: false
             }
         },
         {
-            widget: "moondust:button",
             name: "send_button",
             bounds: [10, 13],
+            position: {
+                type: "anchored",
+                anchor: "bottom_right",
+                offset: [-2, -2]
+            },
+
             button: {
                 on_press: {
                     script: "moondust:button_send_command",
@@ -48,6 +54,7 @@
                     }
                 }
             },
+
             sprites: {
                 normal: "moondust:generic_dark_pixel/arrow/style_2_odd/dark",
                 disabled: "moondust:generic_dark_pixel/arrow/style_2_odd/darkest",
@@ -56,12 +63,7 @@
             },
             sprite_size: [8, 11],
             sprite_offset: [1, 1],
-            focused_sprite: "moondust:generic_dark_pixel/arrow/style_2_odd/outline_white",
-            position: {
-                type: "anchored",
-                anchor: "bottom_right",
-                offset: [-2, -2]
-            }
+            focused_sprite: "moondust:generic_dark_pixel/arrow/style_2_odd/outline_white"
         }
     ]
 }

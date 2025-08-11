@@ -17,7 +17,6 @@
 
     children: [
         {
-            widget: "moondust:empty",
             name: "username",
             position: {
                 type: "anchored",
@@ -49,7 +48,6 @@
             }
         },
         {
-            widget: "moondust:empty",
             name: "message",
             position: {
                 type: "anchored",
@@ -97,7 +95,6 @@
             focused_sprite: "moondust:generic_dark_pixel/button/tiny/hamburger/white"
         },
         {
-            widget: "moondust:button",
             name: "delete_entry",
             position: {
                 type: "anchored",
@@ -105,15 +102,16 @@
                 offset: [-9, 2]
             },
             bounds: [7, 7],
+            button: {
+                on_press: "mock_chat:widget/chat_entry_remove"
+            },
+
             sprites: {
                 normal: "moondust:generic_dark_pixel/button/tiny/cross/normal",
                 hover: "moondust:generic_dark_pixel/button/tiny/cross/white",
                 pressed: "moondust:generic_dark_pixel/button/tiny/cross/white"
             },
-            focused_sprite: "moondust:generic_dark_pixel/button/tiny/cross/black",
-            "moondust:button": {
-                on_press: "mock_chat:widget/chat_entry_remove"
-            }
+            focused_sprite: "moondust:generic_dark_pixel/button/tiny/cross/black"
         }
     ]
 }

@@ -7,18 +7,16 @@
 
     children: [
         {
-            widget: "moondust:button",
             name: "close_button",
             bounds: [13, 13],
-
-            button: {
-                on_press: "moondust:button/exit_app"
-            },
-
             position: {
                 type: "anchored",
                 anchor: "top_right",
                 offset: [-2, 2]
+            },
+
+            button: {
+                on_press: "moondust:button/exit_app"
             },
 
             sprites: {
@@ -29,18 +27,16 @@
             }
         },
         {
-            widget: "moondust:button",
             name: "maximize_button",
             bounds: [13, 13],
-
-            button: {
-                on_press: "moondust:button/maximize_window"
-            },
-
             position: {
                 type: "anchored",
                 anchor: "top_right",
                 offset: [-16, 2]
+            },
+
+            button: {
+                on_press: "moondust:button/maximize_window"
             },
 
             sprites: {
@@ -51,18 +47,16 @@
             }
         },
         {
-            widget: "moondust:button",
             name: "minimize_button",
             bounds: [13, 13],
-
-            button: {
-                on_press: "moondust:button/minimize_window"
-            },
-
             position: {
                 type: "anchored",
                 anchor: "top_right",
                 offset: [-30, 2]
+            },
+
+            button: {
+                on_press: "moondust:button/minimize_window"
             },
 
             sprites: {
@@ -73,9 +67,14 @@
             }
         },
         {
-            widget: "moondust:button",
             name: "navigate_back",
             bounds: [32, 13],
+            position: {
+                type: "anchored",
+                anchor: "top_left",
+                offset: [2, 2]
+            },
+
             button: {
                 on_press: {
                     script: "moondust_test:navigate/back"
@@ -89,18 +88,18 @@
                 hover: "moondust:generic_dark_pixel/button/generic/square/hover",
                 pressed: "moondust:generic_dark_pixel/button/generic/square/pressed"
             },
-            focused_sprite: "moondust:generic_dark_pixel/generic/focus/square",
-
-            position: {
-                type: "anchored",
-                anchor: "top_left",
-                offset: [2, 2]
-            }
+            focused_sprite: "moondust:generic_dark_pixel/generic/focus/square"
         },
         {
-            widget: "moondust:button",
             name: "fake_message",
             bounds: [70, 13],
+            position: {
+                type: "relative",
+                parent: "navigate_back",
+                offset: [2, 0],
+                is_right: true
+            },
+
             button: {
                 on_press: {
                     script: "moondust:button_send_command",
@@ -117,14 +116,7 @@
                 hover: "moondust:generic_dark_pixel/button/generic/square/hover",
                 pressed: "moondust:generic_dark_pixel/button/generic/square/pressed"
             },
-            focused_sprite: "moondust:generic_dark_pixel/generic/focus/square",
-
-            position: {
-                type: "relative",
-                parent: "navigate_back",
-                offset: [2, 0],
-                is_right: true
-            }
+            focused_sprite: "moondust:generic_dark_pixel/generic/focus/square"
         }
     ]
 }

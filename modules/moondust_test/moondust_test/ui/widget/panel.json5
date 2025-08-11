@@ -17,22 +17,19 @@
 
     children: [
         {
-            widget: "moondust:button",
             name: "close_button",
             bounds: [13, 13],
-
-            button: {
-                on_press: "moondust:button/exit_app"
-            },
-            focused_sprite: "moondust_test:sharper_animated",
-
-            // Widget components on panel
             position: {
                 type: "anchored",
                 offset: [0, 0],
                 anchor: "top_right"
             },
 
+            button: {
+                on_press: "moondust:button/exit_app"
+            },
+
+            focused_sprite: "moondust_test:sharper_animated",
             sprites: {
                 normal: "moondust:generic_dark_pixel/button/close_red/normal",
                 disabled: "moondust:generic_dark_pixel/button/close_red/disabled",
@@ -41,14 +38,13 @@
             }
         },
         {
-            widget: "moondust:empty",
             name: "label_test",
+            bounds: [55, 10],
             position: {
                 type: "anchored",
                 anchor: "bottom",
                 offset: [0, -5]
             },
-            bounds: [55, 10],
 
             text: {
                 text: {
@@ -70,7 +66,6 @@
             }
         },
         {
-            widget: "moondust:empty",
             name: "debug_label",
             position: [0, 0]
             /*,
@@ -84,12 +79,9 @@
             }*/
         },
         {
-            // The widget type, required
-            widget: "moondust:button",
-
-            // Non-namespaced name, required
             name: "test_button",
             bounds: [32, 32],
+            position: [30, 10],
 
             button: {
                 on_press: {
@@ -114,9 +106,7 @@
 
             styles: {
                 disabled: "flare:arial"
-            },
-
-            position: [30, 10]
+            }
         },
         {
             widget: "moondust_test:test_radio",
@@ -139,13 +129,12 @@
             }
         },
         {
-            widget: "moondust:empty",
             name: "test_icon",
-            sprite_size: [8, 8],
             position: [0, 0],
             sprites: {
                 "icon": "moondust:sprites/unknown"
             },
+            sprite_size: [8, 8],
             current_sprite: "icon"
         },
         {
@@ -154,27 +143,30 @@
             position: [4, 20]
         },
         {
-            widget: "moondust:text_field",
             name: "text_field",
             bounds: [48, 13],
-
-            // Widget components on panel
             position: {
                 type: "anchored",
                 offset: [0, 15],
                 anchor: "top_right"
+            },
+
+            text_field: {
+                ghost_text: "Text"
             }
         },
         {
-            widget: "moondust:text_field",
             name: "text_field_password",
             bounds: [48, 13],
-
-            // Widget components on panel
             position: {
                 type: "relative",
                 offset: [0, 15],
                 parent: "text_field"
+            },
+
+            text_field: {
+                password: true,
+                ghost_text: "Password"
             }
         },
         {
@@ -199,12 +191,13 @@
             }
         },
         {
-            // The widget type, required
-            widget: "moondust:button",
-
-            // Non-namespaced name, required
             name: "font_settings_button",
             bounds: [64, 13],
+            position: {
+                type: "anchored",
+                anchor: "bottom_right",
+                offset: [0, 0]
+            },
 
             button: {
                 on_press: {
@@ -219,21 +212,16 @@
 
             styles: {
                 disabled: "flare:arial"
-            },
-
-            position: {
-                type: "anchored",
-                anchor: "bottom_right",
-                offset: [0, 0]
             }
         },
         {
-            // The widget type, required
-            widget: "moondust:button",
-
-            // Non-namespaced name, required
             name: "tooltip_test_button",
             bounds: [64, 13],
+            position: {
+                type: "anchored",
+                anchor: "bottom_right",
+                offset: [0, -14]
+            },
 
             button: {
                 on_press: {
@@ -244,24 +232,15 @@
                     }
                 },
                 label: "MC Tooltip"
-            },
-
-            position: {
-                type: "anchored",
-                anchor: "bottom_right",
-                offset: [0, -14]
             }
         },
         {
-            // The widget type, required
-            widget: "moondust:button",
-
-            // Non-namespaced name, required
             name: "dump_textures",
             bounds: [64, 13],
-
-            sprites: {
-                hover: "moondust_test:hover_pulsing"
+            position: {
+                type: "anchored",
+                anchor: "bottom_right",
+                offset: [0, -28]
             },
 
             button: {
@@ -272,16 +251,18 @@
                 label: "Dump Textures"
             },
 
-            position: {
-                type: "anchored",
-                anchor: "bottom_right",
-                offset: [0, -28]
+            sprites: {
+                hover: "moondust_test:hover_pulsing"
             }
         },
         {
-            widget: "moondust:button",
             name: "navigate_mock_chat",
             bounds: [64, 13],
+            position: {
+                type: "anchored",
+                anchor: "bottom_right",
+                offset: [0, -42]
+            },
 
             button: {
                 on_press: {
@@ -292,12 +273,6 @@
                     }
                 },
                 label: "Mock Chat"
-            },
-
-            position: {
-                type: "anchored",
-                anchor: "bottom_right",
-                offset: [0, -42]
             }
         }
     ]

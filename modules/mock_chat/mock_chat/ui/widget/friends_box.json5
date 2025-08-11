@@ -4,16 +4,4 @@
     },
 
     current_sprite: "main"
-
-//    children: [
-//        {
-//            widget: "moondust:text_field",
-//            name: "text_input",
-//            bounds: [8, 13],
-//            position: {
-//                type: "anchored",
-//                anchor: "bottom_left"
-//            }
-//        }
-//    ]
 }

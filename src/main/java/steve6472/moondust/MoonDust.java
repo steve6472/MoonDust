@@ -15,7 +15,6 @@ import steve6472.moondust.widget.component.ClickboxOffset;
 import steve6472.moondust.widget.component.event.*;
 import steve6472.moondust.widget.component.event.global.OnGlobalPixelScaleChange;
 import steve6472.radiant.LuaTableOps;
-import steve6472.radiant.LuauTable;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

@@ -53,7 +53,6 @@ public class WidgetBlueprints
     @Deprecated(forRemoval = true)
     public static final BlueprintEntry<EventsBlueprint> EVENTS = register(EventsBlueprint.KEY, EventsBlueprint.CODEC);
     public static final BlueprintEntry<ScriptsBlueprint> SCRIPTS = register(ScriptsBlueprint.KEY, ScriptsBlueprint.CODEC);
-    public static final BlueprintEntry<OverridesBlueprint> OVERRIDES = register(OverridesBlueprint.KEY, OverridesBlueprint.CODEC);
     public static final BlueprintEntry<CustomDataBlueprint> DATA = register(CustomDataBlueprint.KEY, CustomDataBlueprint.CODEC);
     public static final BlueprintEntry<RadioGroupBlueprint> RADIO_GROUP = register(RadioGroupBlueprint.KEY, RadioGroupBlueprint.CODEC);
     public static final BlueprintEntry<WidgetStatesBl> WIDGET_STATES = register(WidgetStatesBl.KEY, WidgetStatesBl.CODEC);

@@ -1,7 +1,6 @@
 package steve6472.moondust.view.property;
 
 import steve6472.core.setting.FloatSetting;
-import steve6472.core.setting.IntSetting;
 import steve6472.moondust.view.exp.Compare;
 import steve6472.moondust.view.exp.Expression;
 import steve6472.moondust.view.exp.Const;

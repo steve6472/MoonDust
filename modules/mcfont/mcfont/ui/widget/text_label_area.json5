@@ -5,23 +5,20 @@
     },
     children: [
         {
-            widget: "moondust:empty",
             name: "tooltip/frame",
             position: [0, 0],
+            bounds: [48, 48],
             sprites: {normal: "mcfont:tooltip/frame"},
-            current_sprite: "normal",
-            bounds: [48, 48]
+            current_sprite: "normal"
         },
         {
-            widget: "moondust:empty",
             name: "tooltip/background",
+            bounds: [48, 48],
             position: [0, 0],
             sprites: {normal: "mcfont:tooltip/background"},
-            current_sprite: "normal",
-            bounds: [48, 48]
+            current_sprite: "normal"
         },
         {
-            widget: "moondust:empty",
             name: "text",
             position: [0, 0],
 

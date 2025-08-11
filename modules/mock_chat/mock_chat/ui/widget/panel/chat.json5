@@ -5,29 +5,29 @@
         {
             widget: "mock_chat:status_bar",
             name: "top_status_bar",
+            bounds: ["100%", 17],
             position: {
                 type: "anchored",
                 anchor: "top_left"
-            },
-            bounds: ["100%", 17]
+            }
         },
         {
             widget: "mock_chat:message_box",
             name: "message_box",
+            bounds: ["70%", "100% - 17"],
             position: {
                 type: "anchored",
                 anchor: "bottom_left"
-            },
-            bounds: ["70%", "100% - 17"]
+            }
         },
         {
             widget: "mock_chat:friends_box",
             name: "friends_box",
+            bounds: ["30%", "100% - 17"],
             position: {
                 type: "anchored",
                 anchor: "bottom_right"
-            },
-            bounds: ["30%", "100% - 17"]
+            }
         }
     ]
 }

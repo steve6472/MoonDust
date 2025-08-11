@@ -81,26 +81,11 @@ public class WidgetLoader
 
     private static void doWarnings(Map<Key, Blueprint> blueprints, Key key)
     {
-        // Add sprite_size if it is not defined, uses size size if defined, otherwise nothing is added
-        find(blueprints, SpriteSizeBlueprint.class).ifPresent(spriteSize -> {
-            find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
-                if (spriteSize.size().equals(bounds.bounds()))
-                    LOGGER.fine("Pointless declaration of '%s', it has same size as '%s', value: %s in: %s".formatted(WidgetBlueprints.SPRITE_SIZE.key(), WidgetBlueprints.BOUNDS.key(), bounds.bounds(), key));
-            });
-        });
-
-        find(blueprints, ClickboxSizeBlueprint.class).ifPresent(clickboxSize -> {
-            find(blueprints, BoundsBlueprint.class).ifPresent(bounds -> {
-                if (clickboxSize.size().equals(bounds.bounds()))
-                    LOGGER.fine("Pointless declaration of '%s', it has same size as '%s', value: %s in: %s".formatted(WidgetBlueprints.CLICKBOX_SIZE.key(), WidgetBlueprints.BOUNDS.key(), bounds.bounds(), key));
-            });
-        });
-
         find(blueprints, EventsBlueprint.class).ifPresent(_ -> LOGGER.warning("Widget %s contains events component, these will be removed in the future!".formatted(key)));
     }
 
     // Position is checked separately due to being typed and different layouts requiring different position types
-    private static final Collection<Class<? extends Blueprint>> REQUIRED_CHILDREN = Set.of(WidgetReferenceBlueprint.class, NameBlueprint.class);
+    private static final Collection<Class<? extends Blueprint>> REQUIRED_CHILDREN = Set.of(NameBlueprint.class);
 
     private static void validateChildren(ChildrenBlueprint children, Map<Key, Blueprint> widget)
     {

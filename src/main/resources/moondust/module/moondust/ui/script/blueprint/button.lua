@@ -14,6 +14,7 @@ function init(input)
     end
 
     return {
+        widget = "moondust:button",
         tables = {
             ["moondust:button"] = {
                 label = input.label

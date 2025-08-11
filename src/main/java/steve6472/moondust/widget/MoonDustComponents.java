@@ -40,6 +40,7 @@ public final class MoonDustComponents
         register("children", Children.CODEC, Children.class);
         register("render_order", RenderOrder.CODEC, RenderOrder.class);
         register("properties", Properties.CODEC, Properties.class);
+        register("widget", WidgetReference.CODEC, WidgetReference.class);
         // no worky 'cause typed... uhhh annoying
 //        register("position", Position.CODEC, Position.class);
     }

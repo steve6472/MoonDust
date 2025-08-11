@@ -95,7 +95,6 @@ function init(input)
     local children =
     {
         {
-            widget = "moondust:empty",
             name = "content",
             position = {0, 0},
             children = contents

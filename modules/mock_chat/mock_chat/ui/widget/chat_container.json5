@@ -3,8 +3,8 @@
         {
             widget: "mock_chat:chat",
             name: "chat",
-            position: [0, 0],
-            bounds: ["100%", "100%"]
+            bounds: ["100%", "100%"],
+            position: [0, 0]
         }
     ]
 }

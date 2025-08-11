@@ -2,6 +2,7 @@ function init(input)
     --print(core.dump(input))
 
     return {
+        widget = "moondust:text_field",
         properties = {
             text = {
                 type = "string",
