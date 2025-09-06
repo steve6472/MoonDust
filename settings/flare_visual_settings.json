@@ -3,6 +3,7 @@
   "flare:enable_wide_lines": true,
   "flare:font_gen_logs": false,
   "flare:font_generate_timeout": 15,
+  "flare:generate_startup_atlas_data": false,
   "flare:global_camera_count": 1,
   "flare:line_width": 2.0,
   "flare:present_mode": "FIFO",

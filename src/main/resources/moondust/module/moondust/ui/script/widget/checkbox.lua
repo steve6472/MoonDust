@@ -35,7 +35,10 @@ local function propertyChange(widget, changed)
     --print(core.dump(changed))
     if (changed.property == "checked") then
         updateCheckedSprite(widget, changed.new_value)
-    MoonDust.replaceStyleText(widget, pickStyle(widget, false))
+
+        --MoonDust.replaceStyleText(widget, pickStyle(widget, false))
+    elseif (changed.property == "enabled") then
+        updateCheckedSprite(widget, widget:getPropertyValue("checked"))
     end
 end
 

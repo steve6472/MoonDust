@@ -64,6 +64,8 @@ public class MoonDustRegistries extends RegistryCreators
     {
         LOGGER.finest("Bootstrapping '%s'".formatted(WidgetBlueprints.SPRITES.key()));
         LOGGER.finest("Bootstrapping '%s'".formatted(BuiltinBlueprints.SPINNER.key()));
+        LOGGER.finest("Bootstrapping '%s'".formatted("Java Blueprints"));
+        tempWidgetBlueprintReg();
         LOGGER.finest("Bootstrapping '%s'".formatted("Custom Blueprints"));
         CustomBlueprintLoader.load();
     });
@@ -72,9 +74,23 @@ public class MoonDustRegistries extends RegistryCreators
         tempPanelViewReg();
     });
 
+    private static void tempWidgetBlueprintReg()
+    {
+        for (BlueprintEntry<?> entry : MoonDustRegs.WIDGET_BLUEPRINT_ENTRIES)
+        {
+            WIDGET_BLUEPRINT.register(entry);
+        }
+        MoonDustRegs.WIDGET_BLUEPRINT_ENTRIES.clear();
+    }
+
     private static void tempPanelViewReg()
     {
         PANEL_VIEW.register(new PanelViewEntry(Key.withNamespace(ChatView.NAMESPACE, "chat"), ChatView::new));
+        for (PanelViewEntry entry : MoonDustRegs.VIEW_ENTRIES)
+        {
+            PANEL_VIEW.register(entry);
+        }
+        MoonDustRegs.VIEW_ENTRIES.clear();
     }
 
     public static final ObjectRegistry<BlueprintFactory> WIDGET_FACTORY = createObjectRegistry(key("widget_factory"), WidgetLoader::load);

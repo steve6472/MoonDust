@@ -31,4 +31,9 @@ public class BooleanProperty extends Property<Boolean>
     {
         return new Expression<>(this::get, this);
     }
+
+    public Expression<Boolean> copyFromInverted()
+    {
+        return new Expression<>(() -> !get(), this);
+    }
 }

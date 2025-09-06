@@ -2,7 +2,6 @@ package steve6472.mock_chat;
 
 import steve6472.core.registry.Key;
 import steve6472.core.util.RandomUtil;
-import steve6472.flare.settings.VisualSettings;
 import steve6472.moondust.MoonDustSettings;
 import steve6472.moondust.view.PanelView;
 import steve6472.moondust.view.property.BooleanProperty;
@@ -104,9 +103,6 @@ public class ChatView extends PanelView
 
         // Debug
         addCommandListener(key("copy_panel"), _ -> {
-            // TODO: use
-//            inputText.get();
-//            inputText.set("");
             String myString = panel.toString();
             myString = myString.replaceAll("\\R", "\\\\n");
             StringSelection stringSelection = new StringSelection(myString);

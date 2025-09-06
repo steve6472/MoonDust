@@ -37,7 +37,7 @@ local function propertyChange(widget, changed)
             changeCurrentSprite(widget, ids.sprite.disabled)
         end
         MoonDust.replaceStyleText(widget, pickStyle(widget, "ignore"))
-    elseif (changed.property == "text") then
+    elseif (changed.property == "text" or changed.property == "password") then
         updateText(widget)
     end
 end
@@ -66,6 +66,12 @@ end
 
 local function init(widget)
     updateText(widget)
+
+    if (widget:getPropertyValue("enabled")) then
+        changeCurrentSprite(widget, ids.sprite.normal)
+    else
+        changeCurrentSprite(widget, ids.sprite.disabled)
+    end
 end
 
 events.onInit:register(init)
