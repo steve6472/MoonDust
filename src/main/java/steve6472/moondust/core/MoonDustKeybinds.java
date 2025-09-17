@@ -14,10 +14,10 @@ import steve6472.moondust.MoonDustRegistries;
  */
 public interface MoonDustKeybinds
 {
-    Keybind BACK_MODIFIER = register(new Keybind(Key.withNamespace(MoonDustConstants.NAMESPACE, "back_modifier"), KeybindType.REPEAT, GLFW.GLFW_KEY_LEFT_SHIFT));
-    Keybind NEXT_WIDGET = register(new Keybind(Key.withNamespace(MoonDustConstants.NAMESPACE, "next_widget"), KeybindType.ONCE, GLFW.GLFW_KEY_TAB));
-    Keybind UNFOCUS_ALL = register(new Keybind(Key.withNamespace(MoonDustConstants.NAMESPACE, "unfocus_all"), KeybindType.ONCE, GLFW.GLFW_KEY_ESCAPE));
-    Keybind CONFIRM = register(new Keybind(Key.withNamespace(MoonDustConstants.NAMESPACE, "confirm"), KeybindType.ONCE, GLFW.GLFW_KEY_SPACE));
+    Keybind BACK_MODIFIER = register(Keybind.key(Key.withNamespace(MoonDustConstants.NAMESPACE, "back_modifier"), KeybindType.REPEAT, GLFW.GLFW_KEY_LEFT_SHIFT));
+    Keybind NEXT_WIDGET = register(Keybind.key(Key.withNamespace(MoonDustConstants.NAMESPACE, "next_widget"), KeybindType.ONCE, GLFW.GLFW_KEY_TAB));
+    Keybind UNFOCUS_ALL = register(Keybind.key(Key.withNamespace(MoonDustConstants.NAMESPACE, "unfocus_all"), KeybindType.ONCE, GLFW.GLFW_KEY_ESCAPE));
+    Keybind CONFIRM = register(Keybind.key(Key.withNamespace(MoonDustConstants.NAMESPACE, "confirm"), KeybindType.ONCE, GLFW.GLFW_KEY_SPACE));
 
     private static Keybind register(Keybind keybind)
     {
